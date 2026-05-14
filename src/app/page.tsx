@@ -16,14 +16,32 @@ import { Container, EditorialHeading, ProductCard, Reveal } from "@/components/p
 import { Button } from "@/components/ui/button";
 import { products, values } from "@/lib/products";
 
-const footerLinks = [
-  "Shipping & returns",
-  "Washing & care",
-  "FAQ",
-  "Contact",
-  "Instagram",
-  "Privacy Policy",
-  "Terms & Conditions",
+const footerLinkGroups = [
+  {
+    title: "Ontdek",
+    links: [
+      { label: "Shop", href: "#collection" },
+      { label: "Story", href: "#story" },
+      { label: "Materialen", href: "/materials" },
+    ],
+  },
+  {
+    title: "Service",
+    links: [
+      { label: "Washing & care", href: "/care" },
+      { label: "Shipping & returns", href: "/shipping-returns" },
+      { label: "FAQ", href: "/faq" },
+      { label: "Contact", href: "/contact" },
+    ],
+  },
+  {
+    title: "Juridisch",
+    links: [
+      { label: "Privacy Policy", href: "/privacy" },
+      { label: "Terms & Conditions", href: "/terms" },
+      { label: "Instagram", href: "https://instagram.com" },
+    ],
+  },
 ];
 
 const usps = [
@@ -33,6 +51,27 @@ const usps = [
   { label: values[3], Icon: PartyPopper },
   { label: values[4], Icon: HeartHandshake },
   { label: values[5], Icon: Leaf },
+];
+
+const careCards = [
+  {
+    title: "Materialen",
+    description:
+      "Gemaakt van verfijnde stoffen zoals linnen, jacquard, katoen, velours en polyester. Een deel van de stoffen draagt het Oeko-Tex label.",
+    Icon: Leaf,
+  },
+  {
+    title: "Gebruik",
+    description:
+      "Dankzij de katoenen uiteinden hang je de vlaggenlijn makkelijk op en style je die telkens opnieuw, binnen of buiten, voor ieder moment.",
+    Icon: RefreshCw,
+  },
+  {
+    title: "Wasadvies",
+    description:
+      "Je wast de vlaggenlijnen op 30 graden. De exacte samenstelling en verzorgingsinstructies vind je terug bij de productdetails.",
+    Icon: Sparkles,
+  },
 ];
 
 export default function Home() {
@@ -75,10 +114,10 @@ export default function Home() {
         >
           <nav className="flex items-center justify-center gap-6 text-xs uppercase tracking-[0.28em]">
             <a
-              className={`font-medium transition-colors duration-300 ${
+              className={`relative font-medium transition-colors duration-300 after:absolute after:bottom-0 after:left-0 after:h-[1px] after:w-full after:origin-left after:scale-x-0 after:transition-transform after:duration-300 after:ease-out hover:after:scale-x-100 ${
                 isFloating
-                  ? "text-brand-black/70 hover:text-brand-black"
-                  : "text-brand-off-white/80 hover:text-brand-off-white"
+                  ? "text-brand-black/70 hover:text-brand-black after:bg-brand-black"
+                  : "text-brand-off-white/80 hover:text-brand-off-white after:bg-brand-off-white"
               }`}
               href="#story"
             >
@@ -97,10 +136,10 @@ export default function Home() {
               />
             </a>
             <a
-              className={`font-medium transition-colors duration-300 ${
+              className={`relative font-medium transition-colors duration-300 after:absolute after:bottom-0 after:left-0 after:h-[1px] after:w-full after:origin-left after:scale-x-0 after:transition-transform after:duration-300 after:ease-out hover:after:scale-x-100 ${
                 isFloating
-                  ? "text-brand-black/70 hover:text-brand-black"
-                  : "text-brand-off-white/80 hover:text-brand-off-white"
+                  ? "text-brand-black/70 hover:text-brand-black after:bg-brand-black"
+                  : "text-brand-off-white/80 hover:text-brand-off-white after:bg-brand-off-white"
               }`}
               href="#collection"
             >
@@ -122,6 +161,24 @@ export default function Home() {
       </header>
 
       <section className="relative isolate min-h-[60svh] overflow-hidden">
+        <svg
+          aria-hidden
+          className="pointer-events-none absolute h-0 w-0"
+          focusable="false"
+        >
+          <filter id="hero-red-to-purple" colorInterpolationFilters="sRGB">
+            <feColorMatrix
+              type="matrix"
+              values="
+                0.76 0.04 0.20 0 0
+                0.08 0.92 0.00 0 0
+                0.70 0.04 0.96 0 0
+                0.00 0.00 0.00 1 0
+              "
+            />
+          </filter>
+        </svg>
+
         {heroVideoUrl ? (
           <video
             className="hero-video-rotated"
@@ -131,6 +188,10 @@ export default function Home() {
             playsInline
             poster={heroPosterUrl}
             aria-label="Poppy Joy hero video"
+            onLoadedMetadata={(event) => {
+              event.currentTarget.playbackRate = 0.75;
+            }}
+            style={{ filter: "url(#hero-red-to-purple) brightness(0.74) contrast(1.08)" }}
           >
             <source src={heroVideoUrl} />
           </video>
@@ -138,20 +199,20 @@ export default function Home() {
           <div className="absolute inset-0 bg-gradient-to-b from-brand-black/25 to-brand-black/45" />
         )}
 
-        <div className="absolute inset-0 bg-gradient-to-b from-black/75 via-black/55 to-black/75" />
+        <div className="absolute inset-0 bg-gradient-to-b from-brand-purple/44 via-brand-black/34 to-brand-purple/46" />
 
         <Container className="relative z-10 grid min-h-[60svh] gap-10 pb-16 pt-28 md:pb-24 lg:grid-cols-[1.05fr_0.95fr] lg:items-end">
           <Reveal className="max-w-3xl text-brand-off-white">
             <p className="mb-6 text-xs uppercase tracking-[0.36em] text-brand-off-white/85">
-              Reusable fabric bunting
+              Designed to stay made with love
             </p>
             <h1 className="serif max-w-4xl text-6xl font-semibold leading-[0.93] md:text-8xl">
               For moments that deserve joy.
             </h1>
             <p className="mt-8 max-w-2xl text-xl leading-8 text-brand-off-white/85">
-              Designed to stay. Made with love. Tijdloze stoffen vlaggenlijnen
-              voor vieringen groot en klein, handgemaakt van verfijnde
-              materialen die keer op keer opnieuw gebruikt mogen worden.
+              Tijdloze stoffen vlaggenlijnen voor vieringen groot en klein,
+              handgemaakt van verfijnde materialen die keer op keer opnieuw
+              gebruikt mogen worden.
             </p>
             <div className="mt-10 flex flex-wrap gap-4">
               <Button
@@ -177,7 +238,7 @@ export default function Home() {
                   <p className="text-[11px] uppercase tracking-[0.2em] text-brand-purple">
                     Atelier note
                   </p>
-                  <p className="serif mt-4 text-3xl leading-tight md:text-4xl">
+                  <p className="serif mt-4 text-2xl leading-tight md:text-3xl">
                     Ambachtelijk, persoonlijk en ontworpen om te blijven.
                   </p>
                 </div>
@@ -185,10 +246,29 @@ export default function Home() {
                   <p className="text-[11px] uppercase tracking-[0.2em] text-brand-black/55">
                     Materialen
                   </p>
-                  <ul className="mt-4 space-y-3 text-sm text-brand-black/65">
-                    <li>Linnen, katoen, velours, jacquard</li>
-                    <li>Dubbelzijdige afwerking</li>
-                    <li>Herbruikbaar voor elk seizoen</li>
+                  <div className="mt-4 flex flex-wrap gap-2">
+                    <span className="inline-flex items-center gap-1.5 rounded-full bg-brand-purple/10 px-3 py-1 text-[11px] uppercase tracking-[0.16em] text-brand-purple">
+                      <Leaf size={12} />
+                      Verfijnde stoffen
+                    </span>
+                    <span className="inline-flex items-center gap-1.5 rounded-full bg-brand-black/8 px-3 py-1 text-[11px] uppercase tracking-[0.16em] text-brand-black/75">
+                      <Sparkles size={12} />
+                      Tijdloos design
+                    </span>
+                  </div>
+                  <ul className="mt-4 space-y-2.5 text-sm text-brand-black/65">
+                    <li className="flex items-center gap-2">
+                      <span className="h-1.5 w-1.5 rounded-full bg-brand-purple/70" />
+                      Linnen, katoen, velours en jacquard
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <span className="h-1.5 w-1.5 rounded-full bg-brand-purple/70" />
+                      Dubbelzijdige afwerking
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <span className="h-1.5 w-1.5 rounded-full bg-brand-purple/70" />
+                      Herbruikbaar door elk seizoen
+                    </li>
                   </ul>
                 </div>
               </div>
@@ -222,8 +302,8 @@ export default function Home() {
           <EditorialHeading eyebrow="Story" title="Omdat vieren vaker mag." />
         </Reveal>
         <div className="grid grid-auto-rows-fr gap-6 text-lg leading-8 text-brand-black/70 md:grid-cols-2">
-          <Reveal delayMs={80}>
-            <article className="rounded-[1.8rem] border border-border bg-brand-beige p-7">
+          <Reveal delayMs={80} className="h-full">
+            <article className="flex h-full flex-col rounded-[1.8rem] border border-border bg-brand-beige p-7">
               <h3 className="mb-3 text-xs font-bold uppercase tracking-[0.24em] text-brand-black">
                 Wat is het
               </h3>
@@ -235,8 +315,8 @@ export default function Home() {
               </p>
             </article>
           </Reveal>
-          <Reveal delayMs={140}>
-            <article className="rounded-[1.8rem] border border-border bg-brand-beige p-7">
+          <Reveal delayMs={140} className="h-full">
+            <article className="flex h-full flex-col rounded-[1.8rem] border border-border bg-brand-beige p-7">
               <h3 className="mb-3 text-xs font-bold uppercase tracking-[0.24em] text-brand-black">
                 Waarom Poppy Joy
               </h3>
@@ -270,52 +350,54 @@ export default function Home() {
         </Container>
       </section>
 
-        <Container
-          id="care"
-          className="grid grid-auto-rows-fr gap-8 py-24 md:grid-cols-3"
-        >
-        <Reveal>
-          <div className="rounded-[2rem] border border-border bg-brand-beige p-8">
-            <h2 className="serif text-4xl font-semibold text-brand-black">
-              Materials
-            </h2>
-            <p className="mt-5 leading-7 text-brand-black/70">
-              Gemaakt van verfijnde stoffen zoals linnen, jacquard, katoen,
-              velours en polyester. Sommige stoffen dragen het Oeko-Tex label.
-            </p>
-          </div>
-        </Reveal>
-        <Reveal delayMs={80}>
-          <div className="rounded-[2rem] border border-border bg-brand-beige p-8">
-            <h2 className="serif text-4xl font-semibold text-brand-black">Use</h2>
-            <p className="mt-5 leading-7 text-brand-black/70">
-              Flexibel op te hangen met katoenen uiteinden en makkelijk opnieuw
-              te stylen, binnen of buiten, voor kleine en grote momenten.
-            </p>
-          </div>
-        </Reveal>
-        <Reveal delayMs={140}>
-          <div className="rounded-[2rem] border border-border bg-brand-beige p-8">
-            <h2 className="serif text-4xl font-semibold text-brand-black">
-              Washing care
-            </h2>
-            <p className="mt-5 leading-7 text-brand-black/70">
-              De vlaggenlijnen kun je wassen op 30 graden. Exacte samenstelling
-              en verzorging staan bij de productdetails.
-            </p>
-          </div>
-        </Reveal>
+      <Container id="care" className="grid grid-auto-rows-fr gap-8 py-24 md:grid-cols-3">
+        {careCards.map(({ title, description, Icon }, index) => (
+          <Reveal key={title} delayMs={index * 80} className="h-full">
+            <article className="flex h-full flex-col rounded-[2rem] border border-border bg-brand-beige p-8">
+              <span className="inline-flex h-11 w-11 items-center justify-center rounded-full bg-brand-purple/10 text-brand-purple">
+                <Icon size={20} />
+              </span>
+              <h2 className="serif mt-6 text-4xl font-semibold text-brand-black">
+                {title}
+              </h2>
+              <p className="mt-5 leading-7 text-brand-black/70">{description}</p>
+            </article>
+          </Reveal>
+        ))}
       </Container>
 
       <footer className="px-6 pb-10">
-        <Container className="flex flex-col gap-8 border-t border-border px-0 pt-10 md:flex-row md:items-center md:justify-between">
-          <p className="serif text-3xl font-semibold text-brand-black">Poppy Joy</p>
-          <div className="flex flex-wrap gap-x-6 gap-y-3 text-xs uppercase tracking-[0.2em] text-brand-black/65">
-            {footerLinks.map((link) => (
-              <a className="transition hover:text-brand-purple" href="#" key={link}>
-                {link}
-              </a>
+        <Container className="border-t border-border px-0 pt-10">
+          <div className="grid gap-10 text-xs uppercase tracking-[0.2em] text-brand-black/65 md:grid-cols-3">
+            {footerLinkGroups.map((group) => (
+              <div key={group.title}>
+                <p className="mb-4 text-[11px] tracking-[0.24em] text-brand-black/45">
+                  {group.title}
+                </p>
+                <div className="flex flex-col gap-3">
+                  {group.links.map((link) => (
+                    <a
+                      key={link.label}
+                      className="transition hover:text-brand-purple"
+                      href={link.href}
+                      target={link.href.startsWith("http") ? "_blank" : undefined}
+                      rel={link.href.startsWith("http") ? "noreferrer" : undefined}
+                    >
+                      {link.label}
+                    </a>
+                  ))}
+                </div>
+              </div>
             ))}
+          </div>
+          <div className="mt-12 flex items-end justify-start">
+            <Image
+              src="/brand/logo.png"
+              alt="Poppy Joy"
+              width={110}
+              height={40}
+              className="h-10 w-auto object-contain"
+            />
           </div>
         </Container>
       </footer>
