@@ -11,12 +11,14 @@ type ResponsiveImageProps = {
   media: MediaAsset;
   sizes?: string;
   priority?: boolean;
+  frameClassName?: string;
 };
 
 export function ResponsiveImage({
   media,
   sizes = "(min-width: 1024px) 50vw, 100vw",
   priority = false,
+  frameClassName,
 }: ResponsiveImageProps) {
   const [isLoaded, setIsLoaded] = useState(false);
 
@@ -25,12 +27,13 @@ export function ResponsiveImage({
       <MediaFrame
         aspectRatio={media.aspectRatio}
         label={media.alt || "Image coming soon"}
+        className={frameClassName}
       />
     );
   }
 
   return (
-    <MediaFrame aspectRatio={media.aspectRatio}>
+    <MediaFrame aspectRatio={media.aspectRatio} className={frameClassName}>
       {!isLoaded ? <div aria-hidden className="loading-sheen absolute inset-0" /> : null}
       <Image
         src={media.src}

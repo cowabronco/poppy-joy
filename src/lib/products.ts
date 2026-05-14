@@ -1,4 +1,5 @@
 export type Product = {
+  handle: string;
   name: string;
   price: string;
   palette: string;
@@ -8,15 +9,17 @@ export type Product = {
 
 export const products: Product[] = [
   {
+    handle: "zig-zag",
     name: "Zig Zag",
     price: "€49,95",
-    palette: "Warm jacquard, pistache band",
+    palette: "Warm jacquard",
     description:
       "Een levendige zig zag print in warme kleuren, gemaakt van gobelin jacquard met diepte en textuur. De lijn is vastgenaaid aan een soepel geweven katoenen pistachegroene band.",
     details:
       "12 dubbelzijdig gestikte vlaggetjes, 450 cm lang. Samenstelling: 50% polyester en 50% katoen.",
   },
   {
+    handle: "double-joy",
     name: "Double Joy",
     price: "€49,95",
     palette: "Linnen, pistache en paars",
@@ -26,15 +29,17 @@ export const products: Product[] = [
       "12 dubbelzijdig gestikte vlaggetjes, 450 cm lang. Samenstelling: 75% linnen en 25% katoen. Oeko-Tex Standard 100 Product class 2.",
   },
   {
+    handle: "poppy-dots",
     name: "Poppy Dots",
     price: "€49,95",
-    palette: "Velours, zwart-wit en turquoise",
+    palette: "Velours dots",
     description:
       "Een zachte velours stof met speelse zwart-witte dalmatiër stippenprint. Minimalistisch, maar met een twist en afgewerkt met een turquoise katoenen band.",
     details:
       "12 dubbelzijdig gestikte vlaggetjes, 450 cm lang. Samenstelling: 100% polyester.",
   },
   {
+    handle: "wavy-joy",
     name: "Wavy Joy",
     price: "€49,95",
     palette: "Jacquard, aardetinten",
@@ -44,6 +49,7 @@ export const products: Product[] = [
       "12 dubbelzijdig gestikte vlaggetjes, 450 cm lang. Samenstelling: 50% polyester en 50% katoen.",
   },
   {
+    handle: "cobalt-blue",
     name: "Cobalt Blue",
     price: "€49,95",
     palette: "Velours, kobalt en ecru",
@@ -53,6 +59,10 @@ export const products: Product[] = [
       "12 dubbelzijdig gestikte vlaggetjes, 450 cm lang. Samenstelling: 50% polyester en 50% katoen.",
   },
 ];
+
+export function getProductByHandle(handle: string) {
+  return products.find((product) => product.handle === handle);
+}
 
 export const values = [
   "Herbruikbare decoratie",

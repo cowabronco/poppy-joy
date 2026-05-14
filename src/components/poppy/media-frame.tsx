@@ -19,6 +19,7 @@ export function MediaFrame({
     <div
       className={cn(
         "relative overflow-hidden rounded-[2rem] border border-border bg-brand-beige",
+        aspectRatioClassName[aspectRatio],
         className
       )}
       {...props}
@@ -26,8 +27,7 @@ export function MediaFrame({
       {children ?? (
         <div
           className={cn(
-            "flex items-center justify-center bg-[linear-gradient(135deg,var(--brand-beige),var(--brand-off-white))] text-xs uppercase tracking-[0.24em] text-brand-black/45",
-            aspectRatioClassName[aspectRatio]
+            "flex h-full items-center justify-center bg-[linear-gradient(135deg,var(--brand-beige),var(--brand-off-white))] text-xs uppercase tracking-[0.24em] text-brand-black/45"
           )}
         >
           {label ?? "Media"}

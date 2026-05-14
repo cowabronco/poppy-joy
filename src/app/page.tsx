@@ -14,6 +14,7 @@ import {
 import Image from "next/image";
 
 import { Container, EditorialHeading, ProductCard, Reveal } from "@/components/poppy";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { products, values } from "@/lib/products";
 
@@ -29,18 +30,17 @@ const footerLinkGroups = [
   {
     title: "Service",
     links: [
-      { label: "Washing & care", href: "/care" },
-      { label: "Shipping & returns", href: "/shipping-returns" },
-      { label: "FAQ", href: "/faq" },
+      { label: "Wasvoorschriften", href: "/care" },
+      { label: "Veelgestelde vragen", href: "/faq" },
       { label: "Contact", href: "/contact" },
     ],
   },
   {
     title: "Juridisch",
     links: [
-      { label: "Privacy Policy", href: "/privacy" },
-      { label: "Terms & Conditions", href: "/terms" },
-      { label: "Instagram", href: "https://instagram.com" },
+      { label: "Verzending & retourneren", href: "/shipping-returns" },
+      { label: "Privacybeleid", href: "/privacy" },
+      { label: "Algemene voorwaarden", href: "/terms" },
     ],
   },
 ];
@@ -58,7 +58,7 @@ const careCards = [
   {
     title: "Materialen",
     description:
-      "Gemaakt van verfijnde stoffen zoals linnen, jacquard, katoen, velours en polyester. Een deel van de stoffen draagt het Oeko-Tex label.",
+      "Gemaakt van verfijnde stoffen zoals linnen, jacquard, katoen en velours. Een deel draagt het Oeko-Tex label.",
     Icon: Leaf,
   },
   {
@@ -70,7 +70,7 @@ const careCards = [
   {
     title: "Wasadvies",
     description:
-      "Je wast de vlaggenlijnen op 30 graden. De exacte samenstelling en verzorgingsinstructies vind je terug bij de productdetails.",
+      "Was op 30 graden. Exacte samenstelling en verzorging vind je bij de productdetails.",
     Icon: WashingMachine,
   },
 ];
@@ -121,7 +121,7 @@ export default function Home() {
                   ? "text-brand-black/70 hover:text-brand-black after:bg-brand-black"
                   : "text-brand-off-white/80 hover:text-brand-off-white after:bg-brand-off-white"
               }`}
-              href="#story"
+              href="/story"
             >
               Story
             </a>
@@ -226,9 +226,9 @@ export default function Home() {
               <Button
                 asChild
                 variant="outline"
-                className="rounded-full border-brand-off-white/35 bg-transparent px-7 py-6 text-xs uppercase tracking-[0.22em] text-brand-off-white hover:bg-brand-off-white/10"
+                className="rounded-full border border-white/35 bg-white/15 px-7 py-6 text-xs uppercase tracking-[0.22em] text-brand-off-white backdrop-blur-sm hover:bg-white/25"
               >
-                <a href="#story">Lees het verhaal</a>
+                <a href="/story">Lees het verhaal</a>
               </Button>
             </div>
           </Reveal>
@@ -296,42 +296,6 @@ export default function Home() {
         </Container>
       </section>
 
-      <Container
-        id="story"
-        className="grid gap-12 py-24 lg:grid-cols-[0.8fr_1.2fr]"
-      >
-        <Reveal>
-          <EditorialHeading eyebrow="Story" title="Omdat vieren vaker mag." />
-        </Reveal>
-        <div className="grid grid-auto-rows-fr gap-6 text-lg leading-8 text-brand-black/70 md:grid-cols-2">
-          <Reveal delayMs={80} className="h-full">
-            <article className="flex h-full flex-col rounded-[1.8rem] border border-border bg-brand-beige p-7">
-              <h3 className="mb-3 text-xs font-bold uppercase tracking-[0.24em] text-brand-black">
-                Wat is het
-              </h3>
-              <p>
-                Poppy Joy ontwerpt stoffen herbruikbare vlaggenlijnen. De
-                stoffen zijn met zorg en liefde uitgekozen en worden handgemaakt:
-                ontworpen om het leven te vieren, juist in kleine momenten en
-                grote momenten.
-              </p>
-            </article>
-          </Reveal>
-          <Reveal delayMs={140} className="h-full">
-            <article className="flex h-full flex-col rounded-[1.8rem] border border-border bg-brand-beige p-7">
-              <h3 className="mb-3 text-xs font-bold uppercase tracking-[0.24em] text-brand-black">
-                Waarom Poppy Joy
-              </h3>
-              <p>
-                Geen eenmalige plastic versiering, maar iets dat je blijft
-                gebruiken en waarmee je jarenlang herinneringen blijft maken.
-                Warm, stijlvol en met karakter.
-              </p>
-            </article>
-          </Reveal>
-        </div>
-      </Container>
-
       <section id="collection" className="px-6 py-24">
         <Container className="px-0">
           <Reveal className="mb-12 flex flex-col justify-between gap-6 md:flex-row md:items-end">
@@ -349,8 +313,76 @@ export default function Home() {
               </Reveal>
             ))}
           </div>
+
+          <Reveal delayMs={140} className="mt-12 flex justify-center">
+            <Button
+              asChild
+              variant="outline"
+              className="rounded-full border-brand-black/20 bg-transparent px-8 py-6 text-xs uppercase tracking-[0.22em] text-brand-black hover:border-brand-purple hover:text-brand-purple"
+            >
+              <a href="/shop">Alle Producten</a>
+            </Button>
+          </Reveal>
         </Container>
       </section>
+
+      <Container
+        id="story"
+        className="grid gap-12 py-24 lg:grid-cols-[0.8fr_1.2fr]"
+      >
+        <Reveal>
+          <EditorialHeading eyebrow="Story" title="Omdat vieren vaker mag." />
+        </Reveal>
+        <div className="grid grid-auto-rows-fr gap-6 text-lg leading-8 text-brand-black/70 md:grid-cols-2">
+          <Reveal delayMs={80} className="h-full">
+            <article className="relative flex h-full flex-col overflow-hidden rounded-[1.8rem] border border-white/20 p-7 text-brand-off-white">
+              <div
+                aria-hidden
+                className="absolute inset-0 bg-cover bg-center"
+                style={{ backgroundImage: "url('/story/material-closeup4.jpg')" }}
+              />
+              <div
+                aria-hidden
+                className="absolute inset-0 bg-gradient-to-b from-brand-black/30 via-brand-black/40 to-brand-black/65"
+              />
+              <div className="relative z-10">
+                <Badge className="mb-4 bg-brand-off-white/95 text-[10px] uppercase tracking-[0.18em] text-brand-black/65 shadow-sm hover:bg-brand-off-white">
+                  Wat is het
+                </Badge>
+                <p className="text-brand-off-white/90">
+                  Poppy Joy ontwerpt stoffen herbruikbare vlaggenlijnen. De
+                  stoffen zijn met zorg en liefde uitgekozen en worden
+                  handgemaakt: ontworpen om het leven te vieren, juist in
+                  kleine momenten en grote momenten.
+                </p>
+              </div>
+            </article>
+          </Reveal>
+          <Reveal delayMs={140} className="h-full">
+            <article className="relative flex h-full flex-col overflow-hidden rounded-[1.8rem] border border-white/20 p-7 text-brand-off-white">
+              <div
+                aria-hidden
+                className="absolute inset-0 bg-cover bg-center"
+                style={{ backgroundImage: "url('/story/material-closeup6.jpg')" }}
+              />
+              <div
+                aria-hidden
+                className="absolute inset-0 bg-gradient-to-b from-brand-black/30 via-brand-black/40 to-brand-black/65"
+              />
+              <div className="relative z-10">
+                <Badge className="mb-4 bg-brand-off-white/95 text-[10px] uppercase tracking-[0.18em] text-brand-black/65 shadow-sm hover:bg-brand-off-white">
+                  Waarom Poppy Joy
+                </Badge>
+                <p className="text-brand-off-white/90">
+                  Geen eenmalige plastic versiering, maar iets dat je blijft
+                  gebruiken en waarmee je jarenlang herinneringen blijft maken.
+                  Warm, stijlvol en met karakter.
+                </p>
+              </div>
+            </article>
+          </Reveal>
+        </div>
+      </Container>
 
       <Container id="care" className="grid grid-auto-rows-fr gap-8 py-24 md:grid-cols-3">
         {careCards.map(({ title, description, Icon }, index) => (
@@ -392,7 +424,7 @@ export default function Home() {
               </div>
             ))}
           </div>
-          <div className="mt-12 flex items-end justify-start">
+          <div className="mt-12 flex items-end justify-between">
             <Image
               src="/brand/logo.png"
               alt="Poppy Joy"
@@ -400,6 +432,28 @@ export default function Home() {
               height={40}
               className="h-10 w-auto object-contain"
             />
+            <a
+              href="https://instagram.com"
+              target="_blank"
+              rel="noreferrer"
+              aria-label="Instagram"
+              className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-border text-brand-black/65 transition hover:border-brand-purple hover:text-brand-purple"
+            >
+              <svg
+                aria-hidden
+                viewBox="0 0 24 24"
+                className="h-[18px] w-[18px]"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.8"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <rect x="2.5" y="2.5" width="19" height="19" rx="5.5" />
+                <circle cx="12" cy="12" r="4.5" />
+                <circle cx="17.3" cy="6.7" r="0.9" fill="currentColor" stroke="none" />
+              </svg>
+            </a>
           </div>
         </Container>
       </footer>
