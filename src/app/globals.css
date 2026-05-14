@@ -92,6 +92,28 @@ body {
   transform: translateY(0);
 }
 
+.page-enter {
+  opacity: 0.995;
+}
+
+.page-enter-active {
+  animation: pageFadeIn 420ms ease-out;
+}
+
+.auto-reveal {
+  opacity: 0;
+  transform: translateY(16px);
+  transition:
+    opacity 0.72s ease,
+    transform 0.72s ease;
+  transition-delay: var(--auto-reveal-delay, 0ms);
+}
+
+.auto-reveal-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
 .hero-video-rotated {
   position: absolute;
   inset: 0;
@@ -110,12 +132,33 @@ body {
   }
 }
 
+@keyframes pageFadeIn {
+  from {
+    opacity: 0.72;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .loading-sheen {
     animation: none;
   }
 
   .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .page-enter-active {
+    animation: none;
+  }
+
+  .auto-reveal {
     opacity: 1;
     transform: none;
     transition: none;

@@ -4,6 +4,7 @@ export { HeroVideo } from "./hero-video";
 export { InformationalPageTemplate } from "./informational-page-template";
 export { MediaGallery } from "./media-gallery";
 export { MediaFrame } from "./media-frame";
+export { PageMotion } from "./page-motion";
 export { Price } from "./price";
 export { ProductCard } from "./product-card";
 export { ProductGallery } from "./product-gallery";

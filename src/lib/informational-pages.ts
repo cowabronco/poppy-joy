@@ -27,7 +27,7 @@ export const storyPageContent: InformationalPageTemplateProps = {
   milestonesTitle: "Tijdlijn",
   milestones: [
     {
-      label: "Twee jaar geleden",
+      label: "2023",
       title: "Het idee",
       description:
         "Het eerste concept begon met een simpele vraag: wat als feestdecoratie echt herbruikbaar kan zijn?",

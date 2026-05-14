@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Cormorant_Garamond, Geist } from "next/font/google";
 import "./globals.css";
-import { SiteFooter, SiteHeader } from "@/components/poppy";
+import { PageMotion, SiteFooter, SiteHeader } from "@/components/poppy";
 import { cn } from "@/lib/utils";
 
 const geist = Geist({subsets:['latin'],variable:'--font-sans'});
@@ -59,7 +59,7 @@ export default function RootLayout({
     >
       <body>
         <SiteHeader />
-        {children}
+        <PageMotion>{children}</PageMotion>
         <SiteFooter />
       </body>
     </html>
