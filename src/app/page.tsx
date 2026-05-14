@@ -1,3 +1,6 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import {
   HeartHandshake,
   Leaf,
@@ -31,6 +34,23 @@ const usps = [
 ];
 
 export default function Home() {
+  const [isFloating, setIsFloating] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 100) { // Adjust this value as needed
+        setIsFloating(true);
+      } else {
+        setIsFloating(false);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
   const heroVideoUrl =
     process.env.NEXT_PUBLIC_SHOPIFY_HERO_VIDEO_URL ||
     "https://cdn.shopify.com/videos/c/o/v/3eef1d0643ce4c65a38b63f6b1c3c491.mov";
@@ -39,7 +59,7 @@ export default function Home() {
 
   return (
     <main className="min-h-screen overflow-hidden text-brand-black">
-      <section className="relative isolate min-h-[78svh] overflow-hidden">
+      <section className="relative isolate min-h-[60svh] overflow-hidden">
         {heroVideoUrl ? (
           <video
             className="hero-video-rotated"
@@ -58,26 +78,31 @@ export default function Home() {
 
         <div className="absolute inset-0 bg-gradient-to-b from-black/75 via-black/55 to-black/75" />
 
-        <header className="absolute left-0 right-0 top-0 z-20 text-brand-off-white/80">
-          <Container className="flex items-center justify-between py-6 text-xs uppercase tracking-[0.28em]">
-            <a href="#" className="font-semibold tracking-[0.34em] text-brand-off-white">
-              Poppy Joy
-            </a>
-            <nav className="hidden gap-8 text-[11px] md:flex">
-              <a className="transition hover:text-brand-off-white" href="#">
-                Home
+          <header className={`sticky top-0 z-20 text-brand-off-white/80 transition-all duration-300 ease-in-out ${isFloating ? "bg-brand-black/80 backdrop-blur-md shadow-lg py-3" : "py-6"}`}>
+            <Container className="relative flex items-center justify-between py-6 text-xs uppercase tracking-[0.28em]">
+              <nav className="flex gap-8 text-[11px]">
+                <a className="transition hover:text-brand-off-white" href="#story">
+                  Story
+                </a>
+              </nav>
+              <a href="#" className="absolute left-1/2 -translate-x-1/2 font-semibold tracking-[0.34em] text-brand-off-white">
+                Poppy Joy
               </a>
-              <a className="transition hover:text-brand-off-white" href="#collection">
-                Shop
-              </a>
-              <a className="transition hover:text-brand-off-white" href="#story">
-                Story
-              </a>
-            </nav>
-          </Container>
-        </header>
+              <nav className="flex gap-8 text-[11px]">
+                <a className="transition hover:text-brand-off-white" href="#collection">
+                  Shop
+                </a>
+                <a className="transition hover:text-brand-off-white" href="#">
+                  Winkelwagen
+                </a>
+                <a className="transition hover:text-brand-off-white" href="#">
+                  Checkout
+                </a>
+              </nav>
+            </Container>
+          </header>
 
-        <Container className="relative z-10 grid min-h-[78svh] gap-10 pb-16 pt-28 md:pb-24 lg:grid-cols-[1.05fr_0.95fr] lg:items-end">
+        <Container className="relative z-10 grid min-h-[60svh] gap-10 pb-16 pt-28 md:pb-24 lg:grid-cols-[1.05fr_0.95fr] lg:items-end">
           <Reveal className="max-w-3xl text-brand-off-white">
             <p className="mb-6 text-xs uppercase tracking-[0.36em] text-brand-off-white/85">
               Reusable fabric bunting
@@ -108,9 +133,9 @@ export default function Home() {
           </Reveal>
 
           <Reveal delayMs={120} className="lg:justify-self-end">
-            <div className="relative rounded-[2.6rem] border border-white/25 bg-black/25 p-8 shadow-[0_18px_42px_rgba(0,0,0,0.25)] backdrop-blur-[2px]">
+            <div className="relative rounded-[2.6rem] border border-white/10 bg-black/10 p-8 shadow-none backdrop-blur-none">
               <div className="grid gap-8 md:grid-cols-2">
-                <div className="rounded-[1.8rem] border border-white/30 bg-brand-off-white/92 p-6 text-brand-black">
+                <div className="rounded-[1.8rem] border border-white/20 bg-brand-off-white/80 p-6 text-brand-black">
                   <p className="text-[11px] uppercase tracking-[0.2em] text-brand-purple">
                     Atelier note
                   </p>
@@ -118,7 +143,7 @@ export default function Home() {
                     Ambachtelijk, persoonlijk en ontworpen om te blijven.
                   </p>
                 </div>
-                <div className="rounded-[1.8rem] border border-white/30 bg-brand-off-white/92 p-6 text-brand-black">
+                <div className="rounded-[1.8rem] border border-white/20 bg-brand-off-white/80 p-6 text-brand-black">
                   <p className="text-[11px] uppercase tracking-[0.2em] text-brand-black/55">
                     Materialen
                   </p>
