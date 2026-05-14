@@ -9,9 +9,11 @@ Apply this visual direction to all design and frontend work for Poppy Joy.
 
 - Aim for calm editorial quality, not loud e-commerce behavior.
 - Keep the interface clean and minimal, but warm and tactile.
-- Use light ecru and linen backgrounds as the main surface palette.
-- Avoid hard white blocks and pure black text whenever possible.
-- Use warm neutrals for text and UI controls; reserve strong colors for accents.
+- Use `#FEFDFC` as the main off-white page background.
+- Use `#F2EDE3` for containers, cards, and soft section surfaces.
+- Use `#242020` for text, softened with opacity where long-form reading needs warmth.
+- Use `#A3AE65` for prices, positive states, and small product highlights.
+- Use `#82569F` for shop CTAs, callouts, links, and logo-led brand moments.
 - Let product imagery carry color; do not compete with saturated UI sections.
 - Keep typography elegant: serif for story emphasis, sans-serif for UI clarity.
 - Preserve generous spacing and quiet hierarchy.

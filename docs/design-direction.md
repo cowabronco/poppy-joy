@@ -15,11 +15,12 @@ depth.
 
 ## Color Direction
 
-- Base the website on light ecru, linen, and soft sand tones.
-- Avoid large hard-white surfaces and pure black text.
-- Use deeper warm browns for text and controls instead of stark contrast.
-- Treat brand colors as accents only, because product photography already carries
-  rich color.
+- Use `#FEFDFC` as the main off-white page background.
+- Use `#F2EDE3` for containers, cards, soft sections, and product surfaces.
+- Use `#242020` for primary text, with opacity for long paragraphs where needed.
+- Use `#A3AE65` as the green accent, especially for prices, positive states, and subtle product highlights.
+- Use `#82569F` as the purple accent for primary CTAs, shop callouts, links, and brand moments.
+- Keep green and purple restrained. The logo, product photography, and fabric designs already carry strong color.
 
 ## Typography And Rhythm
 

@@ -5,29 +5,30 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  --poppy: #d95c42;
-  --cobalt: #2447a8;
-  --pistachio: #b9c98b;
+  --brand-green: #a3ae65;
+  --brand-purple: #82569f;
+  --brand-off-white: #fefdfc;
+  --brand-beige: #f2ede3;
+  --brand-black: #242020;
   --linen: #fff8ee;
-  --mulberry: #6c3f64;
-  --background: oklch(0.973 0.012 84);
-  --foreground: oklch(0.29 0.03 58);
-  --card: oklch(0.986 0.009 84);
-  --card-foreground: oklch(0.29 0.03 58);
-  --popover: oklch(0.986 0.009 84);
-  --popover-foreground: oklch(0.29 0.03 58);
-  --primary: oklch(0.37 0.045 48);
-  --primary-foreground: oklch(0.985 0.005 90);
-  --secondary: oklch(0.955 0.016 88);
-  --secondary-foreground: oklch(0.31 0.03 58);
-  --muted: oklch(0.948 0.012 88);
-  --muted-foreground: oklch(0.47 0.024 58);
-  --accent: oklch(0.952 0.018 84);
-  --accent-foreground: oklch(0.31 0.03 58);
+  --background: #fefdfc;
+  --foreground: #242020;
+  --card: #f2ede3;
+  --card-foreground: #242020;
+  --popover: #fefdfc;
+  --popover-foreground: #242020;
+  --primary: #82569f;
+  --primary-foreground: #fefdfc;
+  --secondary: #f2ede3;
+  --secondary-foreground: #242020;
+  --muted: #f2ede3;
+  --muted-foreground: color-mix(in srgb, #242020 68%, #fefdfc);
+  --accent: #a3ae65;
+  --accent-foreground: #242020;
   --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.9 0.016 80);
-  --input: oklch(0.905 0.016 80);
-  --ring: oklch(0.58 0.03 52);
+  --border: color-mix(in srgb, #242020 12%, #f2ede3);
+  --input: color-mix(in srgb, #242020 14%, #f2ede3);
+  --ring: #82569f;
   --chart-1: oklch(0.87 0 0);
   --chart-2: oklch(0.556 0 0);
   --chart-3: oklch(0.439 0 0);
@@ -54,13 +55,13 @@ html {
 
 body {
   margin: 0;
-  background: linear-gradient(180deg, #fdf8f1 0%, #f8f0e6 100%);
+  background: var(--background);
   font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
 }
 
 ::selection {
-  background: var(--poppy);
-  color: var(--linen);
+  background: var(--brand-purple);
+  color: var(--brand-off-white);
 }
 
 .serif {
@@ -101,6 +102,11 @@ body {
   --color-card: var(--card);
   --color-foreground: var(--foreground);
   --color-background: var(--background);
+  --color-brand-green: var(--brand-green);
+  --color-brand-purple: var(--brand-purple);
+  --color-brand-off-white: var(--brand-off-white);
+  --color-brand-beige: var(--brand-beige);
+  --color-brand-black: var(--brand-black);
   --radius-sm: calc(var(--radius) * 0.6);
   --radius-md: calc(var(--radius) * 0.8);
   --radius-lg: var(--radius);
