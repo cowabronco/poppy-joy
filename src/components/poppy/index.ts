@@ -1,5 +1,9 @@
 export { Container } from "./container";
 export { EditorialHeading } from "./editorial-heading";
+export { MediaGallery } from "./media-gallery";
 export { MediaFrame } from "./media-frame";
 export { Price } from "./price";
 export { ProductCard } from "./product-card";
+export { Reveal } from "./reveal";
+export { ResponsiveImage } from "./responsive-image";
+export { VideoBlock } from "./video-block";

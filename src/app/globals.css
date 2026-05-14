@@ -8,7 +8,7 @@
   --brand-green: #a3ae65;
   --brand-purple: #82569f;
   --brand-off-white: #fefdfc;
-  --brand-beige: #f2ede3;
+  --brand-beige: #fbf8f2;
   --brand-black: #242020;
   --linen: #fff8ee;
   --background: #fefdfc;
@@ -66,6 +66,68 @@ body {
 
 .serif {
   font-family: var(--font-serif), Georgia, serif;
+}
+
+.loading-sheen {
+  background: linear-gradient(
+    120deg,
+    color-mix(in srgb, var(--brand-beige) 85%, white) 0%,
+    color-mix(in srgb, var(--brand-off-white) 70%, white) 50%,
+    color-mix(in srgb, var(--brand-beige) 85%, white) 100%
+  );
+  background-size: 220% 100%;
+  animation: shimmer 1.6s linear infinite;
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(16px);
+  transition:
+    opacity 0.7s ease,
+    transform 0.7s ease;
+}
+
+.reveal-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.hero-video-rotated {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: translate(-50%, -50%) rotate(90deg) scale(1.6);
+  transform-origin: center;
+}
+
+@media (min-width: 768px) {
+  .hero-video-rotated {
+    transform: translate(-50%, -50%) rotate(90deg) scale(1.38);
+  }
+}
+
+@keyframes shimmer {
+  from {
+    background-position: 200% 0;
+  }
+  to {
+    background-position: -20% 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .loading-sheen {
+    animation: none;
+  }
+
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
 }
 
 @theme inline {

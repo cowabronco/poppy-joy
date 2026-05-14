@@ -74,11 +74,12 @@ This document tracks the build order for the Poppy Joy website.
 
 ## Phase 3 - Media Foundation
 
-- [ ] Define asset intake conventions for client photos and videos.
-- [ ] Add reusable media components for image, video, poster, gallery, and product media.
-- [ ] Use stable aspect ratios to avoid layout shift.
-- [ ] Add alt text and SEO caption fields.
-- [ ] Decide whether media comes from Shopify CDN, local assets, or another storage provider.
+- [x] Define asset intake conventions for client photos and videos.
+- [x] Add reusable media components for image, video, poster, gallery, and product media.
+- [x] Use stable aspect ratios to avoid layout shift.
+- [x] Add alt text and SEO caption fields.
+- [x] Decide media source: use Shopify Media as the source of truth for images and videos.
+- [ ] Replace placeholders with final client photo and video assets.
 
 ## Phase 4 - Page Build Order
 

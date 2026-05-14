@@ -1,0 +1,18 @@
+{
+  "handle": "zig-zag",
+  "title": "Zig Zag",
+  "assets": [
+    {
+      "filename": "product-zig-zag-hero-01.jpg",
+      "alt": "Zig Zag vlaggenlijn als hero beeld",
+      "role": "hero",
+      "order": 1
+    },
+    {
+      "filename": "product-zig-zag-detail-stitching-01.jpg",
+      "alt": "Detail van de dubbelzijdige afwerking van Zig Zag",
+      "role": "detail",
+      "order": 2
+    }
+  ]
+}
