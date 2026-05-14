@@ -61,6 +61,66 @@ export default function Home() {
 
   return (
     <main className="min-h-screen overflow-hidden text-brand-black">
+      <header
+        className={`fixed left-0 right-0 top-0 z-50 transition-all duration-500 ease-out ${
+          isFloating
+            ? "bg-brand-off-white/95 shadow-lg backdrop-blur-md"
+            : "bg-transparent"
+        }`}
+      >
+        <Container
+          className={`flex items-center justify-center transition-all duration-500 ease-out ${
+            isFloating ? "py-2" : "py-5"
+          }`}
+        >
+          <nav className="flex items-center justify-center gap-6 text-xs uppercase tracking-[0.28em]">
+            <a
+              className={`font-medium transition-colors duration-300 ${
+                isFloating
+                  ? "text-brand-black/70 hover:text-brand-black"
+                  : "text-brand-off-white/80 hover:text-brand-off-white"
+              }`}
+              href="#story"
+            >
+              Story
+            </a>
+            <a href="#" className="mx-3">
+              <Image
+                src="/brand/logo.png"
+                alt="Poppy Joy"
+                width={120}
+                height={120}
+                className={`object-contain transition-all duration-500 ease-out ${
+                  isFloating ? "h-12" : "h-16"
+                }`}
+                style={{ width: "auto" }}
+              />
+            </a>
+            <a
+              className={`font-medium transition-colors duration-300 ${
+                isFloating
+                  ? "text-brand-black/70 hover:text-brand-black"
+                  : "text-brand-off-white/80 hover:text-brand-off-white"
+              }`}
+              href="#collection"
+            >
+              Shop
+            </a>
+          </nav>
+          <a
+            href="#"
+            className={`absolute right-12 transition-colors duration-300 ${
+              isFloating
+                ? "text-brand-black/70 hover:text-brand-black"
+                : "text-brand-off-white/80 hover:text-brand-off-white"
+            }`}
+            aria-label="Winkelwagen"
+          >
+            <ShoppingBag size={22} />
+          </a>
+        </Container>
+      </header>
+
       <section className="relative isolate min-h-[60svh] overflow-hidden">
         {heroVideoUrl ? (
           <video
@@ -79,30 +139,6 @@ export default function Home() {
         )}
 
         <div className="absolute inset-0 bg-gradient-to-b from-black/75 via-black/55 to-black/75" />
-
-          <header className={`sticky top-0 z-20 text-brand-off-white/80 transition-all duration-300 ease-in-out ${isFloating ? "bg-brand-black/80 backdrop-blur-md shadow-lg py-3" : "py-6"}`}>
-            <Container className="relative flex items-center justify-between py-6 text-xs uppercase tracking-[0.28em]">
-              <nav className="flex gap-8 text-[11px]">
-                <a className="transition hover:text-brand-off-white" href="#story">
-                  Story
-                </a>
-              </nav>
-              <a href="#" className="absolute left-1/2 -translate-x-1/2 font-semibold tracking-[0.34em] text-brand-off-white">
-                Poppy Joy
-              </a>
-              <nav className="flex gap-8 text-[11px]">
-                <a className="transition hover:text-brand-off-white" href="#collection">
-                  Shop
-                </a>
-                <a className="transition hover:text-brand-off-white" href="#">
-                  Winkelwagen
-                </a>
-                <a className="transition hover:text-brand-off-white" href="#">
-                  Checkout
-                </a>
-              </nav>
-            </Container>
-          </header>
 
         <Container className="relative z-10 grid min-h-[60svh] gap-10 pb-16 pt-28 md:pb-24 lg:grid-cols-[1.05fr_0.95fr] lg:items-end">
           <Reveal className="max-w-3xl text-brand-off-white">
