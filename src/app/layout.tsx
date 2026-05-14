@@ -1,11 +1,9 @@
 import type { Metadata } from "next";
-import { Cormorant_Garamond, Inter } from "next/font/google";
+import { Cormorant_Garamond, Geist } from "next/font/google";
 import "./globals.css";
+import { cn } from "@/lib/utils";
 
-const sans = Inter({
-  subsets: ["latin"],
-  variable: "--font-sans",
-});
+const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 
 const serif = Cormorant_Garamond({
   subsets: ["latin"],
@@ -25,8 +23,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="nl">
-      <body className={`${sans.variable} ${serif.variable}`}>{children}</body>
+    <html
+      lang="nl"
+      className={cn("font-sans", geist.variable, serif.variable)}
+    >
+      <body>{children}</body>
     </html>
   );
 }
