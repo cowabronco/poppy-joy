@@ -1,0 +1,52 @@
+---
+description: Poppy Joy project brief, brand direction, content and product context
+alwaysApply: true
+---
+
+# Projectbrief Poppy Joy
+
+Poppy Joy is een warm, persoonlijk en verfijnd merk voor herbruikbare stoffen vlaggenlijnen. Kernzin: "For moments that deserve joy. Designed to stay. Made with love."
+
+## Merkgevoel
+
+- Viering, joy, liefde, kleur, luxe, handgemaakt en duurzaam.
+- Materiaalwereld: linnen, textiel, katoen, velours, jacquard en kwalitatief verfijnde stoffen.
+- Visueel: clean maar warm, rustig, inspirerend, film look, lichte vintage vibe.
+- Niet commercieel schreeuwerig; copy moet zacht, persoonlijk en design-minded voelen.
+
+## Website
+
+- Hoofdnavigatie: Home (`/`), Shop (`/shop`) en Story (`/story`).
+- Shopstructuur (huidige fase): geen aparte collectie-hiërarchie in navigatie; gebruik een enkel shop-overzicht met alle producten op `/shop`.
+- Productdetailpagina's: `/products/[handle]`.
+- Footer/secondaire pagina's: Materials & production (`/materials`), Washing & care (`/care`), FAQ (`/faq`), Contact (`/contact`), Shipping & returns (`/shipping-returns`), Instagram (externe link), Privacy Policy (`/privacy`) en Terms & Conditions (`/terms`).
+- Home moet uitleggen wat Poppy Joy is, hoe je het gebruikt, waarom het bestaat en welke materialen/productiewaarden belangrijk zijn.
+- Productpagina's tonen productfoto's, naam, prijs, omschrijving, kleur, materiaal, afmeting en productdetails.
+- Richtlijn voor nu: het is nog te vroeg voor zichtbare collections in de UX; focus op een compacte, duidelijke flow: Home -> Shop -> Product -> Shopify checkout.
+
+## Contentpijlers
+
+- Herbruikbare decoratie: duurzaam en bewust.
+- Dubbelzijdig en hoogwaardig afgewerkt.
+- Design-first benadering: geen standaard feestversiering.
+- Voor kleine en grote momenten.
+- Blijvende emotionele waarde: een product waarmee je herinneringen opbouwt.
+- Handgemaakt in small batches met unieke ontwerpen.
+
+## Story
+
+Poppy Joy is ontstaan in de zomer van 2025 in Amsterdam, uit liefde voor stoffen en het vieren van mooie momenten. Omdat vieren vaker mag, en wat mooi is mag blijven. Tijdloze vlaggenlijnen van verfijnde stoffen bewaren herinneringen en worden onderdeel van verhalen, opnieuw en opnieuw.
+
+## Collectie
+
+Drop 1 heet "Celebrate Joy". Producten:
+
+- Zig Zag, €49,95: gobelin jacquard met warme zig zag print en pistachegroene katoenen band. 12 vlaggetjes, 450 cm, 50% polyester en 50% katoen.
+- Double Joy, €49,95: linnen vlaggenlijn met pistachegroene en paarse vlaggetjes en ecru katoenen band. 12 vlaggetjes, 450 cm, 75% linnen en 25% katoen, Oeko-Tex Standard 100 Product class 2.
+- Poppy Dots, €49,95: zachte velours dalmatier stippenprint met turquoise katoenen band. 12 vlaggetjes, 450 cm, 100% polyester.
+- Wavy Joy, €49,95: gobelin jacquard met golvende organische print in aardetinten. 12 vlaggetjes, 450 cm, 50% polyester en 50% katoen.
+- Cobalt Blue, €49,95: zachte velours golfprint met ecru katoenen band. 12 vlaggetjes, 450 cm, 50% polyester en 50% katoen.
+
+## Ontwerpnotities
+
+Gebruik sfeerbeelden of placeholders rond gedekte tafels, tuinfeestjes, dromerige verjaardagen en rustige esthetische settings. Referentiegevoel: Hotel Corazon voor fotografie/vintage sfeer, Flore Flore voor overzichtelijkheid, Artipoppe en By 1 Oak voor verfijning.

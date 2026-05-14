@@ -1,0 +1,65 @@
+---
+description: Technical approach for the Poppy Joy website architecture and deployment
+alwaysApply: true
+---
+
+# Technische Aanpak Poppy Joy
+
+Poppy Joy wordt gebouwd als een moderne headless commerce website met Next.js, Vercel en Shopify.
+
+## Stack
+
+- Framework: Next.js met App Router.
+- Deployment: Vercel als deployment pipeline voor preview deployments, production deployments en domeinbeheer.
+- Commerce backend: Shopify Headless voor producten, collecties, voorraad, prijzen en checkout.
+- Checkout: gebruik Shopify's hosted checkout-systeem; bouw geen eigen checkout-flow tenzij expliciet besloten.
+- Styling: Tailwind CSS, met rustige luxe styling die aansluit op de Poppy Joy projectbrief.
+
+## Architectuurprincipes
+
+- Houd content, productdata en presentatie gescheiden.
+- Gebruik Shopify als bron van waarheid voor productinformatie zodra de shop is ingericht.
+- Gebruik typed data helpers voor producten en collecties, zodat componenten niet direct afhankelijk zijn van ruwe API-responses.
+- Gebruik Next.js Server Components voor product- en contentpagina's waar mogelijk.
+- Voeg client components alleen toe voor echte interactie, zoals filters, menu's of cart-state.
+
+## Shopify Headless
+
+- Producten komen uiteindelijk uit Shopify via de Storefront API.
+- Productvelden die belangrijk zijn: naam, prijs, beschrijving, afbeeldingen, materiaal, afmetingen, verzorging, labels zoals Oeko-Tex, collectie/drop en beschikbaarheid.
+- Cart en checkout moeten aansluiten op Shopify checkout URLs.
+- Vermijd dubbele productadministratie in de code zodra Shopify live is; tijdelijke lokale data mag alleen als placeholder of seed-context dienen.
+
+## Vercel Deployment
+
+- Gebruik Vercel previews voor elke branch of pull request.
+- Production deploys lopen via de `main` branch.
+- Domeinnaam wordt later aan het Vercel project gekoppeld.
+- Environment variables voor Shopify tokens en shop domain horen in Vercel, niet hardcoded in de repository.
+- Gebruik `.env.local` alleen lokaal en commit nooit secrets.
+
+## Verwachte Routes
+
+- `/`: homepage met merkintro, story, shop-intro, materials en care.
+- `/shop`: overzicht van alle producten (geen aparte collectie-overzichtspagina in deze fase).
+- `/story`: merkverhaal en oorsprong.
+- `/products/[handle]`: productdetailpagina op basis van Shopify handle.
+- `/materials`: materials & production.
+- `/care`: washing & care.
+- `/shipping-returns`: shipping & returns.
+- `/faq`, `/contact`, `/privacy`, `/terms`: informatieve pagina's.
+
+## Informatiearchitectuur (fase 1)
+
+- Hoofdnavigatie blijft compact: Home, Shop, Story.
+- Geen zichtbare collectie-hiërarchie zolang het productassortiment klein is.
+- Shopify collections mogen intern wel bestaan voor dataorganisatie, maar worden pas als aparte UX-laag toegevoegd wanneer het assortiment daar sterk genoeg voor is.
+
+## Implementatievolgorde
+
+1. Bouw eerst de statische merk- en contentbasis in Next.js.
+2. Voeg daarna Shopify Storefront API-integratie toe zodra producten en credentials beschikbaar zijn.
+3. Vervang tijdelijke productdata door Shopify-data.
+4. Koppel cart/checkout aan Shopify checkout.
+5. Configureer Vercel project, environment variables en domeinnaam.
+6. Test de volledige flow: bezoeker ziet product, opent detailpagina, start checkout via Shopify.
