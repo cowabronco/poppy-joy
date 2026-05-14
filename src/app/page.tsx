@@ -9,6 +9,7 @@ import {
   Scissors,
   ShoppingBag,
   Sparkles,
+  WashingMachine,
 } from "lucide-react";
 import Image from "next/image";
 
@@ -64,13 +65,13 @@ const careCards = [
     title: "Gebruik",
     description:
       "Dankzij de katoenen uiteinden hang je de vlaggenlijn makkelijk op en style je die telkens opnieuw, binnen of buiten, voor ieder moment.",
-    Icon: RefreshCw,
+    Icon: PartyPopper,
   },
   {
     title: "Wasadvies",
     description:
       "Je wast de vlaggenlijnen op 30 graden. De exacte samenstelling en verzorgingsinstructies vind je terug bij de productdetails.",
-    Icon: Sparkles,
+    Icon: WashingMachine,
   },
 ];
 
@@ -96,7 +97,8 @@ export default function Home() {
     process.env.NEXT_PUBLIC_SHOPIFY_HERO_VIDEO_URL ||
     "https://cdn.shopify.com/videos/c/o/v/31ed7d7d21a2451b964dd6646dddd3ff.mp4";
   const heroPosterUrl = process.env.NEXT_PUBLIC_SHOPIFY_HERO_VIDEO_POSTER_URL;
-  const productPlaceholderSrc = "/placeholders/product-card.jpg";
+  const productPlaceholderSrc =
+    "https://cdn.shopify.com/s/files/1/0971/3359/2909/files/placeholder.jpg?v=1778760581";
 
   return (
     <main className="min-h-screen overflow-hidden text-brand-black">
@@ -281,8 +283,8 @@ export default function Home() {
         <Container className="grid grid-auto-rows-fr gap-4 py-9 md:grid-cols-2 xl:grid-cols-3">
           {usps.map(({ label, Icon }, index) => (
             <Reveal key={label} delayMs={index * 60}>
-              <article className="flex h-full items-start gap-4 rounded-2xl border border-border bg-brand-off-white/80 p-4">
-                <span className="mt-0.5 inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-brand-purple/12 text-brand-purple">
+              <article className="flex h-full items-center justify-start gap-4 rounded-2xl border border-border bg-brand-off-white/80 p-4 text-left">
+                <span className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-brand-purple/12 text-brand-purple">
                   <Icon size={18} />
                 </span>
                 <p className="text-xs uppercase tracking-[0.22em] text-brand-black/70">
