@@ -35,8 +35,8 @@ This document tracks the build order for the Poppy Joy website.
 
 ## Phase 2 - Commerce Foundation
 
-- [ ] Create Shopify store and confirm store domain.
-- [ ] Create Storefront API access token.
+- [x] Create Shopify store and confirm store domain.
+- [x] Create Storefront API access token.
 - [x] Define required product fields:
   - title
   - handle
@@ -53,10 +53,16 @@ This document tracks the build order for the Poppy Joy website.
   - `SHOPIFY_STORE_DOMAIN`
   - `SHOPIFY_STOREFRONT_ACCESS_TOKEN`
   - `SHOPIFY_API_VERSION`
+- [x] Add Admin API environment variable names for setup automation:
+  - `SHOPIFY_ADMIN_ACCESS_TOKEN`
+  - `SHOPIFY_ADMIN_API_VERSION`
 - [x] Create `src/lib/shopify` client.
 - [x] Add typed product query and mapper foundation.
 - [x] Keep local product data as fallback until Shopify content is live.
 - [x] Document Shopify setup in `docs/shopify-setup.md`.
+- [x] Document Shopify product model and metafields in `docs/shopify-product-model.md`.
+- [x] Create product metafield definitions in Shopify.
+- [x] Add products and publish them to the Headless sales channel.
 - [ ] Add collection query and mapper.
 - [ ] Add cart mutations for Shopify checkout handoff.
 

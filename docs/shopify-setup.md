@@ -39,7 +39,42 @@ SHOPIFY_API_VERSION=2025-01
 
 Never commit `.env.local`.
 
-## 3. Vercel Environment
+## 3. Create The Admin API Token
+
+The Storefront API token is enough for the public website, but not for creating
+metafield definitions or products. For setup scripts, create an Admin API access
+token.
+
+1. Open the Shopify app used for Poppy Joy development.
+2. Configure **Admin API scopes**.
+3. Enable the minimum scopes needed for setup:
+   - `read_products`
+   - `write_products`
+   - `read_files`
+   - `write_files`
+   - `read_inventory`
+   - `write_inventory`
+   - `read_metaobject_definitions`
+   - `write_metaobject_definitions`
+4. If Shopify shows separate metafield scopes, also enable:
+   - `read_metafields`
+   - `write_metafields`
+5. Save the configuration.
+6. Install or reinstall the app on the store if Shopify prompts you.
+7. Go to **API credentials**.
+8. Copy the **Admin API access token**.
+
+The Admin API token often starts with `shpat_`. Never expose it to the frontend
+and never commit it.
+
+Add it only to `.env.local`:
+
+```bash
+SHOPIFY_ADMIN_ACCESS_TOKEN=your_admin_api_access_token
+SHOPIFY_ADMIN_API_VERSION=2025-01
+```
+
+## 4. Vercel Environment
 
 Add the same variables in Vercel:
 
@@ -49,7 +84,10 @@ Add the same variables in Vercel:
 
 Add them to Preview and Production environments.
 
-## 4. Product Fields To Prepare In Shopify
+Do not add `SHOPIFY_ADMIN_ACCESS_TOKEN` to client-side code. Only add it to
+Vercel if server-side admin automation is intentionally needed.
+
+## 5. Product Fields To Prepare In Shopify
 
 Each product should eventually include:
 
@@ -66,7 +104,7 @@ Each product should eventually include:
 - Collection/drop, such as `Celebrate Joy`
 - Availability
 
-## 5. First Products
+## 6. First Products
 
 Recommended handles:
 
