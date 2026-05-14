@@ -63,8 +63,14 @@ This document tracks the build order for the Poppy Joy website.
 - [x] Document Shopify product model and metafields in `docs/shopify-product-model.md`.
 - [x] Create product metafield definitions in Shopify.
 - [x] Add products and publish them to the Headless sales channel.
-- [ ] Add collection query and mapper.
-- [ ] Add cart mutations for Shopify checkout handoff.
+- [x] Create `Celebrate Joy` collection and publish it to the Headless sales channel.
+- [x] Add collection query and mapper.
+- [x] Add cart mutations for Shopify checkout handoff.
+- [x] Document checkout and payments setup in `docs/shopify-checkout-payments.md`.
+- [ ] Configure Shopify checkout settings.
+- [ ] Configure shipping rates and tax settings.
+- [ ] Confirm business details for payment activation, including KVK number if required.
+- [ ] Configure Shopify Payments or another payment provider after business details are confirmed.
 
 ## Phase 3 - Media Foundation
 

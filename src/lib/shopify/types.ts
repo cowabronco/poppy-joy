@@ -57,3 +57,51 @@ export type StorefrontProduct = {
   images: ShopifyImage[];
   variants: ShopifyProductVariant[];
 };
+
+export type ShopifyCollectionNode = {
+  id: string;
+  title: string;
+  handle: string;
+  description: string;
+  descriptionHtml: string;
+  image: ShopifyImage | null;
+  products: {
+    edges: Array<{
+      node: ShopifyProductNode;
+    }>;
+  };
+};
+
+export type StorefrontCollection = {
+  id: string;
+  title: string;
+  handle: string;
+  description: string;
+  descriptionHtml: string;
+  image: ShopifyImage | null;
+  products: StorefrontProduct[];
+};
+
+export type ShopifyCart = {
+  id: string;
+  checkoutUrl: string;
+  totalQuantity: number;
+  cost: {
+    subtotalAmount: ShopifyMoney;
+    totalAmount: ShopifyMoney;
+  };
+  lines: {
+    edges: Array<{
+      node: {
+        id: string;
+        quantity: number;
+        merchandise: ShopifyProductVariant & {
+          product: {
+            title: string;
+            handle: string;
+          };
+        };
+      };
+    }>;
+  };
+};

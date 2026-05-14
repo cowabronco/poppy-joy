@@ -1,4 +1,9 @@
-import type { ShopifyProductNode, StorefrontProduct } from "./types";
+import type {
+  ShopifyCollectionNode,
+  ShopifyProductNode,
+  StorefrontCollection,
+  StorefrontProduct,
+} from "./types";
 
 export function mapShopifyProduct(
   product: ShopifyProductNode
@@ -14,5 +19,21 @@ export function mapShopifyProduct(
     featuredImage: product.featuredImage,
     images: product.images.edges.map(({ node }) => node),
     variants: product.variants.edges.map(({ node }) => node),
+  };
+}
+
+export function mapShopifyCollection(
+  collection: ShopifyCollectionNode
+): StorefrontCollection {
+  return {
+    id: collection.id,
+    title: collection.title,
+    handle: collection.handle,
+    description: collection.description,
+    descriptionHtml: collection.descriptionHtml,
+    image: collection.image,
+    products: collection.products.edges.map(({ node }) =>
+      mapShopifyProduct(node)
+    ),
   };
 }

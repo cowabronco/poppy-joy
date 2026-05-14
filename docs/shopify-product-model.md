@@ -8,9 +8,10 @@ the headless Next.js storefront.
 Current Storefront API audit result:
 
 - The Storefront API connection works.
-- No products are currently returned by the Storefront API.
-- This usually means products have not been created yet, are unpublished, or are
-  not published to the Headless sales channel.
+- The five starter products are visible through the Storefront API.
+- Cart creation works through the Storefront API.
+- Shopify exposes the dedicated `Celebrate Joy` collection with all five starter
+  products through the Storefront API.
 
 ## Standard Shopify Fields To Use
 
