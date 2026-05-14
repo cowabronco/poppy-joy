@@ -45,10 +45,12 @@ export function ProductCard({ product, imageSrc }: ProductCardProps) {
           </span>
         </CardHeader>
         <CardContent className="flex flex-1 flex-col">
-          <CardTitle className="serif mt-6 text-3xl font-semibold text-brand-black transition-colors duration-300 group-hover:text-brand-purple">
-            {product.name}
-          </CardTitle>
-          <Price className="mt-2">{product.price}</Price>
+          <div className="mt-6 flex items-start justify-between gap-3">
+            <CardTitle className="serif text-3xl font-semibold text-brand-black transition-colors duration-300 group-hover:text-brand-purple">
+              {product.name}
+            </CardTitle>
+            <Price className="pt-1 text-right whitespace-nowrap">{product.price}</Price>
+          </div>
           <p className="mt-5 flex-1 text-sm leading-6 text-brand-black/70">
             {product.description}
           </p>

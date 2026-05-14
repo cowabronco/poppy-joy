@@ -29,16 +29,16 @@ export function ProductGallery({ media, productName }: ProductGalleryProps) {
           />
         ) : (
           <div className="flex h-full items-center justify-center bg-[linear-gradient(135deg,var(--brand-beige),var(--brand-off-white))] px-8 text-center text-xs uppercase tracking-[0.28em] text-brand-black/45">
-            Product image coming soon
+            Productbeeld binnenkort beschikbaar
           </div>
         )}
       </div>
 
       <div
-        className="grid grid-cols-4 gap-3 sm:grid-cols-5"
+        className="grid grid-cols-4 gap-3"
         aria-label={`${productName} afbeeldingen`}
       >
-        {media.map((item, index) => (
+        {media.slice(0, 4).map((item, index) => (
           <button
             key={`${item.alt}-${index}`}
             type="button"

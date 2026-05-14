@@ -12,4 +12,5 @@ export { Reveal } from "./reveal";
 export { ResponsiveImage } from "./responsive-image";
 export { SiteFooter } from "./site-footer";
 export { SiteHeader } from "./site-header";
+export { ShopFilterableGrid } from "./shop-filterable-grid";
 export { VideoBlock } from "./video-block";

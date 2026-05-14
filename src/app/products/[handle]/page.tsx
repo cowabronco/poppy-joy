@@ -2,10 +2,13 @@ import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import {
   Check,
+  ChevronDown,
+  Flag,
   HeartHandshake,
   Leaf,
   PackageCheck,
   RefreshCw,
+  Ruler,
   Sparkles,
 } from "lucide-react";
 
@@ -16,6 +19,7 @@ import {
   ProductCard,
   ProductGallery,
 } from "@/components/poppy";
+import { ProductPurchaseToolbar } from "@/components/poppy/product-purchase-toolbar";
 import { Button } from "@/components/ui/button";
 import {
   Accordion,
@@ -91,10 +95,15 @@ async function addToCart(formData: FormData) {
     return;
   }
 
+  const rawQuantity = Number(formData.get("quantity"));
+  const quantity = Number.isFinite(rawQuantity)
+    ? Math.min(Math.max(Math.trunc(rawQuantity), 1), 12)
+    : 1;
+
   const cart = await createStorefrontCart([
     {
       merchandiseId: variantId,
-      quantity: 1,
+      quantity,
     },
   ]);
 
@@ -131,8 +140,11 @@ export default async function ProductPage({ params }: ProductPageProps) {
     .slice(0, 3);
   const displayPrice = formatPrice(activeVariant?.price) ?? product.price;
   const canAddToCart = Boolean(activeVariant && storefrontProduct?.availableForSale);
+  const productSummaryFacts = [
+    { label: "Aantal vlaggetjes", value: "12", Icon: Flag },
+    { label: "Totale lengte", value: "450 cm", Icon: Ruler },
+  ];
   const productFacts = [
-    product.dimensions,
     product.materials,
     "Dubbelzijdig gestikt",
     "Handgemaakt in small batches",
@@ -148,14 +160,14 @@ export default async function ProductPage({ params }: ProductPageProps) {
           Terug naar shop
         </Link>
 
-        <section className="mt-8 grid gap-10 lg:grid-cols-[minmax(0,1.05fr)_minmax(420px,0.95fr)] lg:items-start">
+        <section className="mt-8 grid gap-10 lg:grid-cols-[minmax(0,1.15fr)_minmax(400px,0.85fr)] xl:grid-cols-[minmax(0,1.2fr)_minmax(420px,0.8fr)] lg:items-start">
           <ProductGallery media={galleryImages} productName={product.name} />
 
           <article className="rounded-[2rem] border border-border bg-[#F2EDE3] p-6 sm:p-8 lg:sticky lg:top-8">
             <p className="text-xs uppercase tracking-[0.28em] text-brand-purple">
               Celebrate Joy
             </p>
-            <div className="mt-5 flex flex-wrap items-start justify-between gap-4">
+            <div className="mt-5 grid gap-3">
               <div>
                 <h1 className="serif text-5xl font-semibold leading-none md:text-6xl">
                   {product.name}
@@ -164,14 +176,33 @@ export default async function ProductPage({ params }: ProductPageProps) {
                   {product.palette}
                 </p>
               </div>
-              <Price className="text-xl">{displayPrice}</Price>
+              <Price className="serif text-5xl font-semibold leading-none md:text-6xl">
+                {displayPrice}
+              </Price>
             </div>
 
-            <p className="mt-7 max-w-xl text-base leading-7 text-brand-black/75">
-              {storefrontProduct?.description || product.description}
-            </p>
+            <div className="mt-7 grid gap-3 sm:grid-cols-2">
+              {productSummaryFacts.map(({ label, value, Icon }) => (
+                <div
+                  key={label}
+                  className="flex items-center gap-4 rounded-2xl bg-brand-off-white/70 p-4"
+                >
+                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#F2EDE3] text-brand-purple">
+                    <Icon className="h-5 w-5" />
+                  </span>
+                  <span>
+                    <span className="block text-[10px] uppercase tracking-[0.2em] text-brand-black/45">
+                      {label}
+                    </span>
+                    <span className="serif text-2xl font-semibold leading-none text-brand-black">
+                      {value}
+                    </span>
+                  </span>
+                </div>
+              ))}
+            </div>
 
-            <ul className="mt-7 grid gap-3 sm:grid-cols-2">
+            <ul className="mt-5 grid gap-3">
               {productFacts.map((fact) => (
                 <li
                   key={fact}
@@ -185,17 +216,40 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
             <form action={addToCart} className="mt-8">
               <input type="hidden" name="variantId" value={activeVariant?.id ?? ""} />
-              <Button
-                type="submit"
-                disabled={!canAddToCart}
-                className="h-13 w-full rounded-full bg-brand-purple px-8 text-xs uppercase tracking-[0.22em] text-brand-off-white hover:bg-brand-purple/90 disabled:bg-brand-black/20"
-              >
-                {canAddToCart ? "Add to cart" : "Binnenkort beschikbaar"}
-              </Button>
+              <div className="grid gap-3 sm:grid-cols-[112px_minmax(0,1fr)]">
+                <label className="sr-only" htmlFor="quantity">
+                  Aantal
+                </label>
+                <span className="relative">
+                  <select
+                    id="quantity"
+                    name="quantity"
+                    defaultValue="1"
+                    disabled={!canAddToCart}
+                    className="h-13 w-full appearance-none rounded-full border border-border bg-brand-off-white px-5 pr-10 text-center text-sm font-medium text-brand-black outline-none transition focus:border-brand-purple focus:ring-2 focus:ring-brand-purple/20 disabled:opacity-50"
+                  >
+                    {Array.from({ length: 12 }, (_, index) => index + 1).map(
+                      (quantity) => (
+                        <option key={quantity} value={quantity}>
+                          {quantity}
+                        </option>
+                      )
+                    )}
+                  </select>
+                  <ChevronDown className="pointer-events-none absolute right-4 top-1/2 h-4 w-4 -translate-y-1/2 text-brand-black/45" />
+                </span>
+                <Button
+                  type="submit"
+                  disabled={!canAddToCart}
+                  className="h-13 w-full rounded-full bg-brand-purple px-8 text-xs uppercase tracking-[0.22em] text-brand-off-white hover:bg-brand-purple/90 disabled:bg-brand-black/20"
+                >
+                  {canAddToCart ? "In winkelwagen" : "Binnenkort beschikbaar"}
+                </Button>
+              </div>
             </form>
 
             <p className="mt-4 text-center text-xs leading-5 text-brand-black/55">
-              Checkout loopt via Shopify. Herbruikbaar, zorgvuldig afgewerkt en
+              Afrekenen loopt via Shopify. Herbruikbaar, zorgvuldig afgewerkt en
               gemaakt om elk jaar opnieuw te gebruiken.
             </p>
 
@@ -205,6 +259,14 @@ export default async function ProductPage({ params }: ProductPageProps) {
               defaultValue="details"
               className="mt-8 rounded-[1.5rem] border border-border bg-brand-off-white/55 px-4"
             >
+              <AccordionItem value="description" className="border-border">
+                <AccordionTrigger className="py-4 text-xs uppercase tracking-[0.22em] text-brand-black/70 hover:no-underline">
+                  Omschrijving
+                </AccordionTrigger>
+                <AccordionContent className="pb-5 text-sm leading-6 text-brand-black/65">
+                  {storefrontProduct?.description || product.description}
+                </AccordionContent>
+              </AccordionItem>
               <AccordionItem value="details" className="border-border">
                 <AccordionTrigger className="py-4 text-xs uppercase tracking-[0.22em] text-brand-black/70 hover:no-underline">
                   Productdetails
@@ -237,10 +299,10 @@ export default async function ProductPage({ params }: ProductPageProps) {
       <section className="border-y border-border bg-[#F2EDE3] py-12">
         <Container className="grid gap-4 md:grid-cols-4">
           {[
-            { title: "Reusable by design", Icon: RefreshCw },
-            { title: "Small batch made", Icon: HeartHandshake },
-            { title: "Refined fabrics", Icon: Sparkles },
-            { title: "Easy gifting", Icon: PackageCheck },
+            { title: "Ontworpen om te hergebruiken", Icon: RefreshCw },
+            { title: "Handgemaakt in kleine oplage", Icon: HeartHandshake },
+            { title: "Verfijnde stoffen", Icon: Sparkles },
+            { title: "Mooi om cadeau te geven", Icon: PackageCheck },
           ].map(({ title, Icon }) => (
             <div
               key={title}
@@ -258,8 +320,8 @@ export default async function ProductPage({ params }: ProductPageProps) {
       <section className="py-16 lg:py-24">
         <Container className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:items-center">
           <EditorialHeading
-            eyebrow="Made to stay"
-            title="A piece to bring out again and again."
+            eyebrow="Gemaakt om te blijven"
+            title="Een stuk om steeds opnieuw tevoorschijn te halen."
             description="Deze vlaggenlijn is bedoeld als een blijvend onderdeel van je rituelen: verjaardagen, lange tafels, kleine mijlpalen en alle gewone dagen die wat zachter mogen voelen."
           />
           <div className="rounded-[2rem] border border-border bg-brand-beige p-8 md:p-10">
@@ -280,8 +342,8 @@ export default async function ProductPage({ params }: ProductPageProps) {
         <Container>
           <div className="flex flex-wrap items-end justify-between gap-6">
             <EditorialHeading
-              eyebrow="You may also like"
-              title="More pieces from Celebrate Joy"
+              eyebrow="Misschien vind je dit ook mooi"
+              title="Meer uit Celebrate Joy"
             />
             <Link
               href="/shop"
@@ -301,6 +363,14 @@ export default async function ProductPage({ params }: ProductPageProps) {
           </div>
         </Container>
       </section>
+
+      <ProductPurchaseToolbar
+        action={addToCart}
+        canAddToCart={canAddToCart}
+        price={displayPrice}
+        productName={product.name}
+        variantId={activeVariant?.id}
+      />
     </main>
   );
 }
