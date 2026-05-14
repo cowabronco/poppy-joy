@@ -7,8 +7,10 @@ import {
   PartyPopper,
   RefreshCw,
   Scissors,
+  ShoppingBag,
   Sparkles,
 } from "lucide-react";
+import Image from "next/image";
 
 import { Container, EditorialHeading, ProductCard, Reveal } from "@/components/poppy";
 import { Button } from "@/components/ui/button";
