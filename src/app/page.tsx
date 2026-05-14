@@ -1,49 +1,23 @@
-"use client";
-
-import { useEffect, useState } from "react";
 import {
   HeartHandshake,
   Leaf,
   PartyPopper,
   RefreshCw,
   Scissors,
-  ShoppingBag,
   Sparkles,
   WashingMachine,
 } from "lucide-react";
-import Image from "next/image";
 
-import { Container, EditorialHeading, ProductCard, Reveal } from "@/components/poppy";
+import {
+  Container,
+  EditorialHeading,
+  HeroVideo,
+  ProductCard,
+  Reveal,
+} from "@/components/poppy";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { products, values } from "@/lib/products";
-
-const footerLinkGroups = [
-  {
-    title: "Ontdek",
-    links: [
-      { label: "Shop", href: "#collection" },
-      { label: "Story", href: "#story" },
-      { label: "Materialen", href: "/materials" },
-    ],
-  },
-  {
-    title: "Service",
-    links: [
-      { label: "Wasvoorschriften", href: "/care" },
-      { label: "Veelgestelde vragen", href: "/faq" },
-      { label: "Contact", href: "/contact" },
-    ],
-  },
-  {
-    title: "Juridisch",
-    links: [
-      { label: "Verzending & retourneren", href: "/shipping-returns" },
-      { label: "Privacybeleid", href: "/privacy" },
-      { label: "Algemene voorwaarden", href: "/terms" },
-    ],
-  },
-];
 
 const usps = [
   { label: values[0], Icon: RefreshCw },
@@ -76,23 +50,6 @@ const careCards = [
 ];
 
 export default function Home() {
-  const [isFloating, setIsFloating] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY > 100) { // Adjust this value as needed
-        setIsFloating(true);
-      } else {
-        setIsFloating(false);
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
-
   const heroVideoUrl =
     process.env.NEXT_PUBLIC_SHOPIFY_HERO_VIDEO_URL ||
     "https://cdn.shopify.com/videos/c/o/v/31ed7d7d21a2451b964dd6646dddd3ff.mp4";
@@ -102,66 +59,6 @@ export default function Home() {
 
   return (
     <main className="min-h-screen overflow-hidden text-brand-black">
-      <header
-        className={`fixed left-0 right-0 top-0 z-50 transition-all duration-500 ease-out ${
-          isFloating
-            ? "bg-brand-off-white/95 shadow-lg backdrop-blur-md"
-            : "bg-transparent"
-        }`}
-      >
-        <Container
-          className={`flex items-center justify-center transition-all duration-500 ease-out ${
-            isFloating ? "py-2" : "py-5"
-          }`}
-        >
-          <nav className="flex items-center justify-center gap-6 text-xs uppercase tracking-[0.28em]">
-            <a
-              className={`relative font-medium transition-colors duration-300 after:absolute after:bottom-0 after:left-0 after:h-[1px] after:w-full after:origin-left after:scale-x-0 after:transition-transform after:duration-300 after:ease-out hover:after:scale-x-100 ${
-                isFloating
-                  ? "text-brand-black/70 hover:text-brand-black after:bg-brand-black"
-                  : "text-brand-off-white/80 hover:text-brand-off-white after:bg-brand-off-white"
-              }`}
-              href="/story"
-            >
-              Story
-            </a>
-            <a href="#" className="mx-3">
-              <Image
-                src="/brand/logo.png"
-                alt="Poppy Joy"
-                width={120}
-                height={120}
-                className={`object-contain transition-all duration-500 ease-out ${
-                  isFloating ? "h-12" : "h-16"
-                }`}
-                style={{ width: "auto" }}
-              />
-            </a>
-            <a
-              className={`relative font-medium transition-colors duration-300 after:absolute after:bottom-0 after:left-0 after:h-[1px] after:w-full after:origin-left after:scale-x-0 after:transition-transform after:duration-300 after:ease-out hover:after:scale-x-100 ${
-                isFloating
-                  ? "text-brand-black/70 hover:text-brand-black after:bg-brand-black"
-                  : "text-brand-off-white/80 hover:text-brand-off-white after:bg-brand-off-white"
-              }`}
-              href="#collection"
-            >
-              Shop
-            </a>
-          </nav>
-          <a
-            href="#"
-            className={`absolute right-12 transition-colors duration-300 ${
-              isFloating
-                ? "text-brand-black/70 hover:text-brand-black"
-                : "text-brand-off-white/80 hover:text-brand-off-white"
-            }`}
-            aria-label="Winkelwagen"
-          >
-            <ShoppingBag size={22} />
-          </a>
-        </Container>
-      </header>
-
       <section className="relative isolate min-h-[60svh] overflow-hidden">
         <svg
           aria-hidden
@@ -182,21 +79,7 @@ export default function Home() {
         </svg>
 
         {heroVideoUrl ? (
-          <video
-            className="hero-video-rotated"
-            autoPlay
-            muted
-            loop
-            playsInline
-            poster={heroPosterUrl}
-            aria-label="Poppy Joy hero video"
-            onLoadedMetadata={(event) => {
-              event.currentTarget.playbackRate = 0.75;
-            }}
-            style={{ filter: "url(#hero-red-to-purple) brightness(0.74) contrast(1.08)" }}
-          >
-            <source src={heroVideoUrl} />
-          </video>
+          <HeroVideo src={heroVideoUrl} poster={heroPosterUrl} />
         ) : (
           <div className="absolute inset-0 bg-gradient-to-b from-brand-black/25 to-brand-black/45" />
         )}
@@ -221,7 +104,7 @@ export default function Home() {
                 asChild
                 className="rounded-full bg-brand-purple px-7 py-6 text-xs uppercase tracking-[0.22em] text-brand-off-white hover:bg-brand-purple/90"
               >
-                <a href="#collection">Shop de collectie</a>
+                <a href="/shop">Shop de collectie</a>
               </Button>
               <Button
                 asChild
@@ -400,63 +283,6 @@ export default function Home() {
         ))}
       </Container>
 
-      <footer className="px-6 pb-10">
-        <Container className="border-t border-border px-0 pt-10">
-          <div className="grid gap-10 text-xs uppercase tracking-[0.2em] text-brand-black/65 md:grid-cols-3">
-            {footerLinkGroups.map((group) => (
-              <div key={group.title}>
-                <p className="mb-4 text-[11px] tracking-[0.24em] text-brand-black/45">
-                  {group.title}
-                </p>
-                <div className="flex flex-col gap-3">
-                  {group.links.map((link) => (
-                    <a
-                      key={link.label}
-                      className="transition hover:text-brand-purple"
-                      href={link.href}
-                      target={link.href.startsWith("http") ? "_blank" : undefined}
-                      rel={link.href.startsWith("http") ? "noreferrer" : undefined}
-                    >
-                      {link.label}
-                    </a>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-          <div className="mt-12 flex items-end justify-between">
-            <Image
-              src="/brand/logo.png"
-              alt="Poppy Joy"
-              width={110}
-              height={40}
-              className="h-10 w-auto object-contain"
-            />
-            <a
-              href="https://instagram.com"
-              target="_blank"
-              rel="noreferrer"
-              aria-label="Instagram"
-              className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-border text-brand-black/65 transition hover:border-brand-purple hover:text-brand-purple"
-            >
-              <svg
-                aria-hidden
-                viewBox="0 0 24 24"
-                className="h-[18px] w-[18px]"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.8"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <rect x="2.5" y="2.5" width="19" height="19" rx="5.5" />
-                <circle cx="12" cy="12" r="4.5" />
-                <circle cx="17.3" cy="6.7" r="0.9" fill="currentColor" stroke="none" />
-              </svg>
-            </a>
-          </div>
-        </Container>
-      </footer>
     </main>
   );
 }

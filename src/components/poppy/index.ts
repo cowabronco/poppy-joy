@@ -1,9 +1,14 @@
 export { Container } from "./container";
 export { EditorialHeading } from "./editorial-heading";
+export { HeroVideo } from "./hero-video";
+export { InformationalPageTemplate } from "./informational-page-template";
 export { MediaGallery } from "./media-gallery";
 export { MediaFrame } from "./media-frame";
 export { Price } from "./price";
 export { ProductCard } from "./product-card";
+export { ProductGallery } from "./product-gallery";
 export { Reveal } from "./reveal";
 export { ResponsiveImage } from "./responsive-image";
+export { SiteFooter } from "./site-footer";
+export { SiteHeader } from "./site-header";
 export { VideoBlock } from "./video-block";

@@ -1,8 +1,31 @@
-import Image from "next/image";
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
+import {
+  Check,
+  HeartHandshake,
+  Leaf,
+  PackageCheck,
+  RefreshCw,
+  Sparkles,
+} from "lucide-react";
 
-import { Container, Price } from "@/components/poppy";
+import {
+  Container,
+  EditorialHeading,
+  Price,
+  ProductCard,
+  ProductGallery,
+} from "@/components/poppy";
+import { Button } from "@/components/ui/button";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import { createStorefrontCart } from "@/lib/shopify/cart";
+import { getStorefrontProductByHandle } from "@/lib/shopify/products";
+import type { ShopifyImage } from "@/lib/shopify/types";
 import { getProductByHandle, products } from "@/lib/products";
 
 const productPlaceholderSrc =
@@ -16,6 +39,70 @@ export function generateStaticParams() {
   return products.map((product) => ({ handle: product.handle }));
 }
 
+function formatPrice(price?: { amount: string; currencyCode: string }) {
+  if (!price) {
+    return null;
+  }
+
+  return new Intl.NumberFormat("nl-NL", {
+    style: "currency",
+    currency: price.currencyCode,
+  }).format(Number(price.amount));
+}
+
+function getGalleryImages(images: ShopifyImage[], productName: string) {
+  const storefrontImages = images.map((image, index) => ({
+    type: "image" as const,
+    src: image.url,
+    alt: image.altText ?? `${productName} productafbeelding ${index + 1}`,
+    aspectRatio: "4:5" as const,
+  }));
+
+  if (storefrontImages.length > 0) {
+    return storefrontImages;
+  }
+
+  return [
+    {
+      type: "image" as const,
+      src: productPlaceholderSrc,
+      alt: `${productName} productafbeelding`,
+      aspectRatio: "4:5" as const,
+    },
+    {
+      type: "placeholder" as const,
+      alt: `${productName} detailafbeelding`,
+      aspectRatio: "1:1" as const,
+    },
+    {
+      type: "placeholder" as const,
+      alt: `${productName} stylingafbeelding`,
+      aspectRatio: "1:1" as const,
+    },
+  ];
+}
+
+async function addToCart(formData: FormData) {
+  "use server";
+
+  const variantId = formData.get("variantId");
+
+  if (typeof variantId !== "string" || !variantId) {
+    return;
+  }
+
+  const cart = await createStorefrontCart([
+    {
+      merchandiseId: variantId,
+      quantity: 1,
+    },
+  ]);
+
+  if (cart?.checkoutUrl) {
+    redirect(cart.checkoutUrl);
+  }
+}
+
 export default async function ProductPage({ params }: ProductPageProps) {
   const { handle } = await params;
   const product = getProductByHandle(handle);
@@ -24,39 +111,196 @@ export default async function ProductPage({ params }: ProductPageProps) {
     notFound();
   }
 
-  return (
-    <main className="min-h-screen bg-brand-off-white py-16 text-brand-black">
-      <Container className="grid gap-10 lg:grid-cols-[1fr_1fr]">
-        <div className="overflow-hidden rounded-[2rem] border border-border">
-          <Image
-            src={productPlaceholderSrc}
-            alt={`${product.name} productafbeelding`}
-            width={1200}
-            height={1500}
-            className="h-full w-full object-cover"
-            priority
-          />
-        </div>
+  let storefrontProduct = null;
 
-        <article className="rounded-[2rem] border border-border bg-brand-beige p-8">
-          <p className="text-xs uppercase tracking-[0.22em] text-brand-black/55">
-            Product detail
-          </p>
-          <h1 className="serif mt-4 text-5xl font-semibold">{product.name}</h1>
-          <Price className="mt-3">{product.price}</Price>
-          <p className="mt-6 text-sm uppercase tracking-[0.18em] text-brand-black/55">
-            {product.palette}
-          </p>
-          <p className="mt-6 leading-7 text-brand-black/75">{product.description}</p>
-          <p className="mt-6 text-sm leading-6 text-brand-black/60">{product.details}</p>
-          <Link
-            href="/#collection"
-            className="mt-10 inline-flex rounded-full border border-border px-6 py-3 text-xs uppercase tracking-[0.2em] transition hover:border-brand-purple hover:text-brand-purple"
-          >
-            Terug naar collectie
-          </Link>
-        </article>
+  try {
+    storefrontProduct = await getStorefrontProductByHandle(handle);
+  } catch (error) {
+    console.error(`Unable to load Shopify product ${handle}.`, error);
+  }
+
+  const activeVariant = storefrontProduct?.variants.find(
+    (variant) => variant.availableForSale
+  );
+  const galleryImages = getGalleryImages(
+    storefrontProduct?.images ?? [],
+    product.name
+  );
+  const relatedProducts = products
+    .filter((relatedProduct) => relatedProduct.handle !== product.handle)
+    .slice(0, 3);
+  const displayPrice = formatPrice(activeVariant?.price) ?? product.price;
+  const canAddToCart = Boolean(activeVariant && storefrontProduct?.availableForSale);
+  const productFacts = [
+    product.dimensions,
+    product.materials,
+    "Dubbelzijdig gestikt",
+    "Handgemaakt in small batches",
+  ];
+
+  return (
+    <main className="min-h-screen bg-brand-off-white text-brand-black">
+      <Container className="pb-16 pt-8 md:pt-12 lg:pb-24">
+        <Link
+          href="/shop"
+          className="inline-flex text-xs uppercase tracking-[0.24em] text-brand-black/55 transition hover:text-brand-purple"
+        >
+          Terug naar shop
+        </Link>
+
+        <section className="mt-8 grid gap-10 lg:grid-cols-[minmax(0,1.05fr)_minmax(420px,0.95fr)] lg:items-start">
+          <ProductGallery media={galleryImages} productName={product.name} />
+
+          <article className="rounded-[2rem] border border-border bg-[#F2EDE3] p-6 sm:p-8 lg:sticky lg:top-8">
+            <p className="text-xs uppercase tracking-[0.28em] text-brand-purple">
+              Celebrate Joy
+            </p>
+            <div className="mt-5 flex flex-wrap items-start justify-between gap-4">
+              <div>
+                <h1 className="serif text-5xl font-semibold leading-none md:text-6xl">
+                  {product.name}
+                </h1>
+                <p className="mt-4 text-sm uppercase tracking-[0.18em] text-brand-black/55">
+                  {product.palette}
+                </p>
+              </div>
+              <Price className="text-xl">{displayPrice}</Price>
+            </div>
+
+            <p className="mt-7 max-w-xl text-base leading-7 text-brand-black/75">
+              {storefrontProduct?.description || product.description}
+            </p>
+
+            <ul className="mt-7 grid gap-3 sm:grid-cols-2">
+              {productFacts.map((fact) => (
+                <li
+                  key={fact}
+                  className="flex items-start gap-3 rounded-2xl bg-brand-off-white/70 p-4 text-sm leading-5 text-brand-black/72"
+                >
+                  <Check className="mt-0.5 h-4 w-4 shrink-0 text-brand-green" />
+                  <span>{fact}</span>
+                </li>
+              ))}
+            </ul>
+
+            <form action={addToCart} className="mt-8">
+              <input type="hidden" name="variantId" value={activeVariant?.id ?? ""} />
+              <Button
+                type="submit"
+                disabled={!canAddToCart}
+                className="h-13 w-full rounded-full bg-brand-purple px-8 text-xs uppercase tracking-[0.22em] text-brand-off-white hover:bg-brand-purple/90 disabled:bg-brand-black/20"
+              >
+                {canAddToCart ? "Add to cart" : "Binnenkort beschikbaar"}
+              </Button>
+            </form>
+
+            <p className="mt-4 text-center text-xs leading-5 text-brand-black/55">
+              Checkout loopt via Shopify. Herbruikbaar, zorgvuldig afgewerkt en
+              gemaakt om elk jaar opnieuw te gebruiken.
+            </p>
+
+            <Accordion
+              type="single"
+              collapsible
+              defaultValue="details"
+              className="mt-8 rounded-[1.5rem] border border-border bg-brand-off-white/55 px-4"
+            >
+              <AccordionItem value="details" className="border-border">
+                <AccordionTrigger className="py-4 text-xs uppercase tracking-[0.22em] text-brand-black/70 hover:no-underline">
+                  Productdetails
+                </AccordionTrigger>
+                <AccordionContent className="pb-5 text-sm leading-6 text-brand-black/65">
+                  {product.details}
+                </AccordionContent>
+              </AccordionItem>
+              <AccordionItem value="materials" className="border-border">
+                <AccordionTrigger className="py-4 text-xs uppercase tracking-[0.22em] text-brand-black/70 hover:no-underline">
+                  Materialen
+                </AccordionTrigger>
+                <AccordionContent className="pb-5 text-sm leading-6 text-brand-black/65">
+                  {product.materials}
+                </AccordionContent>
+              </AccordionItem>
+              <AccordionItem value="care" className="border-border">
+                <AccordionTrigger className="py-4 text-xs uppercase tracking-[0.22em] text-brand-black/70 hover:no-underline">
+                  Wasadvies
+                </AccordionTrigger>
+                <AccordionContent className="pb-5 text-sm leading-6 text-brand-black/65">
+                  {product.care}
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
+          </article>
+        </section>
       </Container>
+
+      <section className="border-y border-border bg-[#F2EDE3] py-12">
+        <Container className="grid gap-4 md:grid-cols-4">
+          {[
+            { title: "Reusable by design", Icon: RefreshCw },
+            { title: "Small batch made", Icon: HeartHandshake },
+            { title: "Refined fabrics", Icon: Sparkles },
+            { title: "Easy gifting", Icon: PackageCheck },
+          ].map(({ title, Icon }) => (
+            <div
+              key={title}
+              className="rounded-[1.5rem] border border-border bg-brand-off-white/60 p-5"
+            >
+              <Icon className="h-5 w-5 text-brand-purple" />
+              <p className="mt-5 text-xs uppercase tracking-[0.22em] text-brand-black/65">
+                {title}
+              </p>
+            </div>
+          ))}
+        </Container>
+      </section>
+
+      <section className="py-16 lg:py-24">
+        <Container className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:items-center">
+          <EditorialHeading
+            eyebrow="Made to stay"
+            title="A piece to bring out again and again."
+            description="Deze vlaggenlijn is bedoeld als een blijvend onderdeel van je rituelen: verjaardagen, lange tafels, kleine mijlpalen en alle gewone dagen die wat zachter mogen voelen."
+          />
+          <div className="rounded-[2rem] border border-border bg-brand-beige p-8 md:p-10">
+            <Leaf className="h-6 w-6 text-brand-green" />
+            <p className="serif mt-6 text-3xl leading-tight text-brand-black md:text-4xl">
+              {product.story}
+            </p>
+            <p className="mt-6 text-sm leading-6 text-brand-black/62">
+              Bewaar de lijn na gebruik rustig op in een droge kast of lade. Zo
+              wordt het geen wegwerpdecoratie, maar een klein terugkerend
+              ontwerpobject in huis.
+            </p>
+          </div>
+        </Container>
+      </section>
+
+      <section className="bg-[#F2EDE3] py-16 lg:py-24">
+        <Container>
+          <div className="flex flex-wrap items-end justify-between gap-6">
+            <EditorialHeading
+              eyebrow="You may also like"
+              title="More pieces from Celebrate Joy"
+            />
+            <Link
+              href="/shop"
+              className="rounded-full border border-border px-6 py-3 text-xs uppercase tracking-[0.22em] text-brand-black/65 transition hover:border-brand-purple hover:text-brand-purple"
+            >
+              Bekijk alles
+            </Link>
+          </div>
+          <div className="mt-10 grid gap-8 md:grid-cols-3">
+            {relatedProducts.map((relatedProduct) => (
+              <ProductCard
+                key={relatedProduct.handle}
+                product={relatedProduct}
+                imageSrc={productPlaceholderSrc}
+              />
+            ))}
+          </div>
+        </Container>
+      </section>
     </main>
   );
 }
