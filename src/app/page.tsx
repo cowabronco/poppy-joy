@@ -55,7 +55,7 @@ export default function Home() {
 
   const heroVideoUrl =
     process.env.NEXT_PUBLIC_SHOPIFY_HERO_VIDEO_URL ||
-    "https://cdn.shopify.com/videos/c/o/v/3eef1d0643ce4c65a38b63f6b1c3c491.mov";
+    "https://cdn.shopify.com/videos/c/o/v/31ed7d7d21a2451b964dd6646dddd3ff.mp4";
   const heroPosterUrl = process.env.NEXT_PUBLIC_SHOPIFY_HERO_VIDEO_POSTER_URL;
   const productPlaceholderSrc = "/placeholders/product-card.jpg";
 

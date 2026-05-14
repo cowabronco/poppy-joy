@@ -94,19 +94,11 @@ body {
 
 .hero-video-rotated {
   position: absolute;
-  top: 50%;
-  left: 50%;
+  inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transform: translate(-50%, -50%) rotate(90deg) scale(1.6);
-  transform-origin: center;
-}
-
-@media (min-width: 768px) {
-  .hero-video-rotated {
-    transform: translate(-50%, -50%) rotate(90deg) scale(1.38);
-  }
+  object-position: center;
 }
 
 @keyframes shimmer {
