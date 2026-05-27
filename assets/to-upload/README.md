@@ -23,5 +23,5 @@ Na upload naar Shopify kunnen deze bestanden uit de repository worden verwijderd
 ## Brongebruik
 
 - `editorial`, `materials`, `products` en `video` worden geupload naar Shopify en daarna vanuit Shopify ingeladen.
-- Uitzondering: `brand/favicon.*` en `brand/featured-image.*` blijven lokaal voor metadata (favicon + social preview image).
+- Uitzondering: `brand/logo.png` en `brand/featured-image.*` blijven lokaal voor metadata (favicon + social preview image).
 - Gebruik `npm run sync:brand` om metadata-bestanden uit `assets/to-upload/brand/` te kopieren naar `public/brand/`.

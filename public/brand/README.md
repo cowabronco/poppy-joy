@@ -2,10 +2,10 @@
 
 Plaats hier de bestanden die door globale metadata worden gebruikt:
 
-- `favicon.png` (aanbevolen 512x512 of groter, vierkant)
+- `logo.png` — logo én favicon (wordt ook gekopieerd naar `src/app/icon.png`)
 - `featured-image.jpg` (1200x630 voor Open Graph/Twitter previews)
 
-Deze paden worden gebruikt in `src/app/layout.tsx`.
+Deze paden worden gebruikt in `src/lib/site-metadata.ts`.
 
 Bronbestand-locatie:
 

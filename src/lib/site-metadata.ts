@@ -13,11 +13,6 @@ export const rootMetadata: Metadata = {
     template: titleTemplate,
   },
   description: defaultDescription,
-  icons: {
-    icon: [{ url: "/brand/logo.png", type: "image/png" }],
-    shortcut: ["/brand/logo.png"],
-    apple: [{ url: "/brand/logo.png" }],
-  },
   openGraph: {
     type: "website",
     locale: "nl_NL",
