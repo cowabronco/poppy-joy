@@ -96,7 +96,7 @@ export const products: Product[] = [
     dimensions: "12 vlaggetjes, totale lengte 450 cm.",
     care: "Was voorzichtig op 30 graden en houd uit direct hitte bij drogen.",
     story:
-      "Cobalt Blue heeft een rustige statementkwaliteit. Het kobalt geeft diepte, terwijl de zachte stof het geheel warm en tastbaar houdt.",
+      "Cobalt Blue heeft een rustige statementkwaliteit. Het cobalt geeft diepte, terwijl de zachte stof het geheel warm en tastbaar houdt.",
     published: false,
   },
 ];

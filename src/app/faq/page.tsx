@@ -2,12 +2,12 @@ import type { Metadata } from "next";
 
 import { FaqPageContent } from "@/components/poppy";
 import { faqItems } from "@/lib/content-pages";
+import { pageDescriptions, pageMetadata } from "@/lib/site-metadata";
 
-export const metadata: Metadata = {
-  title: "Veelgestelde vragen | Poppy Joy",
-  description:
-    "Antwoorden op veelgestelde vragen over herbruikbare stoffen vlaggenlijnen, verzending, verzorging en retourneren.",
-};
+export const metadata: Metadata = pageMetadata(
+  "Veelgestelde vragen",
+  pageDescriptions.faq
+);
 
 function FaqJsonLd() {
   const schema = {

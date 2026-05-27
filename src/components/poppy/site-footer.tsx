@@ -11,7 +11,6 @@ const footerLinkGroups = [
     links: [
       { label: "Shop", href: "/shop" },
       { label: "Story", href: "/story" },
-      { label: "Materialen", href: "/materials" },
     ],
   },
   {
@@ -62,9 +61,9 @@ export function SiteFooter() {
           <Image
             src="/brand/logo.png"
             alt="Poppy Joy"
-            width={110}
-            height={40}
-            className="h-10 w-auto object-contain"
+            width={165}
+            height={60}
+            className="h-[3.75rem] w-auto object-contain"
           />
           <a
             href={INSTAGRAM_URL}

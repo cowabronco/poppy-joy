@@ -5,7 +5,7 @@ export const storyPageContent: InformationalPageTemplateProps = {
   title: "Van wegwerpfrustratie naar een blijvend alternatief.",
   intro:
     "Poppy Joy begon vanuit een frustratie: waarom zouden mooie feestmomenten eindigen met plastic decoratie die na een dag wordt weggegooid?",
-  highlights: ["Herbruikbaar", "Kleine oplages", "Tijdloos ontwerp", "Amsterdam"],
+  highlights: ["Herbruikbaar", "Small batches", "Tijdloos ontwerp", "Amsterdam"],
   heroBackgroundImage:
     "https://cdn.shopify.com/s/files/1/0971/3359/2909/files/hero-bg.png?v=1778763881",
   sections: [

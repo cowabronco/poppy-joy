@@ -46,7 +46,7 @@ const filterGroupConfig: Array<{
       "Mosgroen",
       "Turquoise",
       "Aardetinten",
-      "Kobalt",
+      "Cobalt",
     ],
   },
   {

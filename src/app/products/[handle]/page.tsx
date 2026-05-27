@@ -1,4 +1,5 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 import { notFound, redirect } from "next/navigation";
 import {
   Check,
@@ -37,6 +38,7 @@ import {
   getPublishedProductByHandle,
   publishedProducts,
 } from "@/lib/products";
+import { pageMetadata } from "@/lib/site-metadata";
 
 type ProductPageProps = {
   params: Promise<{ handle: string }>;
@@ -44,6 +46,19 @@ type ProductPageProps = {
 
 export function generateStaticParams() {
   return publishedProducts.map((product) => ({ handle: product.handle }));
+}
+
+export async function generateMetadata({
+  params,
+}: ProductPageProps): Promise<Metadata> {
+  const { handle } = await params;
+  const product = getPublishedProductByHandle(handle);
+
+  if (!product) {
+    return {};
+  }
+
+  return pageMetadata(product.name, product.description);
 }
 
 function formatPrice(price?: { amount: string; currencyCode: string }) {
@@ -284,7 +299,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
         <Container className="grid gap-4 md:grid-cols-4">
           {[
             { title: "Ontworpen om te hergebruiken", Icon: RefreshCw },
-            { title: "Handgemaakt in kleine oplage", Icon: HeartHandshake },
+            { title: "Handgemaakt in small batches", Icon: HeartHandshake },
             { title: "Verfijnde stoffen", Icon: Sparkles },
             { title: "Mooi om cadeau te geven", Icon: PackageCheck },
           ].map(({ title, Icon }) => (
@@ -306,7 +321,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
           <EditorialHeading
             eyebrow="Gemaakt om te blijven"
             title="Een stuk om steeds opnieuw tevoorschijn te halen."
-            description="Deze vlaggenlijn is bedoeld als een blijvend onderdeel van je rituelen: verjaardagen, lange tafels, kleine mijlpalen en alle gewone dagen die wat zachter mogen voelen."
+            description="Deze vlaggenlijn is bedoeld als een blijvend onderdeel van je rituelen: verjaardagen, gezellige tafels, kleine mijlpalen en alle gewone dagen die wat zachter mogen voelen."
           />
           <div className="rounded-[2rem] border border-border bg-brand-beige p-8 md:p-10">
             <Leaf className="h-6 w-6 text-brand-green" />

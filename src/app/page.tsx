@@ -8,6 +8,8 @@ import {
   WashingMachine,
 } from "lucide-react";
 
+import type { Metadata } from "next";
+
 import {
   Container,
   EditorialHeading,
@@ -15,10 +17,17 @@ import {
   ProductCard,
   Reveal,
 } from "@/components/poppy";
+import { pageDescriptions, pageMetadata } from "@/lib/site-metadata";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { publishedProducts, values } from "@/lib/products";
 import { getFeaturedImageByHandle } from "@/lib/shopify/products";
+
+export const metadata: Metadata = pageMetadata(
+  "Poppy Joy | For moments that deserve joy · Designed to stay",
+  pageDescriptions.home,
+  { absolute: true }
+);
 
 const usps = [
   { label: values[0], Icon: RefreshCw },
@@ -94,29 +103,22 @@ export default async function Home() {
             <h1 className="serif max-w-4xl text-6xl font-semibold leading-[0.93] md:text-8xl">
               For moments that deserve joy.
             </h1>
-            <p className="mt-8 max-w-2xl text-xl leading-8 text-brand-off-white/85">
+            <p className="mt-8 max-w-2xl leading-7 text-brand-off-white/85">
               Tijdloze stoffen vlaggenlijnen voor vieringen groot en klein,
               handgemaakt van verfijnde materialen die keer op keer opnieuw
               gebruikt mogen worden.
             </p>
-            <div className="mt-10 flex flex-wrap gap-4">
+            <div className="mt-10">
               <Button
                 asChild
                 className="rounded-full bg-brand-purple px-7 py-6 text-xs uppercase tracking-[0.22em] text-brand-off-white hover:bg-brand-purple/90"
               >
                 <a href="/shop">Shop de collectie</a>
               </Button>
-              <Button
-                asChild
-                variant="outline"
-                className="rounded-full border border-white/35 bg-white/15 px-7 py-6 text-xs uppercase tracking-[0.22em] text-brand-off-white backdrop-blur-sm hover:bg-white/25"
-              >
-                <a href="/story">Lees het verhaal</a>
-              </Button>
             </div>
           </Reveal>
 
-          <Reveal delayMs={120} className="lg:justify-self-end">
+          <Reveal delayMs={120} className="hidden lg:block lg:justify-self-end">
             <div className="relative rounded-[2.6rem] border border-white/10 bg-black/10 p-8 shadow-none backdrop-blur-none">
               <div className="grid gap-8 md:grid-cols-2">
                 <div className="rounded-[1.8rem] border border-white/20 bg-brand-off-white/80 p-6 text-brand-black">
@@ -214,14 +216,18 @@ export default async function Home() {
 
       <Container
         id="story"
-        className="grid gap-12 py-24 lg:grid-cols-[0.8fr_1.2fr]"
+        className="grid gap-12 py-24 lg:grid-cols-[0.85fr_1.15fr] lg:items-start"
       >
         <Reveal>
-          <EditorialHeading eyebrow="Story" title="Omdat vieren vaker mag." />
+          <EditorialHeading
+            eyebrow="Story"
+            title="Omdat vieren vaker mag."
+            description="Stoffen vlaggenlijnen met de warmte van handwerk — bedoeld om telkens opnieuw tevoorschijn te halen, van gezellige tafels tot tuinfeesten."
+          />
         </Reveal>
-        <div className="grid grid-auto-rows-fr gap-6 text-lg leading-8 text-brand-black/70 md:grid-cols-2">
+        <div className="grid grid-auto-rows-fr gap-6 md:grid-cols-2">
           <Reveal delayMs={80} className="h-full">
-            <article className="relative flex h-full flex-col overflow-hidden rounded-[1.8rem] border border-white/20 p-7 text-brand-off-white">
+            <article className="relative flex min-h-[20rem] flex-col overflow-hidden rounded-[1.8rem] border border-white/20 p-7 text-brand-off-white md:min-h-[22rem]">
               <div
                 aria-hidden
                 className="absolute inset-0 bg-cover bg-center"
@@ -229,23 +235,23 @@ export default async function Home() {
               />
               <div
                 aria-hidden
-                className="absolute inset-0 bg-gradient-to-b from-brand-black/30 via-brand-black/40 to-brand-black/65"
+                className="absolute inset-0 bg-gradient-to-t from-brand-black/88 via-brand-black/45 to-brand-black/15"
               />
-              <div className="relative z-10">
+              <div className="relative z-10 mt-auto">
                 <Badge className="mb-4 bg-brand-off-white/95 text-[10px] uppercase tracking-[0.18em] text-brand-black/65 shadow-sm hover:bg-brand-off-white">
                   Wat is het
                 </Badge>
-                <p className="text-brand-off-white/90">
-                  Poppy Joy ontwerpt stoffen herbruikbare vlaggenlijnen. De
-                  stoffen zijn met zorg en liefde uitgekozen en worden
-                  handgemaakt: ontworpen om het leven te vieren, juist in
-                  kleine momenten en grote momenten.
+                <p className="serif text-[1.35rem] leading-[1.55] text-brand-off-white md:text-2xl md:leading-[1.48]">
+                  Poppy Joy ontwerpt herbruikbare stoffen vlaggenlijnen —
+                  handgemaakt in small batches van verfijnde materialen, voor
+                  kleine momenten en grote vieringen die je keer op keer wilt
+                  herbeleven.
                 </p>
               </div>
             </article>
           </Reveal>
           <Reveal delayMs={140} className="h-full">
-            <article className="relative flex h-full flex-col overflow-hidden rounded-[1.8rem] border border-white/20 p-7 text-brand-off-white">
+            <article className="relative flex min-h-[20rem] flex-col overflow-hidden rounded-[1.8rem] border border-white/20 p-7 text-brand-off-white md:min-h-[22rem]">
               <div
                 aria-hidden
                 className="absolute inset-0 bg-cover bg-center"
@@ -253,21 +259,33 @@ export default async function Home() {
               />
               <div
                 aria-hidden
-                className="absolute inset-0 bg-gradient-to-b from-brand-black/30 via-brand-black/40 to-brand-black/65"
+                className="absolute inset-0 bg-gradient-to-t from-brand-black/88 via-brand-black/45 to-brand-black/15"
               />
-              <div className="relative z-10">
+              <div className="relative z-10 mt-auto">
                 <Badge className="mb-4 bg-brand-off-white/95 text-[10px] uppercase tracking-[0.18em] text-brand-black/65 shadow-sm hover:bg-brand-off-white">
                   Waarom Poppy Joy
                 </Badge>
-                <p className="text-brand-off-white/90">
-                  Geen eenmalige plastic versiering, maar iets dat je blijft
-                  gebruiken en waarmee je jarenlang herinneringen blijft maken.
-                  Warm, stijlvol en met karakter.
+                <p className="serif text-[1.35rem] leading-[1.55] text-brand-off-white md:text-2xl md:leading-[1.48]">
+                  Geen eenmalige plastic versiering, maar iets dat je bewaart,
+                  hergebruikt en doorgeeft. Warm, stijlvol — en onderdeel van
+                  verhalen die blijven.
                 </p>
               </div>
             </article>
           </Reveal>
         </div>
+      </Container>
+
+      <Container className="pb-24 pt-0">
+        <Reveal className="flex justify-center">
+          <Button
+            asChild
+            variant="outline"
+            className="rounded-full border-brand-black/20 bg-transparent px-8 py-6 text-xs uppercase tracking-[0.22em] text-brand-black hover:border-brand-purple hover:text-brand-purple"
+          >
+            <a href="/story">Lees het verhaal</a>
+          </Button>
+        </Reveal>
       </Container>
 
       <Container id="care" className="grid grid-auto-rows-fr gap-8 py-24 md:grid-cols-3">

@@ -1,4 +1,7 @@
+import type { Metadata } from "next";
+
 import { Container, ShopFilterableGrid } from "@/components/poppy";
+import { pageDescriptions, pageMetadata } from "@/lib/site-metadata";
 import { publishedProducts } from "@/lib/products";
 import { getFeaturedImageByHandle } from "@/lib/shopify/products";
 
@@ -23,6 +26,8 @@ const productFilterMetadata = {
     availability: "Op voorraad" as const,
   },
 };
+
+export const metadata: Metadata = pageMetadata("Shop", pageDescriptions.shop);
 
 export default async function ShopPage() {
   const imageByHandle = await getFeaturedImageByHandle();
