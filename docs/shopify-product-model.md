@@ -44,6 +44,8 @@ Use namespace `custom` for all fields.
 | Material | `custom.material` | Single line text or rich text | Yes | Human-readable material summary. |
 | Composition | `custom.composition` | Single line text or rich text | Yes | Exact composition, for example `75% linnen, 25% katoen`. |
 | Dimensions | `custom.dimensions` | Single line text | Yes | Product size, for example `12 vlaggetjes, 450 cm lang`. |
+| Product length | `custom.product_length` | Integer | Yes | Total length in centimeters, for example `450`. |
+| Flag count | `custom.flag_count` | Integer | Yes | Number of flags on the bunting line, for example `12`. |
 | Washing care | `custom.washing_care` | Multi-line text or rich text | Yes | Washing and care instructions. |
 | Certifications | `custom.certifications` | List of single line text | No | Labels such as `Oeko-Tex Standard 100`. |
 | Drop | `custom.drop` | Single line text | Yes | Collection/drop name, for example `Celebrate Joy`. |

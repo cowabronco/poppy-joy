@@ -108,6 +108,18 @@ const metafieldDefinitions = [
     description: "Product dimensions and length.",
   },
   {
+    name: "Product length",
+    key: "product_length",
+    type: "number_integer",
+    description: "Total product length in centimeters.",
+  },
+  {
+    name: "Flag count",
+    key: "flag_count",
+    type: "number_integer",
+    description: "Number of flags on the bunting line.",
+  },
+  {
     name: "Washing care",
     key: "washing_care",
     type: "multi_line_text_field",
@@ -157,6 +169,7 @@ const products = [
     colorStory: "Gobelin + limoen groene keperband",
     inventoryQuantity: 22,
     status: "ACTIVE",
+    sku: "PJ-CJ-ZZ",
     certifications: [],
   },
   {
@@ -170,6 +183,7 @@ const products = [
     colorStory: "Linnen + ecru keperband",
     inventoryQuantity: 15,
     status: "ACTIVE",
+    sku: "PJ-CJ-DJ",
     certifications: ["Oeko-Tex Standard 100 Product class 2"],
   },
   {
@@ -183,6 +197,7 @@ const products = [
     colorStory: "Velours stippen + mosgroene keperband",
     inventoryQuantity: 21,
     status: "ACTIVE",
+    sku: "PJ-CJ-PD",
     certifications: [],
   },
   {
@@ -196,6 +211,7 @@ const products = [
     colorStory: "Gobelin + turquoise keperband",
     inventoryQuantity: 21,
     status: "ACTIVE",
+    sku: "PJ-CJ-WJ",
     certifications: [],
   },
   {
@@ -209,6 +225,7 @@ const products = [
     colorStory: "Velours golf + ecru keperband",
     inventoryQuantity: 21,
     status: "DRAFT",
+    sku: "PJ-CJ-CB",
     certifications: [],
   },
 ].map((product) => ({
@@ -222,6 +239,8 @@ const products = [
   craftNote:
     "Met zorg samengesteld en dubbelzijdig afgewerkt voor momenten die mogen blijven.",
   includedItems: ["1 stoffen vlaggenlijn", "12 dubbelzijdige vlaggetjes"],
+  productLength: 450,
+  flagCount: 12,
 }));
 
 async function findMetafieldDefinition(key) {
@@ -329,6 +348,8 @@ function productMetafields(product) {
     ["material", "single_line_text_field", product.material],
     ["composition", "multi_line_text_field", product.composition],
     ["dimensions", "single_line_text_field", product.dimensions],
+    ["product_length", "number_integer", String(product.productLength)],
+    ["flag_count", "number_integer", String(product.flagCount)],
     ["washing_care", "multi_line_text_field", product.washingCare],
     ["certifications", "list.single_line_text_field", JSON.stringify(product.certifications)],
     ["drop", "single_line_text_field", product.drop],
@@ -393,7 +414,7 @@ async function createProduct(product) {
 async function updateProduct(existing, product) {
   const data = await adminRequest(
     `#graphql
-      mutation ProductUpdate($product: ProductInput!) {
+      mutation ProductUpdate($product: ProductUpdateInput!) {
         productUpdate(product: $product) {
           product {
             id
@@ -521,7 +542,7 @@ async function updateVariantInventory(variantId, quantity) {
   }
 }
 
-async function updateVariantPrice(productId, variantId, price) {
+async function updateVariantDetails(productId, variantId, { price, sku }) {
   const data = await adminRequest(
     `#graphql
       mutation ProductVariantsBulkUpdate($productId: ID!, $variants: [ProductVariantsBulkInput!]!) {
@@ -531,6 +552,7 @@ async function updateVariantPrice(productId, variantId, price) {
           }
           productVariants {
             id
+            sku
             price
           }
           userErrors {
@@ -546,6 +568,7 @@ async function updateVariantPrice(productId, variantId, price) {
         {
           id: variantId,
           price,
+          inventoryItem: sku ? { sku } : undefined,
         },
       ],
     }
@@ -554,7 +577,7 @@ async function updateVariantPrice(productId, variantId, price) {
   const errors = data.productVariantsBulkUpdate.userErrors;
   if (errors.length) {
     throw new Error(
-      `Failed to update variant price: ${JSON.stringify(errors)}`
+      `Failed to update variant details: ${JSON.stringify(errors)}`
     );
   }
 }
@@ -568,14 +591,17 @@ async function ensureProducts() {
 
     const variantId = saved.variants.nodes[0]?.id;
     if (variantId) {
-      await updateVariantPrice(saved.id, variantId, product.price);
+      await updateVariantDetails(saved.id, variantId, {
+        price: product.price,
+        sku: product.sku,
+      });
       if (typeof product.inventoryQuantity === "number") {
         await updateVariantInventory(variantId, product.inventoryQuantity);
       }
     }
 
     console.log(
-      `${existing ? "Updated" : "Created"} product: ${saved.title} (${product.status ?? "ACTIVE"}, stock ${product.inventoryQuantity ?? "n/a"})`
+      `${existing ? "Updated" : "Created"} product: ${saved.title} (${product.status ?? "ACTIVE"}, SKU ${product.sku ?? "n/a"}, stock ${product.inventoryQuantity ?? "n/a"})`
     );
   }
 }
