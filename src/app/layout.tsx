@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import { Cormorant_Garamond, Geist } from "next/font/google";
 import "./globals.css";
-import { PageMotion, SiteFooter, SiteHeader } from "@/components/poppy";
+import { PageMotion } from "@/components/poppy/page-motion";
+import { SiteFooter } from "@/components/poppy/site-footer";
+import { SiteHeader } from "@/components/poppy/site-header";
 import { cn } from "@/lib/utils";
 
 const geist = Geist({subsets:['latin'],variable:'--font-sans'});
@@ -55,6 +57,7 @@ export default function RootLayout({
   return (
     <html
       lang="nl"
+      data-scroll-behavior="smooth"
       className={cn("font-sans", geist.variable, serif.variable)}
     >
       <body>
