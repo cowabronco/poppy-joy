@@ -5,6 +5,7 @@ export type Product = {
   subtitle: string;
   description: string;
   details: string;
+  materialTags: string[];
   materials: string;
   dimensions: string;
   care: string;
@@ -22,6 +23,7 @@ export const products: Product[] = [
       "Een levendige zig zag print in warme kleuren, gemaakt van gobelin jacquard met diepte en textuur. De lijn is vastgenaaid aan een soepel geweven limoen groene keperband.",
     details:
       "12 dubbelzijdig gestikte vlaggetjes, 450 cm lang. Samenstelling: 50% polyester en 50% katoen.",
+    materialTags: ["Jacquard"],
     materials: "Gobelin jacquard met een limoen groene keperband.",
     dimensions: "12 vlaggetjes, totale lengte 450 cm.",
     care: "Was voorzichtig op 30 graden en laat aan de lucht drogen.",
@@ -38,6 +40,7 @@ export const products: Product[] = [
       "Een linnen vlaggenlijn met pistachegroene en paarse vlaggetjes die elkaar afwisselen, afgewerkt met een soepel geweven ecru keperband.",
     details:
       "12 dubbelzijdig gestikte vlaggetjes, 450 cm lang. Samenstelling: 75% linnen en 25% katoen. Oeko-Tex Standard 100 Product class 2.",
+    materialTags: ["Linnen"],
     materials: "Linnen vlaggetjes met een ecru keperband.",
     dimensions: "12 vlaggetjes, totale lengte 450 cm.",
     care: "Was voorzichtig op 30 graden en strijk licht wanneer gewenst.",
@@ -54,6 +57,7 @@ export const products: Product[] = [
       "Een zachte velours stof met speelse zwart-witte dalmatiër stippenprint. Minimalistisch, maar met een twist en afgewerkt met een mosgroene keperband.",
     details:
       "12 dubbelzijdig gestikte vlaggetjes, 450 cm lang. Samenstelling: 100% polyester.",
+    materialTags: ["Velours"],
     materials: "Velours stippen met een mosgroene keperband.",
     dimensions: "12 vlaggetjes, totale lengte 450 cm.",
     care: "Was voorzichtig op 30 graden en vermijd de droger.",
@@ -70,6 +74,7 @@ export const products: Product[] = [
       "Een gobelin jacquard met een zachte flow van aardse tinten. De golvende organische print brengt rust en karakter, afgewerkt met een turquoise keperband.",
     details:
       "12 dubbelzijdig gestikte vlaggetjes, 450 cm lang. Samenstelling: 50% polyester en 50% katoen.",
+    materialTags: ["Jacquard"],
     materials: "Gobelin jacquard met een turquoise keperband.",
     dimensions: "12 vlaggetjes, totale lengte 450 cm.",
     care: "Was voorzichtig op 30 graden en laat plat of hangend drogen.",
@@ -86,6 +91,7 @@ export const products: Product[] = [
       "Een zachte velours vlaggenlijn met golfprint, dubbelzijdig gestikt en vastgenaaid aan een soepel geweven ecru keperband.",
     details:
       "12 dubbelzijdig gestikte vlaggetjes, 450 cm lang. Samenstelling: 50% polyester en 50% katoen.",
+    materialTags: ["Velours"],
     materials: "Velours golf met een ecru keperband.",
     dimensions: "12 vlaggetjes, totale lengte 450 cm.",
     care: "Was voorzichtig op 30 graden en houd uit direct hitte bij drogen.",

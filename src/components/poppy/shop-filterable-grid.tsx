@@ -6,6 +6,7 @@ import { Check } from "lucide-react";
 import type { Product } from "@/lib/products";
 
 import { ProductCard } from "./product-card";
+import { Reveal } from "./reveal";
 
 type FilterGroupKey = "materials" | "colors" | "availability";
 
@@ -32,7 +33,7 @@ const filterGroups: Array<{
   {
     key: "materials",
     label: "Materiaal",
-    options: ["Linnen", "Jacquard", "Velours", "Katoen"],
+    options: ["Linnen", "Jacquard", "Velours"],
   },
   {
     key: "colors",
@@ -178,12 +179,13 @@ export function ShopFilterableGrid({ products }: ShopFilterableGridProps) {
       </aside>
 
       <section aria-label="Producten" className="grid gap-8 md:grid-cols-2">
-        {visibleProducts.map((entry) => (
-          <ProductCard
-            key={entry.product.handle}
-            product={entry.product}
-            imageSrc={entry.imageSrc}
-          />
+        {visibleProducts.map((entry, index) => (
+          <Reveal key={entry.product.handle} delayMs={index * 60}>
+            <ProductCard
+              product={entry.product}
+              imageSrc={entry.imageSrc}
+            />
+          </Reveal>
         ))}
       </section>
     </div>

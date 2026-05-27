@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 
 import { MediaFrame } from "@/components/poppy/media-frame";
@@ -22,6 +22,10 @@ export function ResponsiveImage({
 }: ResponsiveImageProps) {
   const [isLoaded, setIsLoaded] = useState(false);
 
+  useEffect(() => {
+    setIsLoaded(false);
+  }, [media.src]);
+
   if (!media.src) {
     return (
       <MediaFrame
@@ -41,7 +45,11 @@ export function ResponsiveImage({
         fill
         priority={priority}
         sizes={sizes}
-        onLoad={() => setIsLoaded(true)}
+        onLoad={(event) => {
+          if (event.currentTarget.complete) {
+            setIsLoaded(true);
+          }
+        }}
         className={cn(
           "object-cover transition duration-700",
           isLoaded ? "scale-100 opacity-100 blur-0" : "scale-[1.03] opacity-0 blur-sm"

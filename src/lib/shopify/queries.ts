@@ -56,7 +56,7 @@ export const PRODUCTS_QUERY = `#graphql
   ${PRODUCT_FRAGMENT}
 
   query Products($first: Int!, $after: String) {
-    products(first: $first, after: $after, sortKey: MANUAL) {
+    products(first: $first, after: $after) {
       pageInfo {
         hasNextPage
         endCursor

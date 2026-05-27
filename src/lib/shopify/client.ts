@@ -1,6 +1,6 @@
 import { createStorefrontApiClient } from "@shopify/storefront-api-client";
 
-const DEFAULT_API_VERSION = "2025-01";
+const DEFAULT_API_VERSION = "2026-01";
 
 export function hasShopifyConfig() {
   return Boolean(

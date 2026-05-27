@@ -7,22 +7,18 @@ const shopHeroImage =
 
 const productFilterMetadata = {
   "zig-zag": {
-    materials: ["Jacquard", "Katoen"],
     colors: ["Warm", "Limoen"],
     availability: "Op voorraad" as const,
   },
   "double-joy": {
-    materials: ["Linnen", "Katoen"],
     colors: ["Pistache", "Paars"],
     availability: "Op voorraad" as const,
   },
   "poppy-dots": {
-    materials: ["Velours"],
     colors: ["Mosgroen"],
     availability: "Op voorraad" as const,
   },
   "wavy-joy": {
-    materials: ["Jacquard", "Katoen"],
     colors: ["Aardetinten", "Turquoise"],
     availability: "Op voorraad" as const,
   },
@@ -35,6 +31,7 @@ export default async function ShopPage() {
     imageSrc: imageByHandle[product.handle],
     filters: {
       collection: "Celebrate Joy" as const,
+      materials: product.materialTags,
       ...productFilterMetadata[product.handle as keyof typeof productFilterMetadata],
     },
   }));

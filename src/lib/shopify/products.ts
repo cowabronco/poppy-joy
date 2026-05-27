@@ -72,8 +72,11 @@ export async function getFeaturedImageByHandle(): Promise<Record<string, string>
     const storefrontProducts = await getStorefrontProducts(20);
 
     return storefrontProducts.reduce<Record<string, string>>((acc, product) => {
-      if (product.featuredImage?.url) {
-        acc[product.handle] = product.featuredImage.url;
+      const imageUrl =
+        product.featuredImage?.url ?? product.images[0]?.url ?? null;
+
+      if (imageUrl) {
+        acc[product.handle] = imageUrl;
       }
 
       return acc;
