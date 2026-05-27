@@ -9,11 +9,11 @@ import {
 } from "lucide-react";
 
 import type { Metadata } from "next";
+import Image from "next/image";
 
 import {
   Container,
   EditorialHeading,
-  HeroVideo,
   ProductCard,
   Reveal,
 } from "@/components/poppy";
@@ -59,43 +59,29 @@ const careCards = [
   },
 ];
 
+const homeHeroImage =
+  "https://cdn.shopify.com/s/files/1/0971/3359/2909/files/hero.jpg?v=1779897558";
+
 export default async function Home() {
   const imageByHandle = await getFeaturedImageByHandle();
-  const heroVideoUrl =
-    process.env.NEXT_PUBLIC_SHOPIFY_HERO_VIDEO_URL ||
-    "https://cdn.shopify.com/videos/c/o/v/31ed7d7d21a2451b964dd6646dddd3ff.mp4";
-  const heroPosterUrl = process.env.NEXT_PUBLIC_SHOPIFY_HERO_VIDEO_POSTER_URL;
 
   return (
     <main className="min-h-screen overflow-hidden text-brand-black">
-      <section className="relative isolate min-h-svh overflow-hidden lg:min-h-[60svh]">
-        <svg
-          aria-hidden
-          className="pointer-events-none absolute h-0 w-0"
-          focusable="false"
-        >
-          <filter id="hero-red-to-purple" colorInterpolationFilters="sRGB">
-            <feColorMatrix
-              type="matrix"
-              values="
-                0.76 0.04 0.20 0 0
-                0.08 0.92 0.00 0 0
-                0.70 0.04 0.96 0 0
-                0.00 0.00 0.00 1 0
-              "
-            />
-          </filter>
-        </svg>
+      <section className="relative isolate min-h-[80svh] overflow-hidden">
+        <div className="absolute inset-0">
+          <Image
+            src={homeHeroImage}
+            alt="Picknicktafel met vlaggenlijn in een zonnige tuin aan het water"
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover object-top"
+          />
+        </div>
 
-        {heroVideoUrl ? (
-          <HeroVideo src={heroVideoUrl} poster={heroPosterUrl} />
-        ) : (
-          <div className="absolute inset-0 bg-gradient-to-b from-brand-black/25 to-brand-black/45" />
-        )}
+        <div className="absolute inset-0 bg-gradient-to-b from-brand-black/30 via-brand-black/40 to-brand-black/55" />
 
-        <div className="absolute inset-0 bg-gradient-to-b from-brand-purple/44 via-brand-black/34 to-brand-purple/46" />
-
-        <Container className="relative z-10 flex min-h-svh flex-col justify-center gap-10 pb-16 pt-20 md:pb-24 lg:grid lg:min-h-[60svh] lg:grid-cols-[1.05fr_0.95fr] lg:items-end lg:pt-28">
+        <Container className="relative z-10 flex min-h-[80svh] flex-col justify-center gap-10 pb-16 pt-20 md:pb-24 lg:grid lg:grid-cols-[1.05fr_0.95fr] lg:items-end lg:pt-28">
           <Reveal className="max-w-3xl text-brand-off-white">
             <p className="mb-6 text-xs uppercase tracking-[0.36em] text-brand-off-white/85">
               Designed to stay made with love
