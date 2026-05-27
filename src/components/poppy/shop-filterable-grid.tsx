@@ -25,27 +25,73 @@ type ShopFilterableGridProps = {
   products: ShopProduct[];
 };
 
-const filterGroups: Array<{
+const filterGroupConfig: Array<{
   key: FilterGroupKey;
   label: string;
-  options: string[];
+  optionOrder: string[];
 }> = [
   {
     key: "materials",
     label: "Materiaal",
-    options: ["Linnen", "Jacquard", "Velours"],
+    optionOrder: ["Linnen", "Jacquard", "Velours"],
   },
   {
     key: "colors",
     label: "Kleur",
-    options: ["Warm", "Pistache", "Paars", "Kobalt", "Aardetinten"],
+    optionOrder: [
+      "Warm",
+      "Pistache",
+      "Paars",
+      "Limoen",
+      "Mosgroen",
+      "Turquoise",
+      "Aardetinten",
+      "Kobalt",
+    ],
   },
   {
     key: "availability",
     label: "Beschikbaarheid",
-    options: ["Op voorraad", "Binnenkort"],
+    optionOrder: ["Op voorraad", "Binnenkort"],
   },
 ];
+
+function getProductFilterValues(
+  product: ShopProduct,
+  groupKey: FilterGroupKey
+): string[] {
+  if (groupKey === "availability") {
+    return [product.filters.availability];
+  }
+
+  return product.filters[groupKey];
+}
+
+function buildFilterGroups(products: ShopProduct[]) {
+  return filterGroupConfig
+    .map((group) => {
+      const presentValues = new Set<string>();
+
+      for (const product of products) {
+        for (const value of getProductFilterValues(product, group.key)) {
+          presentValues.add(value);
+        }
+      }
+
+      const options = group.optionOrder.filter((option) =>
+        presentValues.has(option)
+      );
+
+      for (const value of presentValues) {
+        if (!options.includes(value)) {
+          options.push(value);
+        }
+      }
+
+      return { ...group, options };
+    })
+    .filter((group) => group.options.length > 1);
+}
 
 type Selection = Record<FilterGroupKey, string | null>;
 
@@ -73,6 +119,8 @@ function productMatches(product: ShopProduct, selection: Selection) {
 
 export function ShopFilterableGrid({ products }: ShopFilterableGridProps) {
   const [selection, setSelection] = useState<Selection>(initialSelection);
+
+  const filterGroups = useMemo(() => buildFilterGroups(products), [products]);
 
   const visibleProducts = useMemo(
     () => products.filter((product) => productMatches(product, selection)),
@@ -125,8 +173,9 @@ export function ShopFilterableGrid({ products }: ShopFilterableGridProps) {
       <aside className="h-fit rounded-[2rem] border border-border bg-[#F2EDE3] p-6 lg:sticky lg:top-24">
         <p className="text-xs uppercase tracking-[0.24em] text-brand-black/55">Filters</p>
         <p className="mt-3 text-sm leading-6 text-brand-black/65">
-          Selecteer materiaal, kleur of beschikbaarheid. Onmogelijke combinaties
-          worden automatisch uitgezet.
+          {filterGroups.length > 0
+            ? "Selecteer materiaal, kleur of beschikbaarheid. Onmogelijke combinaties worden automatisch uitgezet."
+            : "Alle producten staan hieronder."}
         </p>
 
         <div className="mt-8 space-y-7">
