@@ -14,8 +14,26 @@ type ProductGalleryProps = {
 
 export function ProductGallery({ media, productName }: ProductGalleryProps) {
   const [activeIndex, setActiveIndex] = useState(0);
+  const [isImageLoaded, setIsImageLoaded] = useState(false);
   const activeMedia = media[activeIndex] ?? media[0];
   const hasMultipleImages = media.length > 1;
+
+  useEffect(() => {
+    setIsImageLoaded(false);
+
+    if (!activeMedia?.src) {
+      return;
+    }
+
+    const preload = new window.Image();
+    preload.src = activeMedia.src;
+
+    if (preload.complete) {
+      requestAnimationFrame(() => {
+        setIsImageLoaded(true);
+      });
+    }
+  }, [activeMedia?.src]);
 
   const goToPrevious = useCallback(() => {
     setActiveIndex((current) =>
@@ -54,15 +72,25 @@ export function ProductGallery({ media, productName }: ProductGalleryProps) {
     <div className="space-y-4">
       <div className="relative aspect-[4/5] overflow-hidden rounded-[2rem] border border-border bg-brand-beige">
         {activeMedia?.src ? (
-          <Image
-            key={activeMedia.src}
-            src={activeMedia.src}
-            alt={activeMedia.alt}
-            fill
-            priority={activeIndex === 0}
-            sizes="(min-width: 1024px) 48vw, 100vw"
-            className="object-cover"
-          />
+          <>
+            {!isImageLoaded ? (
+              <div aria-hidden className="loading-sheen absolute inset-0 z-10" />
+            ) : null}
+            <Image
+              src={activeMedia.src}
+              alt={activeMedia.alt}
+              fill
+              priority={activeIndex === 0}
+              sizes="(min-width: 1024px) 48vw, 100vw"
+              onLoad={() => setIsImageLoaded(true)}
+              className={cn(
+                "object-cover transition duration-700 ease-out",
+                isImageLoaded
+                  ? "scale-100 opacity-100 blur-0"
+                  : "scale-[1.03] opacity-0 blur-sm"
+              )}
+            />
+          </>
         ) : (
           <div className="flex h-full items-center justify-center bg-[linear-gradient(135deg,var(--brand-beige),var(--brand-off-white))] px-8 text-center text-xs uppercase tracking-[0.28em] text-brand-black/45">
             Productbeeld binnenkort beschikbaar
@@ -75,7 +103,7 @@ export function ProductGallery({ media, productName }: ProductGalleryProps) {
               type="button"
               aria-label="Vorige afbeelding"
               onClick={goToPrevious}
-              className="absolute left-4 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-border bg-brand-off-white/90 text-brand-black shadow-sm backdrop-blur-sm transition hover:border-brand-purple hover:text-brand-purple focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-purple/30"
+              className="absolute left-4 top-1/2 z-20 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-border bg-brand-off-white/90 text-brand-black shadow-sm backdrop-blur-sm transition hover:border-brand-purple hover:text-brand-purple focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-purple/30"
             >
               <ChevronLeft className="h-5 w-5" aria-hidden />
             </button>
@@ -83,13 +111,13 @@ export function ProductGallery({ media, productName }: ProductGalleryProps) {
               type="button"
               aria-label="Volgende afbeelding"
               onClick={goToNext}
-              className="absolute right-4 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-border bg-brand-off-white/90 text-brand-black shadow-sm backdrop-blur-sm transition hover:border-brand-purple hover:text-brand-purple focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-purple/30"
+              className="absolute right-4 top-1/2 z-20 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-border bg-brand-off-white/90 text-brand-black shadow-sm backdrop-blur-sm transition hover:border-brand-purple hover:text-brand-purple focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-purple/30"
             >
               <ChevronRight className="h-5 w-5" aria-hidden />
             </button>
             <p
               aria-live="polite"
-              className="absolute bottom-4 left-1/2 -translate-x-1/2 rounded-full border border-border bg-brand-off-white/90 px-3 py-1 text-[10px] uppercase tracking-[0.22em] text-brand-black/65 backdrop-blur-sm"
+              className="absolute bottom-4 left-1/2 z-20 -translate-x-1/2 rounded-full border border-border bg-brand-off-white/90 px-3 py-1 text-[10px] uppercase tracking-[0.22em] text-brand-black/65 backdrop-blur-sm transition duration-500"
             >
               {activeIndex + 1} / {media.length}
             </p>
@@ -113,7 +141,7 @@ export function ProductGallery({ media, productName }: ProductGalleryProps) {
                 aria-current={isActive ? "true" : undefined}
                 onClick={() => setActiveIndex(index)}
                 className={cn(
-                  "relative aspect-square w-[calc(25%-0.5625rem)] min-w-[4.5rem] shrink-0 overflow-hidden rounded-2xl border-2 bg-brand-beige transition",
+                  "relative aspect-square w-[calc(25%-0.5625rem)] min-w-[4.5rem] shrink-0 overflow-hidden rounded-2xl border-2 bg-brand-beige transition duration-300",
                   isActive
                     ? "border-brand-purple opacity-100 ring-2 ring-brand-purple/25 ring-offset-2 ring-offset-brand-off-white"
                     : "border-transparent opacity-55 hover:border-brand-purple/40 hover:opacity-85"
@@ -125,7 +153,10 @@ export function ProductGallery({ media, productName }: ProductGalleryProps) {
                     alt=""
                     fill
                     sizes="96px"
-                    className="object-cover"
+                    className={cn(
+                      "object-cover transition duration-300",
+                      isActive ? "scale-100" : "scale-105"
+                    )}
                   />
                 ) : (
                   <span className="absolute inset-0 bg-[linear-gradient(135deg,var(--brand-beige),var(--brand-off-white))]" />
@@ -133,7 +164,7 @@ export function ProductGallery({ media, productName }: ProductGalleryProps) {
                 {isActive ? (
                   <span
                     aria-hidden
-                    className="absolute inset-x-2 bottom-2 h-1 rounded-full bg-brand-purple"
+                    className="absolute inset-x-2 bottom-2 h-1 rounded-full bg-brand-purple transition duration-300"
                   />
                 ) : null}
               </button>

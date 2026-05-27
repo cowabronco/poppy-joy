@@ -19,6 +19,7 @@ import {
   Price,
   ProductCard,
   ProductGallery,
+  Reveal,
 } from "@/components/poppy";
 import { ProductPurchaseToolbar } from "@/components/poppy/product-purchase-toolbar";
 import { Button } from "@/components/ui/button";
@@ -154,19 +155,24 @@ export default async function ProductPage({ params }: ProductPageProps) {
   ];
 
   return (
-    <main className="min-h-screen bg-brand-off-white text-brand-black">
-      <Container className="pb-16 pt-8 md:pt-12 lg:pb-24">
-        <Link
-          href="/shop"
-          className="inline-flex text-xs uppercase tracking-[0.24em] text-brand-black/55 transition hover:text-brand-purple"
-        >
-          Terug naar shop
-        </Link>
+    <main className="min-h-screen bg-brand-off-white pt-28 text-brand-black md:pt-32">
+      <Container className="pb-16 lg:pb-24">
+        <Reveal>
+          <Link
+            href="/shop"
+            className="inline-flex text-xs uppercase tracking-[0.24em] text-brand-black/55 transition hover:text-brand-purple"
+          >
+            Terug naar shop
+          </Link>
+        </Reveal>
 
         <section className="mt-8 grid gap-10 lg:grid-cols-[minmax(0,1.15fr)_minmax(400px,0.85fr)] xl:grid-cols-[minmax(0,1.2fr)_minmax(420px,0.8fr)] lg:items-start">
-          <ProductGallery media={galleryImages} productName={product.name} />
+          <Reveal>
+            <ProductGallery media={galleryImages} productName={product.name} />
+          </Reveal>
 
-          <article className="rounded-[2rem] border border-border bg-[#F2EDE3] p-6 sm:p-8 lg:sticky lg:top-8">
+          <Reveal delayMs={80}>
+            <article className="rounded-[2rem] border border-border bg-[#F2EDE3] p-6 sm:p-8 lg:sticky lg:top-28 xl:top-32">
             <p className="text-xs uppercase tracking-[0.28em] text-brand-purple">
               Celebrate Joy
             </p>
@@ -254,7 +260,6 @@ export default async function ProductPage({ params }: ProductPageProps) {
             <Accordion
               type="single"
               collapsible
-              defaultValue="details"
               className="mt-8 rounded-[1.5rem] border border-border bg-brand-off-white/55 px-4"
             >
               <AccordionItem value="description" className="border-border">
@@ -282,7 +287,8 @@ export default async function ProductPage({ params }: ProductPageProps) {
                 </AccordionContent>
               </AccordionItem>
             </Accordion>
-          </article>
+            </article>
+          </Reveal>
         </section>
       </Container>
 
@@ -293,58 +299,62 @@ export default async function ProductPage({ params }: ProductPageProps) {
             { title: "Handgemaakt in small batches", Icon: HeartHandshake },
             { title: "Verfijnde stoffen", Icon: Sparkles },
             { title: "Mooi om cadeau te geven", Icon: PackageCheck },
-          ].map(({ title, Icon }) => (
-            <div
-              key={title}
-              className="rounded-[1.5rem] border border-border bg-brand-off-white/60 p-5"
-            >
-              <Icon className="h-5 w-5 text-brand-purple" />
-              <p className="mt-5 text-xs uppercase tracking-[0.22em] text-brand-black/65">
-                {title}
-              </p>
-            </div>
+          ].map(({ title, Icon }, index) => (
+            <Reveal key={title} delayMs={index * 60} className="h-full">
+              <div className="h-full rounded-[1.5rem] border border-border bg-brand-off-white/60 p-5">
+                <Icon className="h-5 w-5 text-brand-purple" />
+                <p className="mt-5 text-xs uppercase tracking-[0.22em] text-brand-black/65">
+                  {title}
+                </p>
+              </div>
+            </Reveal>
           ))}
         </Container>
       </section>
 
       <section className="py-16 lg:py-24">
         <Container>
-          <div className="rounded-[2rem] border border-border bg-brand-beige p-8 md:p-10">
-            <Leaf className="h-6 w-6 text-brand-green" />
-            <p className="serif mt-6 text-3xl leading-tight text-brand-black md:text-4xl">
-              {product.story}
-            </p>
-            <p className="mt-6 text-sm leading-6 text-brand-black/62">
-              Bewaar de lijn na gebruik rustig op in een droge kast of lade. Zo
-              wordt het geen wegwerpdecoratie, maar een klein terugkerend
-              ontwerpobject in huis.
-            </p>
-          </div>
+          <Reveal>
+            <div className="rounded-[2rem] border border-border bg-brand-beige p-8 md:p-10">
+              <Leaf className="h-6 w-6 text-brand-green" />
+              <p className="serif mt-6 text-3xl leading-tight text-brand-black md:text-4xl">
+                {product.story}
+              </p>
+              <p className="mt-6 text-sm leading-6 text-brand-black/62">
+                Bewaar de lijn na gebruik rustig op in een droge kast of lade. Zo
+                wordt het geen wegwerpdecoratie, maar een klein terugkerend
+                ontwerpobject in huis.
+              </p>
+            </div>
+          </Reveal>
         </Container>
       </section>
 
       <section className="bg-[#F2EDE3] py-16 lg:py-24">
         <Container>
-          <div className="flex flex-wrap items-end justify-between gap-6">
-            <EditorialHeading
-              eyebrow="Misschien vind je dit ook mooi"
-              title="Meer uit Celebrate Joy"
-            />
-            <Link
-              href="/shop"
-              className="rounded-full border border-border px-6 py-3 text-xs uppercase tracking-[0.22em] text-brand-black/65 transition hover:border-brand-purple hover:text-brand-purple"
-            >
-              Bekijk alles
-            </Link>
-          </div>
-          <div className="mt-10 grid gap-8 md:grid-cols-3">
-            {relatedProducts.map((relatedProduct) => (
-              <ProductCard
-                key={relatedProduct.handle}
-                product={relatedProduct}
-                imageSrc={imageByHandle[relatedProduct.handle]}
-                showDetails={false}
+          <Reveal>
+            <div className="flex flex-wrap items-end justify-between gap-6">
+              <EditorialHeading
+                eyebrow="Misschien vind je dit ook mooi"
+                title="Meer uit Celebrate Joy"
               />
+              <Link
+                href="/shop"
+                className="rounded-full border border-border px-6 py-3 text-xs uppercase tracking-[0.22em] text-brand-black/65 transition hover:border-brand-purple hover:text-brand-purple"
+              >
+                Bekijk alles
+              </Link>
+            </div>
+          </Reveal>
+          <div className="mt-10 grid gap-8 md:grid-cols-3">
+            {relatedProducts.map((relatedProduct, index) => (
+              <Reveal key={relatedProduct.handle} delayMs={index * 60}>
+                <ProductCard
+                  product={relatedProduct}
+                  imageSrc={imageByHandle[relatedProduct.handle]}
+                  showDetails={false}
+                />
+              </Reveal>
             ))}
           </div>
         </Container>

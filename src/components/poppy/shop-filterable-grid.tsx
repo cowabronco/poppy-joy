@@ -233,6 +233,7 @@ export function ShopFilterableGrid({ products }: ShopFilterableGridProps) {
             <ProductCard
               product={entry.product}
               imageSrc={entry.imageSrc}
+              showDetails={false}
             />
           </Reveal>
         ))}
