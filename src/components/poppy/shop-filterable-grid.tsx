@@ -170,7 +170,7 @@ export function ShopFilterableGrid({ products }: ShopFilterableGridProps) {
 
   return (
     <div className="mt-12 grid gap-10 lg:grid-cols-[280px_minmax(0,1fr)]">
-      <aside className="h-fit rounded-[2rem] border border-border bg-[#F2EDE3] p-6 lg:sticky lg:top-24">
+      <aside className="hidden h-fit rounded-[2rem] border border-border bg-[#F2EDE3] p-6 lg:block lg:sticky lg:top-24">
         <p className="text-xs uppercase tracking-[0.24em] text-brand-black/55">Filters</p>
         <p className="mt-3 text-sm leading-6 text-brand-black/65">
           {filterGroups.length > 0
