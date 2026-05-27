@@ -2,6 +2,7 @@ import { getShopifyClient, hasShopifyConfig } from "./client";
 import {
   CART_CREATE_MUTATION,
   CART_LINES_ADD_MUTATION,
+  CART_QUERY,
 } from "./queries";
 import type { ShopifyCart } from "./types";
 
@@ -92,4 +93,27 @@ export async function addLinesToStorefrontCart(
 
   assertNoCartErrors(data.cartLinesAdd.userErrors);
   return data.cartLinesAdd.cart;
+}
+
+type CartQueryResponse = {
+  cart: ShopifyCart | null;
+};
+
+export async function getStorefrontCartById(
+  cartId: string
+): Promise<ShopifyCart | null> {
+  if (!hasShopifyConfig()) {
+    return null;
+  }
+
+  const client = getShopifyClient();
+  const { data, errors } = await client.request<CartQueryResponse>(CART_QUERY, {
+    variables: { cartId },
+  });
+
+  if (errors) {
+    throw new Error(`Shopify cart query failed: ${errors.message}`);
+  }
+
+  return data?.cart ?? null;
 }

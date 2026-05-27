@@ -99,6 +99,7 @@ export type ShopifyCart = {
           product: {
             title: string;
             handle: string;
+            featuredImage?: ShopifyImage | null;
           };
         };
       };

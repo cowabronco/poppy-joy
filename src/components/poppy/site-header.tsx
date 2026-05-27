@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, ShoppingBag } from "lucide-react";
+import { Menu } from "lucide-react";
 
 import {
   Sheet,
@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/sheet";
 
 import { Container } from "./container";
+import { CartNavLink } from "./cart-nav-link";
 
 const primaryNavLinks = [
   { label: "Home", href: "/" },
@@ -150,13 +151,7 @@ export function SiteHeader() {
             />
           </Link>
 
-          <Link
-            href="#"
-            className={`inline-flex h-11 w-11 items-center justify-center justify-self-end rounded-full transition-colors duration-300 ${iconButtonClassName}`}
-            aria-label="Winkelwagen"
-          >
-            <ShoppingBag size={22} />
-          </Link>
+          <CartNavLink className={`justify-self-end ${iconButtonClassName}`} />
         </div>
 
         <div className="relative hidden items-center justify-center lg:flex">
@@ -179,13 +174,7 @@ export function SiteHeader() {
             </Link>
           </nav>
 
-          <Link
-            href="#"
-            className={`absolute right-0 inline-flex h-11 w-11 items-center justify-center rounded-full transition-colors duration-300 ${iconButtonClassName}`}
-            aria-label="Winkelwagen"
-          >
-            <ShoppingBag size={22} />
-          </Link>
+          <CartNavLink className={`absolute right-0 ${iconButtonClassName}`} />
         </div>
       </Container>
     </header>

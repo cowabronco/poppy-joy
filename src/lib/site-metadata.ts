@@ -76,4 +76,5 @@ export const pageDescriptions = {
     "Lees hoe Poppy Joy omgaat met persoonsgegevens, cookies en jouw privacyrechten.",
   terms:
     "De algemene voorwaarden van Poppy Joy voor bestellingen, verzending, retourneren en productgebruik.",
+  cart: "Bekijk je winkelwagen en ga verder naar Shopify checkout wanneer je klaar bent om af te rekenen.",
 } as const;

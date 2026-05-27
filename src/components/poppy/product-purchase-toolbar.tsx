@@ -12,6 +12,7 @@ type ProductPurchaseToolbarProps = {
   canAddToCart: boolean;
   price: string;
   productName: string;
+  returnPath: string;
   variantId?: string;
 };
 
@@ -20,6 +21,7 @@ export function ProductPurchaseToolbar({
   canAddToCart,
   price,
   productName,
+  returnPath,
   variantId = "",
 }: ProductPurchaseToolbarProps) {
   const [isVisible, setIsVisible] = useState(false);
@@ -57,6 +59,7 @@ export function ProductPurchaseToolbar({
 
         <form action={action} className="grid gap-3 sm:min-w-[420px] sm:grid-cols-[112px_minmax(0,1fr)]">
           <input type="hidden" name="variantId" value={variantId} />
+          <input type="hidden" name="returnPath" value={returnPath} />
           <label className="sr-only" htmlFor="toolbar-quantity">
             Aantal
           </label>

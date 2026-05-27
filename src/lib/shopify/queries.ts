@@ -165,6 +165,10 @@ export const CART_FRAGMENT = `#graphql
               product {
                 title
                 handle
+                featuredImage {
+                  url
+                  altText
+                }
               }
             }
           }
@@ -202,6 +206,16 @@ export const CART_LINES_ADD_MUTATION = `#graphql
         field
         message
       }
+    }
+  }
+`;
+
+export const CART_QUERY = `#graphql
+  ${CART_FRAGMENT}
+
+  query Cart($cartId: ID!) {
+    cart(id: $cartId) {
+      ...CartFragment
     }
   }
 `;

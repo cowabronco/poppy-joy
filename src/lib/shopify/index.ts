@@ -2,6 +2,7 @@ export { getShopifyClient, hasShopifyConfig } from "./client";
 export {
   addLinesToStorefrontCart,
   createStorefrontCart,
+  getStorefrontCartById,
 } from "./cart";
 export {
   getStorefrontCollectionByHandle,

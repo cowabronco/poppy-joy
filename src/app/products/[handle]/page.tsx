@@ -1,6 +1,6 @@
 import Link from "next/link";
 import type { Metadata } from "next";
-import { notFound, redirect } from "next/navigation";
+import { notFound } from "next/navigation";
 import {
   Check,
   ChevronDown,
@@ -29,7 +29,8 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { createStorefrontCart } from "@/lib/shopify/cart";
+import { addToCart } from "@/lib/cart/actions";
+import { formatMoney } from "@/lib/money";
 import {
   getFeaturedImageByHandle,
   getStorefrontProductByHandle,
@@ -64,14 +65,7 @@ export async function generateMetadata({
 }
 
 function formatPrice(price?: { amount: string; currencyCode: string }) {
-  if (!price) {
-    return null;
-  }
-
-  return new Intl.NumberFormat("nl-NL", {
-    style: "currency",
-    currency: price.currencyCode,
-  }).format(Number(price.amount));
+  return formatMoney(price ?? null);
 }
 
 function getGalleryImages(images: ShopifyImage[], productName: string) {
@@ -81,32 +75,6 @@ function getGalleryImages(images: ShopifyImage[], productName: string) {
     alt: image.altText ?? `${productName} productafbeelding ${index + 1}`,
     aspectRatio: "4:5" as const,
   }));
-}
-
-async function addToCart(formData: FormData) {
-  "use server";
-
-  const variantId = formData.get("variantId");
-
-  if (typeof variantId !== "string" || !variantId) {
-    return;
-  }
-
-  const rawQuantity = Number(formData.get("quantity"));
-  const quantity = Number.isFinite(rawQuantity)
-    ? Math.min(Math.max(Math.trunc(rawQuantity), 1), 12)
-    : 1;
-
-  const cart = await createStorefrontCart([
-    {
-      merchandiseId: variantId,
-      quantity,
-    },
-  ]);
-
-  if (cart?.checkoutUrl) {
-    redirect(cart.checkoutUrl);
-  }
 }
 
 export default async function ProductPage({ params }: ProductPageProps) {
@@ -228,6 +196,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
             <form action={addToCart} className="mt-8">
               <input type="hidden" name="variantId" value={activeVariant?.id ?? ""} />
+              <input type="hidden" name="returnPath" value="/cart" />
               <div className="grid gap-3 sm:grid-cols-[112px_minmax(0,1fr)]">
                 <label className="sr-only" htmlFor="quantity">
                   Aantal
@@ -368,6 +337,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
         canAddToCart={canAddToCart}
         price={displayPrice}
         productName={product.name}
+        returnPath="/cart"
         variantId={activeVariant?.id}
       />
     </main>
