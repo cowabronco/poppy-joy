@@ -57,7 +57,16 @@ export default async function ShopPage() {
               Shop
             </p>
             <h1 className="serif mt-5 max-w-2xl text-5xl font-semibold leading-[0.95] text-brand-off-white md:text-7xl">
-              Celebrate Joy
+              Celebrate Joy{" "}
+              <span
+                aria-hidden
+                className="font-sans text-[0.34em] font-light text-brand-off-white/35"
+              >
+                |
+              </span>{" "}
+              <span className="font-sans text-[0.3em] font-medium uppercase tracking-[0.34em] text-brand-off-white/80 md:text-[0.26em]">
+                Drop 1
+              </span>
             </h1>
             <p className="mt-6 max-w-2xl text-lg leading-8 text-brand-off-white/85">
               Vier tijdloze vlaggenlijnen in verfijnde stoffen. Gemaakt om keer
