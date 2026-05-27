@@ -4,11 +4,14 @@ import { HeartHandshake, Leaf, Sparkles } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 import { Container } from "./container";
+import { DrawnHeart } from "./drawn-heart";
 import { EditorialHeading } from "./editorial-heading";
 
 type InformationalPageSection = {
   title: string;
   paragraphs: string[];
+  variant?: "default" | "italic";
+  signature?: string;
 };
 
 type InformationalPageMilestone = {
@@ -152,10 +155,22 @@ export function InformationalPageTemplate({
               <h2 className="serif text-3xl font-semibold text-brand-black md:text-4xl">
                 {section.title}
               </h2>
-              <div className="mt-5 space-y-4 text-base leading-7 text-brand-black/75">
+              <div
+                className={cn(
+                  "mt-5 space-y-4 text-base leading-7 text-brand-black/75",
+                  section.variant === "italic" &&
+                    "serif text-lg italic leading-[1.65] text-brand-black/85 md:text-[1.2rem] md:leading-[1.7]",
+                )}
+              >
                 {section.paragraphs.map((paragraph) => (
                   <p key={paragraph}>{paragraph}</p>
                 ))}
+                {section.signature ? (
+                  <p className="flex items-center gap-2 pt-2">
+                    <span>{section.signature}</span>
+                    <DrawnHeart className="h-[1.1em] w-[1.1em] translate-y-px text-brand-purple/75" />
+                  </p>
+                ) : null}
               </div>
             </article>
           ))}
@@ -228,7 +243,7 @@ export function InformationalPageTemplate({
       ) : null}
 
       {cta ? (
-        <section className="pb-20">
+        <section className="pt-10 pb-20 md:pt-14">
           <Container>
             <div className="relative overflow-hidden rounded-[2.2rem] border border-white/20 p-7 shadow-[0_18px_48px_-28px_rgba(36,32,32,0.7)] md:p-9">
               <div

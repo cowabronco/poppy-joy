@@ -2,7 +2,7 @@ import type { InformationalPageTemplateProps } from "@/components/poppy/informat
 
 export const storyPageContent: InformationalPageTemplateProps = {
   eyebrow: "Ons verhaal",
-  title: "Van wegwerpfrustratie naar een blijvend alternatief.",
+  title: "For moments that deserve joy. Designed to stay. Made with love.",
   intro:
     "Poppy Joy begon vanuit een frustratie: waarom zouden mooie feestmomenten eindigen met plastic decoratie die na een dag wordt weggegooid?",
   highlights: ["Herbruikbaar", "Small batches", "Tijdloos ontwerp", "Amsterdam"],
@@ -10,45 +10,27 @@ export const storyPageContent: InformationalPageTemplateProps = {
     "https://cdn.shopify.com/s/files/1/0971/3359/2909/files/hero-bg.png?v=1778763881",
   sections: [
     {
-      title: "Waarom we begonnen",
+      title: "Het begin van iets moois",
       paragraphs: [
-        "Het merk ontstond vanuit een duidelijke overtuiging: mooie momenten hoeven geen onnodig afval achter te laten. Plastic vlaggen zijn nog vaak de standaard bij feestjes, maar verdwijnen meestal na een dag in de prullenbak.",
-        "Poppy Joy biedt een zachter en blijvend alternatief met stoffen vlaggenlijnen die je telkens opnieuw gebruikt voor verjaardagen, diners, tuinfeestjes en andere mijlpalen.",
+        "Poppy Joy is ontstaan in de zomer 2025, in Amsterdam.",
+        "Geboren uit liefde voor stoffen en het vieren van mooie momenten.",
+        "Omdat vieren vaker mag.",
+        "En wat mooi is, mag blijven.",
+        "Voor vieringen, groot of klein.",
+        "Ontworpen om jarenlang mee te gaan.",
+        "Tijdloze vlaggenlijnen van verfijnde stoffen, om herinneringen te bewaren en verhalen te laten groeien.",
       ],
     },
     {
-      title: "Wat we willen bouwen",
+      title: "Atelier Note",
+      variant: "italic",
       paragraphs: [
-        "Elk ontwerp is bedoeld om warm, ambachtelijk en tijdloos aan te voelen, zodat decoratie onderdeel wordt van je herinneringen in plaats van tijdelijke rommel.",
-        "Door stukken te maken die je wilt bewaren, hergebruiken en doorgeven, verbindt het merk vieren met zorg voor materialen en de planeet.",
+        "Poppy Joy begon vanuit een gemis. Waarom worden de mooiste momenten zo vaak versierd met iets tijdelijks?",
+        "Ik verlangde naar decoratie die niet alleen feestelijk voelt, maar ook warmte met zich meebrengt. Iets dat je met liefde bewaart en er steeds opnieuw bij pakt. Geen wegwerpmoment, maar een blijvend onderdeel van herinneringen. Juist in kleine en grote momenten.",
+        "Daarom maakt Poppy Joy tijdloze vlaggenlijnen van verfijnde stoffen: zacht, stijlvol en gemaakt om jarenlang mee te vieren.",
+        "En hopelijk onderdeel te worden van heel veel mooie herinneringen, omdat vieren vaker mag.",
       ],
-    },
-  ],
-  milestonesTitle: "Tijdlijn",
-  milestones: [
-    {
-      label: "2023",
-      title: "Het idee",
-      description:
-        "Het eerste concept begon met een simpele vraag: wat als feestdecoratie echt herbruikbaar kan zijn?",
-    },
-    {
-      label: "2025",
-      title: "Uitwerking",
-      description:
-        "Het idee groeide uit tot een design-first merk, met focus op stofkwaliteit, afwerking en langdurig gebruik.",
-    },
-    {
-      label: "2025 - begin 2026",
-      title: "Ontwikkeling & testen",
-      description:
-        "In deze fase is het product verder ontwikkeld, zijn materialen verfijnd en zijn meerdere productiepartners getest om de juiste kwaliteit en afwerking te vinden.",
-    },
-    {
-      label: "Lente 2026",
-      title: "Lancering in Amsterdam",
-      description:
-        "Poppy Joy lanceerde officieel in Amsterdam met de eerste collectie herbruikbare stoffen vlaggenlijnen.",
+      signature: "With love, Chloé",
     },
   ],
   cta: {
