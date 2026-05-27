@@ -7,6 +7,7 @@
 :root {
   --brand-green: #a3ae65;
   --brand-purple: #82569f;
+  --brand-butter: #edddaf;
   --brand-off-white: #fefdfc;
   --brand-beige: #fbf8f2;
   --brand-black: #242020;
@@ -201,6 +202,7 @@ body {
   --color-background: var(--background);
   --color-brand-green: var(--brand-green);
   --color-brand-purple: var(--brand-purple);
+  --color-brand-butter: #edddaf;
   --color-brand-off-white: var(--brand-off-white);
   --color-brand-beige: var(--brand-beige);
   --color-brand-black: var(--brand-black);

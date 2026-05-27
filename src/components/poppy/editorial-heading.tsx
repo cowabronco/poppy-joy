@@ -4,12 +4,20 @@ import { cn } from "@/lib/utils";
 
 type EditorialHeadingProps = ComponentPropsWithoutRef<"div"> & {
   eyebrow?: string;
+  eyebrowTone?: "purple" | "butter";
   title: string;
   description?: string;
 };
 
+const eyebrowToneClasses = {
+  purple: "text-brand-purple",
+  butter:
+    "inline-block w-fit rounded-full bg-brand-butter px-3 py-1.5 text-brand-black/65",
+};
+
 export function EditorialHeading({
   eyebrow,
+  eyebrowTone = "purple",
   title,
   description,
   className,
@@ -18,7 +26,12 @@ export function EditorialHeading({
   return (
     <div className={cn("max-w-3xl", className)} {...props}>
       {eyebrow ? (
-        <p className="mb-5 text-xs uppercase tracking-[0.34em] text-brand-purple">
+        <p
+          className={cn(
+            "mb-5 text-xs uppercase tracking-[0.34em]",
+            eyebrowToneClasses[eyebrowTone]
+          )}
+        >
           {eyebrow}
         </p>
       ) : null}
