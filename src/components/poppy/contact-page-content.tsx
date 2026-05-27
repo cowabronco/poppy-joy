@@ -1,3 +1,5 @@
+import { Mail } from "lucide-react";
+
 import {
   CONTACT_EMAIL,
   INSTAGRAM_HANDLE,
@@ -25,9 +27,33 @@ export function ContactPageContent() {
 
         <div className="mt-14 space-y-6">
           <section className="rounded-[1.75rem] border border-border bg-brand-beige p-7 md:p-9">
-            <h2 className="text-xs uppercase tracking-[0.24em] text-brand-black/55">
-              Instagram
-            </h2>
+            <div className="flex items-center gap-3">
+              <span className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-brand-purple/10 text-brand-purple">
+                <svg
+                  aria-hidden
+                  viewBox="0 0 24 24"
+                  className="h-[18px] w-[18px]"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.8"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <rect x="2.5" y="2.5" width="19" height="19" rx="5.5" />
+                  <circle cx="12" cy="12" r="4.5" />
+                  <circle
+                    cx="17.3"
+                    cy="6.7"
+                    r="0.9"
+                    fill="currentColor"
+                    stroke="none"
+                  />
+                </svg>
+              </span>
+              <h2 className="text-xs uppercase tracking-[0.24em] text-brand-black/55">
+                Instagram
+              </h2>
+            </div>
             <a
               href={INSTAGRAM_URL}
               target="_blank"
@@ -39,9 +65,14 @@ export function ContactPageContent() {
           </section>
 
           <section className="rounded-[1.75rem] border border-border bg-brand-beige p-7 md:p-9">
-            <h2 className="text-xs uppercase tracking-[0.24em] text-brand-black/55">
-              E-mail
-            </h2>
+            <div className="flex items-center gap-3">
+              <span className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-brand-purple/10 text-brand-purple">
+                <Mail size={18} aria-hidden />
+              </span>
+              <h2 className="text-xs uppercase tracking-[0.24em] text-brand-black/55">
+                E-mail
+              </h2>
+            </div>
             <a
               href={`mailto:${CONTACT_EMAIL}`}
               className="serif mt-3 inline-block text-3xl text-brand-black transition hover:text-brand-purple md:text-4xl"
