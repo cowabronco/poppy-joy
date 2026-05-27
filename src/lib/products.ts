@@ -45,7 +45,7 @@ export const products: Product[] = [
     dimensions: "12 vlaggetjes, totale lengte 450 cm.",
     care: "Was voorzichtig op 30 graden, of lager. En laat aan de lucht drogen.",
     story:
-      "Double Joy voelt luchtig, zacht en uitgesproken tegelijk. Het linnen geeft de vlaggenlijn een natuurlijke rust die mooi blijft tussen feestmomenten door.",
+      "Double Joy voelt luchtig, zacht en uitgesproken tegelijk.",
     published: true,
   },
   {
@@ -88,7 +88,7 @@ export const products: Product[] = [
     price: "€49,95",
     subtitle: "Velours golf + ecru keperband",
     description:
-      "Een zachte velours vlaggenlijn met golfprint, dubbelzijdig gestikt en vastgenaaid aan een soepel geweven ecru keperband.",
+      "De Cobalt Blue vlaggenlijn is een zachte velours stof met een mooie blauwe golvende print. De vlaggenlijn is dubbelzijdig gestikt, vastgenaaid aan een soepel geweven ecru katoenen band, en bestaat uit 12 vlaggetjes met een lengte van 450 cm.",
     details:
       "12 dubbelzijdig gestikte vlaggetjes, 450 cm lang. Samenstelling: 50% polyester en 50% katoen.",
     materialTags: ["Velours"],
@@ -96,7 +96,7 @@ export const products: Product[] = [
     dimensions: "12 vlaggetjes, totale lengte 450 cm.",
     care: "Was voorzichtig op 30 graden, of lager. En laat aan de lucht drogen.",
     story:
-      "Cobalt Blue heeft een rustige statementkwaliteit. Het cobalt geeft diepte, terwijl de zachte stof het geheel warm en tastbaar houdt.",
+      "In a world full of pastels, be a striking stroke of cobalt blue",
     published: false,
   },
 ];
