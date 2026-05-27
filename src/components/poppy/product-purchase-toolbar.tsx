@@ -49,7 +49,10 @@ export function ProductPurchaseToolbar({
           <p className="serif text-2xl font-semibold leading-none text-brand-black">
             {productName}
           </p>
-          <Price className="mt-1 text-base">{price}</Price>
+          <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
+            <Price className="text-base">{price}</Price>
+            <span className="text-[11px] text-brand-black/50">Inclusief BTW</span>
+          </div>
         </div>
 
         <form action={action} className="grid gap-3 sm:min-w-[420px] sm:grid-cols-[112px_minmax(0,1fr)]">

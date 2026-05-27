@@ -185,9 +185,12 @@ export default async function ProductPage({ params }: ProductPageProps) {
                   {product.subtitle}
                 </p>
               </div>
-              <Price className="serif text-5xl font-semibold leading-none md:text-6xl">
-                {displayPrice}
-              </Price>
+              <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+                <Price className="serif text-5xl font-semibold leading-none md:text-6xl">
+                  {displayPrice}
+                </Price>
+                <span className="text-xs text-brand-black/50">Inclusief BTW</span>
+              </div>
             </div>
 
             <div className="mt-7 grid gap-3 sm:grid-cols-2">
