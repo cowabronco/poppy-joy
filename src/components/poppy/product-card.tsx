@@ -7,18 +7,28 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import type { Product } from "@/lib/products";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, Flag, Ruler } from "lucide-react";
 import Link from "next/link";
 
 import { Price } from "./price";
 import { ResponsiveImage } from "./responsive-image";
 
+const productCardFacts = [
+  { label: "Vlaggetjes", value: "12", Icon: Flag },
+  { label: "Totale lengte", value: "450 cm", Icon: Ruler },
+] as const;
+
 type ProductCardProps = {
   product: Product;
   imageSrc?: string;
+  showDetails?: boolean;
 };
 
-export function ProductCard({ product, imageSrc }: ProductCardProps) {
+export function ProductCard({
+  product,
+  imageSrc,
+  showDetails = true,
+}: ProductCardProps) {
   return (
     <Link
       href={`/products/${product.handle}`}
@@ -51,7 +61,7 @@ export function ProductCard({ product, imageSrc }: ProductCardProps) {
             <ArrowUpRight size={16} />
           </span>
         </CardHeader>
-        <CardContent className="flex flex-1 flex-col">
+        <CardContent className="flex flex-1 flex-col pb-6">
           <div className="mt-6 flex items-start justify-between gap-3">
             <CardTitle className="serif text-3xl font-semibold text-brand-black transition-colors duration-300 group-hover:text-brand-purple">
               {product.name}
@@ -61,10 +71,34 @@ export function ProductCard({ product, imageSrc }: ProductCardProps) {
           <p className="mt-5 flex-1 text-sm leading-6 text-brand-black/70">
             {product.description}
           </p>
+          {!showDetails ? (
+            <div className="mt-5 grid grid-cols-2 gap-3">
+              {productCardFacts.map(({ label, value, Icon }) => (
+                <div
+                  key={label}
+                  className="flex items-center gap-3 rounded-2xl bg-brand-off-white/70 p-3"
+                >
+                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#F2EDE3] text-brand-purple">
+                    <Icon className="h-4 w-4" />
+                  </span>
+                  <span>
+                    <span className="block text-[9px] uppercase tracking-[0.18em] text-brand-black/45">
+                      {label}
+                    </span>
+                    <span className="serif text-xl font-semibold leading-none text-brand-black">
+                      {value}
+                    </span>
+                  </span>
+                </div>
+              ))}
+            </div>
+          ) : null}
         </CardContent>
-        <CardFooter>
-          <p className="text-xs leading-5 text-brand-black/55">{product.details}</p>
-        </CardFooter>
+        {showDetails ? (
+          <CardFooter>
+            <p className="text-xs leading-5 text-brand-black/55">{product.details}</p>
+          </CardFooter>
+        ) : null}
       </Card>
     </Link>
   );

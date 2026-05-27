@@ -26,7 +26,7 @@ export const products: Product[] = [
     materialTags: ["Jacquard"],
     materials: "Gobelin jacquard met een limoen groene keperband.",
     dimensions: "12 vlaggetjes, totale lengte 450 cm.",
-    care: "Was voorzichtig op 30 graden en laat aan de lucht drogen.",
+    care: "Was voorzichtig op 30 graden, of lager. En laat aan de lucht drogen.",
     story:
       "Zig Zag brengt warmte en beweging in een kamer zonder te overheersen. Mooi boven een gedekte tafel, langs een kast of in de tuin op een lange zomeravond.",
     published: true,
@@ -43,7 +43,7 @@ export const products: Product[] = [
     materialTags: ["Linnen"],
     materials: "Linnen vlaggetjes met een ecru keperband.",
     dimensions: "12 vlaggetjes, totale lengte 450 cm.",
-    care: "Was voorzichtig op 30 graden en strijk licht wanneer gewenst.",
+    care: "Was voorzichtig op 30 graden, of lager. En laat aan de lucht drogen.",
     story:
       "Double Joy voelt luchtig, zacht en uitgesproken tegelijk. Het linnen geeft de vlaggenlijn een natuurlijke rust die mooi blijft tussen feestmomenten door.",
     published: true,
@@ -60,7 +60,7 @@ export const products: Product[] = [
     materialTags: ["Velours"],
     materials: "Velours stippen met een mosgroene keperband.",
     dimensions: "12 vlaggetjes, totale lengte 450 cm.",
-    care: "Was voorzichtig op 30 graden en vermijd de droger.",
+    care: "Was voorzichtig op 30 graden, of lager. En laat aan de lucht drogen.",
     story:
       "Poppy Dots is speels op een ingetogen manier. De velours textuur vangt licht subtiel op en maakt van een kleine viering meteen iets bijzonders.",
     published: true,
@@ -77,9 +77,9 @@ export const products: Product[] = [
     materialTags: ["Jacquard"],
     materials: "Gobelin jacquard met een turquoise keperband.",
     dimensions: "12 vlaggetjes, totale lengte 450 cm.",
-    care: "Was voorzichtig op 30 graden en laat plat of hangend drogen.",
+    care: "Was voorzichtig op 30 graden, of lager. En laat aan de lucht drogen.",
     story:
-      "Wavy Joy is gemaakt voor mensen die kleur willen, maar met zachtheid. De organische print past bij brunches, verjaardagen en kamers die al veel karakter hebben.",
+      "Wavy Joy is gemaakt voor mensen die kleur willen, maar met zachtheid.",
     published: true,
   },
   {
@@ -94,7 +94,7 @@ export const products: Product[] = [
     materialTags: ["Velours"],
     materials: "Velours golf met een ecru keperband.",
     dimensions: "12 vlaggetjes, totale lengte 450 cm.",
-    care: "Was voorzichtig op 30 graden en houd uit direct hitte bij drogen.",
+    care: "Was voorzichtig op 30 graden, of lager. En laat aan de lucht drogen.",
     story:
       "Cobalt Blue heeft een rustige statementkwaliteit. Het cobalt geeft diepte, terwijl de zachte stof het geheel warm en tastbaar houdt.",
     published: false,
@@ -109,6 +109,20 @@ export function getProductByHandle(handle: string) {
 
 export function getPublishedProductByHandle(handle: string) {
   return publishedProducts.find((product) => product.handle === handle);
+}
+
+export function formatProductDescription(text: string) {
+  const trimmed = text.trim();
+
+  if (!trimmed) {
+    return trimmed;
+  }
+
+  const withSentenceSpacing = trimmed.replace(/\.([^\s.])/g, ". $1");
+
+  return withSentenceSpacing.endsWith(".")
+    ? withSentenceSpacing
+    : `${withSentenceSpacing}.`;
 }
 
 export const values = [

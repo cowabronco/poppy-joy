@@ -35,6 +35,7 @@ import {
 } from "@/lib/shopify/products";
 import type { ShopifyImage } from "@/lib/shopify/types";
 import {
+  formatProductDescription,
   getPublishedProductByHandle,
   publishedProducts,
 } from "@/lib/products";
@@ -139,12 +140,15 @@ export default async function ProductPage({ params }: ProductPageProps) {
     .slice(0, 3);
   const displayPrice = formatPrice(activeVariant?.price) ?? product.price;
   const canAddToCart = Boolean(activeVariant && storefrontProduct?.availableForSale);
+  const productDescription = formatProductDescription(
+    storefrontProduct?.description || product.description
+  );
   const productSummaryFacts = [
-    { label: "Aantal vlaggetjes", value: "12", Icon: Flag },
+    { label: "Vlaggetjes", value: "12", Icon: Flag },
     { label: "Totale lengte", value: "450 cm", Icon: Ruler },
   ];
   const productFacts = [
-    product.materials,
+    product.materials.replace(/\.$/, ""),
     "Dubbelzijdig gestikt",
     "Handgemaakt in small batches",
   ];
@@ -247,11 +251,6 @@ export default async function ProductPage({ params }: ProductPageProps) {
               </div>
             </form>
 
-            <p className="mt-4 text-center text-xs leading-5 text-brand-black/55">
-              Afrekenen loopt via Shopify. Herbruikbaar, zorgvuldig afgewerkt en
-              gemaakt om elk jaar opnieuw te gebruiken.
-            </p>
-
             <Accordion
               type="single"
               collapsible
@@ -263,7 +262,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
                   Omschrijving
                 </AccordionTrigger>
                 <AccordionContent className="pb-5 text-sm leading-6 text-brand-black/65">
-                  {storefrontProduct?.description || product.description}
+                  {productDescription}
                 </AccordionContent>
               </AccordionItem>
               <AccordionItem value="details" className="border-border">
@@ -272,14 +271,6 @@ export default async function ProductPage({ params }: ProductPageProps) {
                 </AccordionTrigger>
                 <AccordionContent className="pb-5 text-sm leading-6 text-brand-black/65">
                   {product.details}
-                </AccordionContent>
-              </AccordionItem>
-              <AccordionItem value="materials" className="border-border">
-                <AccordionTrigger className="py-4 text-xs uppercase tracking-[0.22em] text-brand-black/70 hover:no-underline">
-                  Materialen
-                </AccordionTrigger>
-                <AccordionContent className="pb-5 text-sm leading-6 text-brand-black/65">
-                  {product.materials}
                 </AccordionContent>
               </AccordionItem>
               <AccordionItem value="care" className="border-border">
@@ -317,12 +308,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
       </section>
 
       <section className="py-16 lg:py-24">
-        <Container className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:items-center">
-          <EditorialHeading
-            eyebrow="Gemaakt om te blijven"
-            title="Een stuk om steeds opnieuw tevoorschijn te halen."
-            description="Deze vlaggenlijn is bedoeld als een blijvend onderdeel van je rituelen: verjaardagen, gezellige tafels, kleine mijlpalen en alle gewone dagen die wat zachter mogen voelen."
-          />
+        <Container>
           <div className="rounded-[2rem] border border-border bg-brand-beige p-8 md:p-10">
             <Leaf className="h-6 w-6 text-brand-green" />
             <p className="serif mt-6 text-3xl leading-tight text-brand-black md:text-4xl">
@@ -357,6 +343,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
                 key={relatedProduct.handle}
                 product={relatedProduct}
                 imageSrc={imageByHandle[relatedProduct.handle]}
+                showDetails={false}
               />
             ))}
           </div>

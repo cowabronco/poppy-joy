@@ -197,6 +197,7 @@ export default async function Home() {
                 <ProductCard
                   product={product}
                   imageSrc={imageByHandle[product.handle]}
+                  showDetails={false}
                 />
               </Reveal>
             ))}
