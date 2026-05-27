@@ -30,7 +30,10 @@ import {
 import { createStorefrontCart } from "@/lib/shopify/cart";
 import { getStorefrontProductByHandle } from "@/lib/shopify/products";
 import type { ShopifyImage } from "@/lib/shopify/types";
-import { getProductByHandle, products } from "@/lib/products";
+import {
+  getPublishedProductByHandle,
+  publishedProducts,
+} from "@/lib/products";
 
 const productPlaceholderSrc =
   "https://cdn.shopify.com/s/files/1/0971/3359/2909/files/placeholder.jpg?v=1778760581";
@@ -40,7 +43,7 @@ type ProductPageProps = {
 };
 
 export function generateStaticParams() {
-  return products.map((product) => ({ handle: product.handle }));
+  return publishedProducts.map((product) => ({ handle: product.handle }));
 }
 
 function formatPrice(price?: { amount: string; currencyCode: string }) {
@@ -114,7 +117,7 @@ async function addToCart(formData: FormData) {
 
 export default async function ProductPage({ params }: ProductPageProps) {
   const { handle } = await params;
-  const product = getProductByHandle(handle);
+  const product = getPublishedProductByHandle(handle);
 
   if (!product) {
     notFound();
@@ -135,7 +138,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
     storefrontProduct?.images ?? [],
     product.name
   );
-  const relatedProducts = products
+  const relatedProducts = publishedProducts
     .filter((relatedProduct) => relatedProduct.handle !== product.handle)
     .slice(0, 3);
   const displayPrice = formatPrice(activeVariant?.price) ?? product.price;
@@ -173,7 +176,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
                   {product.name}
                 </h1>
                 <p className="mt-4 text-sm uppercase tracking-[0.18em] text-brand-black/55">
-                  {product.palette}
+                  {product.subtitle}
                 </p>
               </div>
               <Price className="serif text-5xl font-semibold leading-none md:text-6xl">

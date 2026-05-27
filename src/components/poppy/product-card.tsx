@@ -1,4 +1,3 @@
-import { Badge } from "@/components/ui/badge";
 import {
   Card,
   CardContent,
@@ -37,9 +36,6 @@ export function ProductCard({ product, imageSrc }: ProductCardProps) {
             sizes="(min-width: 1536px) 18vw, (min-width: 768px) 45vw, 100vw"
             frameClassName="rounded-none border-0"
           />
-          <Badge className="absolute bottom-4 left-4 bg-brand-off-white/95 text-[10px] uppercase tracking-[0.18em] text-brand-black/65 shadow-sm hover:bg-brand-off-white">
-            {product.palette}
-          </Badge>
           <span className="absolute right-4 top-4 inline-flex h-9 w-9 items-center justify-center rounded-full bg-brand-off-white/95 text-brand-black/75 opacity-0 shadow-sm transition duration-300 group-hover:opacity-100">
             <ArrowUpRight size={16} />
           </span>

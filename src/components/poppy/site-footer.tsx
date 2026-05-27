@@ -1,6 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
 
+import { INSTAGRAM_URL } from "@/lib/site-contact";
+
 import { Container } from "./container";
 
 const footerLinkGroups = [
@@ -65,7 +67,7 @@ export function SiteFooter() {
             className="h-10 w-auto object-contain"
           />
           <a
-            href="https://instagram.com"
+            href={INSTAGRAM_URL}
             target="_blank"
             rel="noreferrer"
             aria-label="Instagram"

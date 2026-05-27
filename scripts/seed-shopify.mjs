@@ -150,59 +150,65 @@ const products = [
     title: "Zig Zag",
     handle: "zig-zag",
     descriptionHtml:
-      "<p>De <strong>Zig Zag</strong> vlaggenlijn is gemaakt van gobelin jacquard, een rijk geweven stof met diepte en textuur. Een levendige zig zag print in warme kleuren die een instant vrolijke en uitgesproken sfeer neerzet. De lijn is vastgenaaid aan een soepel geweven katoenen pistachegroene band.</p><p>De vlaggen zijn dubbelzijdig gestikt, waardoor de lijn van beide kanten mooi is. Met 12 vlaggetjes en een lengte van 450 cm.</p>",
-    material: "Gobelin jacquard met katoenen band",
+      "<p>De <strong>Zig Zag</strong> vlaggenlijn is gemaakt van gobelin jacquard, een rijk geweven stof met diepte en textuur. Een levendige zig zag print in warme kleuren die een instant vrolijke en uitgesproken sfeer neerzet. De lijn is vastgenaaid aan een soepel geweven limoen groene keperband.</p><p>De vlaggen zijn dubbelzijdig gestikt, waardoor de lijn van beide kanten mooi is. Met 12 vlaggetjes en een lengte van 450 cm.</p>",
+    material: "Gobelin jacquard met limoen groene keperband",
     composition: "50% polyester en 50% katoen",
     dimensions: "12 vlaggetjes, 450 cm lang",
-    colorStory:
-      "Een levendige zig zag print in warme kleuren met een pistachegroene katoenen band.",
+    colorStory: "Gobelin + limoen groene keperband",
+    inventoryQuantity: 22,
+    status: "ACTIVE",
     certifications: [],
   },
   {
     title: "Double Joy",
     handle: "double-joy",
     descriptionHtml:
-      "<p>De <strong>Double Joy</strong> vlaggenlijn is uitgevoerd in linnen, met pistachegroene en paarse vlaggetjes die elkaar afwisselen, en een soepel geweven katoenen ecru band.</p><p>De dubbelzijdige afwerking zorgt ervoor dat de vlaggenlijn van beide kanten mooi valt. Voorzien van 12 vlaggetjes en een lengte van 450 cm.</p>",
-    material: "Linnen met katoenen band",
+      "<p>De <strong>Double Joy</strong> vlaggenlijn is uitgevoerd in linnen, met pistachegroene en paarse vlaggetjes die elkaar afwisselen, en een soepel geweven ecru keperband.</p><p>De dubbelzijdige afwerking zorgt ervoor dat de vlaggenlijn van beide kanten mooi valt. Voorzien van 12 vlaggetjes en een lengte van 450 cm.</p>",
+    material: "Linnen met ecru keperband",
     composition: "75% linnen en 25% katoen",
     dimensions: "12 vlaggetjes, 450 cm lang",
-    colorStory:
-      "Pistachegroene en paarse linnen vlaggetjes met een rustige ecru katoenen band.",
+    colorStory: "Linnen + ecru keperband",
+    inventoryQuantity: 15,
+    status: "ACTIVE",
     certifications: ["Oeko-Tex Standard 100 Product class 2"],
   },
   {
     title: "Poppy Dots",
     handle: "poppy-dots",
     descriptionHtml:
-      "<p>Een zachte, aaibare velours stof met een speelse zwart-witte dalmatiër stippenprint. Minimalistisch, maar met een twist.</p><p>De <strong>Poppy Dots</strong> is dubbelzijdig gestikt, vastgenaaid aan een soepel geweven turquoise katoenen band, en bestaat uit 12 vlaggetjes met een lengte van 450 cm.</p>",
-    material: "Velours met katoenen band",
+      "<p>Een zachte, aaibare velours stof met een speelse zwart-witte dalmatiër stippenprint. Minimalistisch, maar met een twist.</p><p>De <strong>Poppy Dots</strong> is dubbelzijdig gestikt, vastgenaaid aan een soepel geweven mosgroene keperband, en bestaat uit 12 vlaggetjes met een lengte van 450 cm.</p>",
+    material: "Velours stippen met mosgroene keperband",
     composition: "100% polyester",
     dimensions: "12 vlaggetjes, 450 cm lang",
-    colorStory:
-      "Zwart-witte dalmatiër stippenprint met een turquoise katoenen band.",
+    colorStory: "Velours stippen + mosgroene keperband",
+    inventoryQuantity: 21,
+    status: "ACTIVE",
     certifications: [],
   },
   {
     title: "Wavy Joy",
     handle: "wavy-joy",
     descriptionHtml:
-      "<p>De <strong>Wavy Joy</strong> vlaggenlijn is gemaakt van gobelin jacquard, een rijk geweven stof met een zachte flow van aardse tinten.</p><p>De golvende organische print brengt rust en karakter. Door de dubbelzijdige afwerking is de vlaggenlijn van beide kanten mooi. Wavy Joy heeft 12 vlaggetjes en een lengte van 450 cm.</p>",
-    material: "Gobelin jacquard",
+      "<p>De <strong>Wavy Joy</strong> vlaggenlijn is gemaakt van gobelin jacquard, een rijk geweven stof met een zachte flow van aardse tinten.</p><p>De golvende organische print brengt rust en karakter. De lijn is vastgenaaid aan een turquoise keperband. Door de dubbelzijdige afwerking is de vlaggenlijn van beide kanten mooi. Wavy Joy heeft 12 vlaggetjes en een lengte van 450 cm.</p>",
+    material: "Gobelin jacquard met turquoise keperband",
     composition: "50% polyester en 50% katoen",
     dimensions: "12 vlaggetjes, 450 cm lang",
-    colorStory:
-      "Een golvende organische print in warme aardetinten en subtiele kleuraccenten.",
+    colorStory: "Gobelin + turquoise keperband",
+    inventoryQuantity: 21,
+    status: "ACTIVE",
     certifications: [],
   },
   {
     title: "Cobalt Blue",
     handle: "cobalt-blue",
     descriptionHtml:
-      "<p>De <strong>Cobalt Blue</strong> vlaggenlijn is een zachte velours stof met een golfprint. De vlaggenlijn is dubbelzijdig gestikt, vastgenaaid aan een soepel geweven ecru katoenen band, en bestaat uit 12 vlaggetjes met een lengte van 450 cm.</p>",
-    material: "Velours met katoenen band",
+      "<p>De <strong>Cobalt Blue</strong> vlaggenlijn is een zachte velours stof met een golfprint. De vlaggenlijn is dubbelzijdig gestikt, vastgenaaid aan een soepel geweven ecru keperband, en bestaat uit 12 vlaggetjes met een lengte van 450 cm.</p>",
+    material: "Velours golf met ecru keperband",
     composition: "50% polyester en 50% katoen",
     dimensions: "12 vlaggetjes, 450 cm lang",
-    colorStory: "Een zachte velours golfprint in kobaltblauw met ecru band.",
+    colorStory: "Velours golf + ecru keperband",
+    inventoryQuantity: 21,
+    status: "DRAFT",
     certifications: [],
   },
 ].map((product) => ({
@@ -368,7 +374,7 @@ async function createProduct(product) {
         vendor: product.vendor,
         productType: product.productType,
         tags: product.tags,
-        status: "ACTIVE",
+        status: product.status ?? "ACTIVE",
         metafields: productMetafields(product),
       },
     }
@@ -416,7 +422,7 @@ async function updateProduct(existing, product) {
         vendor: product.vendor,
         productType: product.productType,
         tags: product.tags,
-        status: "ACTIVE",
+        status: product.status ?? "ACTIVE",
         metafields: productMetafields(product),
       },
     }
@@ -430,6 +436,89 @@ async function updateProduct(existing, product) {
   }
 
   return data.productUpdate.product;
+}
+
+async function getPrimaryLocationId() {
+  const data = await adminRequest(
+    `#graphql
+      query Locations {
+        locations(first: 1) {
+          nodes {
+            id
+          }
+        }
+      }
+    `
+  );
+
+  const locationId = data.locations.nodes[0]?.id;
+  if (!locationId) {
+    throw new Error("No Shopify location found for inventory updates.");
+  }
+
+  return locationId;
+}
+
+async function getVariantInventoryItemId(variantId) {
+  const data = await adminRequest(
+    `#graphql
+      query VariantInventoryItem($id: ID!) {
+        productVariant(id: $id) {
+          inventoryItem {
+            id
+          }
+        }
+      }
+    `,
+    { id: variantId }
+  );
+
+  return data.productVariant?.inventoryItem?.id ?? null;
+}
+
+async function updateVariantInventory(variantId, quantity) {
+  const [locationId, inventoryItemId] = await Promise.all([
+    getPrimaryLocationId(),
+    getVariantInventoryItemId(variantId),
+  ]);
+
+  if (!inventoryItemId) {
+    throw new Error(`No inventory item found for variant ${variantId}.`);
+  }
+
+  const data = await adminRequest(
+    `#graphql
+      mutation InventorySetQuantities($input: InventorySetQuantitiesInput!) {
+        inventorySetQuantities(input: $input) {
+          userErrors {
+            field
+            message
+          }
+        }
+      }
+    `,
+    {
+      input: {
+        name: "available",
+        reason: "correction",
+        ignoreCompareQuantity: true,
+        quantities: [
+          {
+            inventoryItemId,
+            locationId,
+            quantity,
+          },
+        ],
+      },
+    }
+  );
+
+  const errors = data.inventorySetQuantities.userErrors;
+  if (errors.length) {
+    throw new Error(
+      `Failed to update inventory for ${variantId}: ${JSON.stringify(errors)}`
+    );
+  }
 }
 
 async function updateVariantPrice(productId, variantId, price) {
@@ -480,9 +569,14 @@ async function ensureProducts() {
     const variantId = saved.variants.nodes[0]?.id;
     if (variantId) {
       await updateVariantPrice(saved.id, variantId, product.price);
+      if (typeof product.inventoryQuantity === "number") {
+        await updateVariantInventory(variantId, product.inventoryQuantity);
+      }
     }
 
-    console.log(`${existing ? "Updated" : "Created"} product: ${saved.title}`);
+    console.log(
+      `${existing ? "Updated" : "Created"} product: ${saved.title} (${product.status ?? "ACTIVE"}, stock ${product.inventoryQuantity ?? "n/a"})`
+    );
   }
 }
 

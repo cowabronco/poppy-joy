@@ -1,5 +1,5 @@
 import { Container, ShopFilterableGrid } from "@/components/poppy";
-import { products } from "@/lib/products";
+import { publishedProducts } from "@/lib/products";
 import { getStorefrontProducts } from "@/lib/shopify/products";
 
 const placeholderImageSrc =
@@ -11,7 +11,7 @@ const shopHeroImage =
 const productFilterMetadata = {
   "zig-zag": {
     materials: ["Jacquard", "Katoen"],
-    colors: ["Warm", "Pistache"],
+    colors: ["Warm", "Limoen"],
     availability: "Op voorraad" as const,
   },
   "double-joy": {
@@ -21,17 +21,12 @@ const productFilterMetadata = {
   },
   "poppy-dots": {
     materials: ["Velours"],
-    colors: ["Warm"],
+    colors: ["Mosgroen"],
     availability: "Op voorraad" as const,
   },
   "wavy-joy": {
     materials: ["Jacquard", "Katoen"],
-    colors: ["Aardetinten"],
-    availability: "Op voorraad" as const,
-  },
-  "cobalt-blue": {
-    materials: ["Velours", "Katoen"],
-    colors: ["Kobalt"],
+    colors: ["Aardetinten", "Turquoise"],
     availability: "Op voorraad" as const,
   },
 };
@@ -54,7 +49,7 @@ async function getImageByHandle() {
 
 export default async function ShopPage() {
   const imageByHandle = await getImageByHandle();
-  const entries = products.map((product) => ({
+  const entries = publishedProducts.map((product) => ({
     product,
     imageSrc: imageByHandle[product.handle] ?? placeholderImageSrc,
     filters: {
@@ -82,7 +77,7 @@ export default async function ShopPage() {
               Celebrate Joy
             </h1>
             <p className="mt-6 max-w-2xl text-lg leading-8 text-brand-off-white/85">
-              Vijf tijdloze vlaggenlijnen in verfijnde stoffen. Gemaakt om keer
+              Vier tijdloze vlaggenlijnen in verfijnde stoffen. Gemaakt om keer
               op keer opnieuw te gebruiken, van kleine rituelen tot grote
               vieringen.
             </p>

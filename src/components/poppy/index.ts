@@ -1,5 +1,8 @@
+export { ContactPageContent } from "./contact-page-content";
 export { Container } from "./container";
+export { ContentPageTemplate } from "./content-page-template";
 export { EditorialHeading } from "./editorial-heading";
+export { FaqPageContent } from "./faq-page-content";
 export { HeroVideo } from "./hero-video";
 export { InformationalPageTemplate } from "./informational-page-template";
 export { MediaGallery } from "./media-gallery";

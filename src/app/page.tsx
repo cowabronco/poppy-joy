@@ -17,7 +17,7 @@ import {
 } from "@/components/poppy";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { products, values } from "@/lib/products";
+import { publishedProducts, values } from "@/lib/products";
 
 const usps = [
   { label: values[0], Icon: RefreshCw },
@@ -184,13 +184,13 @@ export default function Home() {
           <Reveal className="mb-12 flex flex-col justify-between gap-6 md:flex-row md:items-end">
             <EditorialHeading eyebrow="Drop 1" title="Celebrate Joy" />
             <p className="max-w-md leading-7 text-brand-black/70">
-              Vijf unieke ontwerpen, elk dubbelzijdig gestikt en gemaakt voor
+              Vier unieke ontwerpen, elk dubbelzijdig gestikt en gemaakt voor
               interieur, tuinfeest, verjaardag of spontaan diner.
             </p>
           </Reveal>
 
-          <div className="grid grid-auto-rows-fr gap-5 md:grid-cols-2 xl:grid-cols-5">
-            {products.map((product, index) => (
+          <div className="grid grid-auto-rows-fr gap-5 md:grid-cols-2 xl:grid-cols-4">
+            {publishedProducts.map((product, index) => (
               <Reveal key={product.name} delayMs={index * 60}>
                 <ProductCard product={product} imageSrc={productPlaceholderSrc} />
               </Reveal>
