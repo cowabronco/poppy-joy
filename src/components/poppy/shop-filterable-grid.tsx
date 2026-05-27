@@ -11,7 +11,7 @@ type FilterGroupKey = "materials" | "colors" | "availability";
 
 type ShopProduct = {
   product: Product;
-  imageSrc: string;
+  imageSrc?: string;
   filters: {
     collection: "Celebrate Joy";
     materials: string[];

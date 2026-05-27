@@ -1,9 +1,6 @@
 import { Container, ShopFilterableGrid } from "@/components/poppy";
 import { publishedProducts } from "@/lib/products";
-import { getStorefrontProducts } from "@/lib/shopify/products";
-
-const placeholderImageSrc =
-  "https://cdn.shopify.com/s/files/1/0971/3359/2909/files/placeholder.jpg?v=1778760581";
+import { getFeaturedImageByHandle } from "@/lib/shopify/products";
 
 const shopHeroImage =
   "https://cdn.shopify.com/s/files/1/0971/3359/2909/files/hero-bg.png?v=1778763881";
@@ -31,27 +28,11 @@ const productFilterMetadata = {
   },
 };
 
-async function getImageByHandle() {
-  try {
-    const storefrontProducts = await getStorefrontProducts(20);
-    return storefrontProducts.reduce<Record<string, string>>((acc, product) => {
-      if (product.featuredImage?.url) {
-        acc[product.handle] = product.featuredImage.url;
-      }
-
-      return acc;
-    }, {});
-  } catch (error) {
-    console.error("Unable to load Shopify product images for /shop.", error);
-    return {};
-  }
-}
-
 export default async function ShopPage() {
-  const imageByHandle = await getImageByHandle();
+  const imageByHandle = await getFeaturedImageByHandle();
   const entries = publishedProducts.map((product) => ({
     product,
-    imageSrc: imageByHandle[product.handle] ?? placeholderImageSrc,
+    imageSrc: imageByHandle[product.handle],
     filters: {
       collection: "Celebrate Joy" as const,
       ...productFilterMetadata[product.handle as keyof typeof productFilterMetadata],

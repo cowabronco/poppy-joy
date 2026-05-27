@@ -28,15 +28,15 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { createStorefrontCart } from "@/lib/shopify/cart";
-import { getStorefrontProductByHandle } from "@/lib/shopify/products";
+import {
+  getFeaturedImageByHandle,
+  getStorefrontProductByHandle,
+} from "@/lib/shopify/products";
 import type { ShopifyImage } from "@/lib/shopify/types";
 import {
   getPublishedProductByHandle,
   publishedProducts,
 } from "@/lib/products";
-
-const productPlaceholderSrc =
-  "https://cdn.shopify.com/s/files/1/0971/3359/2909/files/placeholder.jpg?v=1778760581";
 
 type ProductPageProps = {
   params: Promise<{ handle: string }>;
@@ -58,35 +58,12 @@ function formatPrice(price?: { amount: string; currencyCode: string }) {
 }
 
 function getGalleryImages(images: ShopifyImage[], productName: string) {
-  const storefrontImages = images.map((image, index) => ({
+  return images.map((image, index) => ({
     type: "image" as const,
     src: image.url,
     alt: image.altText ?? `${productName} productafbeelding ${index + 1}`,
     aspectRatio: "4:5" as const,
   }));
-
-  if (storefrontImages.length > 0) {
-    return storefrontImages;
-  }
-
-  return [
-    {
-      type: "image" as const,
-      src: productPlaceholderSrc,
-      alt: `${productName} productafbeelding`,
-      aspectRatio: "4:5" as const,
-    },
-    {
-      type: "placeholder" as const,
-      alt: `${productName} detailafbeelding`,
-      aspectRatio: "1:1" as const,
-    },
-    {
-      type: "placeholder" as const,
-      alt: `${productName} stylingafbeelding`,
-      aspectRatio: "1:1" as const,
-    },
-  ];
 }
 
 async function addToCart(formData: FormData) {
@@ -124,9 +101,13 @@ export default async function ProductPage({ params }: ProductPageProps) {
   }
 
   let storefrontProduct = null;
+  let imageByHandle: Record<string, string> = {};
 
   try {
-    storefrontProduct = await getStorefrontProductByHandle(handle);
+    [storefrontProduct, imageByHandle] = await Promise.all([
+      getStorefrontProductByHandle(handle),
+      getFeaturedImageByHandle(),
+    ]);
   } catch (error) {
     console.error(`Unable to load Shopify product ${handle}.`, error);
   }
@@ -360,7 +341,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
               <ProductCard
                 key={relatedProduct.handle}
                 product={relatedProduct}
-                imageSrc={productPlaceholderSrc}
+                imageSrc={imageByHandle[relatedProduct.handle]}
               />
             ))}
           </div>

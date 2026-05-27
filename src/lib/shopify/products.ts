@@ -66,3 +66,20 @@ export async function getStorefrontProductByHandle(
 
   return data.product ? mapShopifyProduct(data.product) : null;
 }
+
+export async function getFeaturedImageByHandle(): Promise<Record<string, string>> {
+  try {
+    const storefrontProducts = await getStorefrontProducts(20);
+
+    return storefrontProducts.reduce<Record<string, string>>((acc, product) => {
+      if (product.featuredImage?.url) {
+        acc[product.handle] = product.featuredImage.url;
+      }
+
+      return acc;
+    }, {});
+  } catch (error) {
+    console.error("Unable to load Shopify product images.", error);
+    return {};
+  }
+}

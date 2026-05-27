@@ -18,6 +18,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { publishedProducts, values } from "@/lib/products";
+import { getFeaturedImageByHandle } from "@/lib/shopify/products";
 
 const usps = [
   { label: values[0], Icon: RefreshCw },
@@ -49,13 +50,12 @@ const careCards = [
   },
 ];
 
-export default function Home() {
+export default async function Home() {
+  const imageByHandle = await getFeaturedImageByHandle();
   const heroVideoUrl =
     process.env.NEXT_PUBLIC_SHOPIFY_HERO_VIDEO_URL ||
     "https://cdn.shopify.com/videos/c/o/v/31ed7d7d21a2451b964dd6646dddd3ff.mp4";
   const heroPosterUrl = process.env.NEXT_PUBLIC_SHOPIFY_HERO_VIDEO_POSTER_URL;
-  const productPlaceholderSrc =
-    "https://cdn.shopify.com/s/files/1/0971/3359/2909/files/placeholder.jpg?v=1778760581";
 
   return (
     <main className="min-h-screen overflow-hidden text-brand-black">
@@ -192,7 +192,10 @@ export default function Home() {
           <div className="grid grid-auto-rows-fr gap-5 md:grid-cols-2 xl:grid-cols-4">
             {publishedProducts.map((product, index) => (
               <Reveal key={product.name} delayMs={index * 60}>
-                <ProductCard product={product} imageSrc={productPlaceholderSrc} />
+                <ProductCard
+                  product={product}
+                  imageSrc={imageByHandle[product.handle]}
+                />
               </Reveal>
             ))}
           </div>
