@@ -228,7 +228,7 @@ export default async function Home() {
           src={homeLifestyleImage}
           alt="Sfeerbeeld van een gedekte tafel met stoffen vlaggenlijn in een warme ruimte"
           fill
-          quality={90}
+          quality={100}
           sizes="100vw"
           className="object-cover"
         />

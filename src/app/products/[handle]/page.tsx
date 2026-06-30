@@ -34,12 +34,13 @@ import { formatMoney } from "@/lib/money";
 import {
   getFeaturedImageByHandle,
   getStorefrontProductByHandle,
+  getStorefrontProducts,
 } from "@/lib/shopify/products";
-import type { ShopifyImage } from "@/lib/shopify/types";
+import type { ShopifyImage, StorefrontProduct } from "@/lib/shopify/types";
 import {
   formatProductDescription,
-  getPublishedProductByHandle,
-  publishedProducts,
+  getProductByHandle,
+  type Product,
 } from "@/lib/products";
 import { pageMetadata } from "@/lib/site-metadata";
 
@@ -47,21 +48,24 @@ type ProductPageProps = {
   params: Promise<{ handle: string }>;
 };
 
-export function generateStaticParams() {
-  return publishedProducts.map((product) => ({ handle: product.handle }));
+export async function generateStaticParams() {
+  const storefrontProducts = await getStorefrontProducts(50);
+  return storefrontProducts.map((p) => ({ handle: p.handle }));
 }
 
 export async function generateMetadata({
   params,
 }: ProductPageProps): Promise<Metadata> {
   const { handle } = await params;
-  const product = getPublishedProductByHandle(handle);
+  const local = getProductByHandle(handle);
 
-  if (!product) {
-    return {};
+  if (local) {
+    return pageMetadata(local.name, local.description);
   }
 
-  return pageMetadata(product.name, product.description);
+  const sp = await getStorefrontProductByHandle(handle);
+  if (!sp) return {};
+  return pageMetadata(sp.title, sp.description);
 }
 
 function formatPrice(price?: { amount: string; currencyCode: string }) {
@@ -77,15 +81,20 @@ function getGalleryImages(images: ShopifyImage[], productName: string) {
   }));
 }
 
+function buildProductFacts(local: Product | undefined, sp: StorefrontProduct | null) {
+  const facts: string[] = [];
+  const materials = local?.materials?.replace(/\.$/, "");
+  if (materials) facts.push(materials);
+  facts.push("Dubbelzijdig gestikt");
+  facts.push("Handgemaakt in small batches");
+  return facts;
+}
+
 export default async function ProductPage({ params }: ProductPageProps) {
   const { handle } = await params;
-  const product = getPublishedProductByHandle(handle);
+  const local = getProductByHandle(handle);
 
-  if (!product) {
-    notFound();
-  }
-
-  let storefrontProduct = null;
+  let storefrontProduct: StorefrontProduct | null = null;
   let imageByHandle: Record<string, string> = {};
 
   try {
@@ -97,30 +106,56 @@ export default async function ProductPage({ params }: ProductPageProps) {
     console.error(`Unable to load Shopify product ${handle}.`, error);
   }
 
+  if (!local && !storefrontProduct) {
+    notFound();
+  }
+
+  const productName = storefrontProduct?.title ?? local?.name ?? handle;
   const activeVariant = storefrontProduct?.variants.find(
     (variant) => variant.availableForSale
   );
   const galleryImages = getGalleryImages(
     storefrontProduct?.images ?? [],
-    product.name
+    productName
   );
-  const relatedProducts = publishedProducts
-    .filter((relatedProduct) => relatedProduct.handle !== product.handle)
+
+  const allStorefrontProducts = await getStorefrontProducts(50);
+  const relatedSPs = allStorefrontProducts
+    .filter((p) => p.handle !== handle)
     .slice(0, 3);
-  const displayPrice = formatPrice(activeVariant?.price) ?? product.price;
+  const relatedProducts: Array<{ product: Product; imageSrc?: string }> =
+    relatedSPs.map((sp) => {
+      const relLocal = getProductByHandle(sp.handle);
+      return {
+        product: {
+          handle: sp.handle,
+          name: sp.title,
+          price: formatMoney(sp.price) ?? `€${Number(sp.price.amount).toFixed(2).replace(".", ",")}`,
+          subtitle: relLocal?.subtitle ?? "",
+          description: sp.description || relLocal?.description || "",
+          details: relLocal?.details ?? "",
+          materialTags: relLocal?.materialTags ?? [],
+          materials: relLocal?.materials ?? "",
+          dimensions: relLocal?.dimensions ?? "",
+          care: relLocal?.care ?? "",
+          story: relLocal?.story ?? "",
+          published: true,
+        },
+        imageSrc: imageByHandle[sp.handle] ?? sp.featuredImage?.url,
+      };
+    });
+
+  const displayPrice =
+    formatPrice(activeVariant?.price) ?? local?.price ?? formatPrice(storefrontProduct?.price);
   const canAddToCart = Boolean(activeVariant && storefrontProduct?.availableForSale);
   const productDescription = formatProductDescription(
-    storefrontProduct?.description || product.description
+    storefrontProduct?.description || local?.description || ""
   );
   const productSummaryFacts = [
     { label: "Vlaggetjes", value: "12", Icon: Flag },
     { label: "Totale lengte", value: "450 cm", Icon: Ruler },
   ];
-  const productFacts = [
-    product.materials.replace(/\.$/, ""),
-    "Dubbelzijdig gestikt",
-    "Handgemaakt in small batches",
-  ];
+  const productFacts = buildProductFacts(local, storefrontProduct);
 
   return (
     <main className="min-h-screen bg-brand-off-white pt-24 text-brand-black md:pt-28">
@@ -136,7 +171,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
         <section className="mt-5 grid gap-10 lg:mt-6 lg:grid-cols-[minmax(0,1.15fr)_minmax(400px,0.85fr)] xl:grid-cols-[minmax(0,1.2fr)_minmax(420px,0.8fr)] lg:items-start">
           <Reveal>
-            <ProductGallery media={galleryImages} productName={product.name} />
+            <ProductGallery media={galleryImages} productName={productName} />
           </Reveal>
 
           <Reveal delayMs={80}>
@@ -147,11 +182,8 @@ export default async function ProductPage({ params }: ProductPageProps) {
             <div className="mt-5 grid gap-3">
               <div>
                 <h1 className="serif text-5xl font-semibold leading-none md:text-6xl">
-                  {product.name}
+                  {productName}
                 </h1>
-                <p className="mt-4 text-sm uppercase tracking-[0.18em] text-brand-black/55">
-                  {product.subtitle}
-                </p>
               </div>
               <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
                 <Price className="serif text-5xl font-semibold leading-none md:text-6xl">
@@ -242,22 +274,26 @@ export default async function ProductPage({ params }: ProductPageProps) {
                   {productDescription}
                 </AccordionContent>
               </AccordionItem>
+              {(local?.details) ? (
               <AccordionItem value="details" className="border-border">
                 <AccordionTrigger className="py-4 text-xs uppercase tracking-[0.22em] text-brand-black/70 hover:no-underline">
                   Productdetails
                 </AccordionTrigger>
                 <AccordionContent className="pb-5 text-sm leading-6 text-brand-black/65">
-                  {product.details}
+                  {local.details}
                 </AccordionContent>
               </AccordionItem>
+              ) : null}
+              {(local?.care) ? (
               <AccordionItem value="care" className="border-border">
                 <AccordionTrigger className="py-4 text-xs uppercase tracking-[0.22em] text-brand-black/70 hover:no-underline">
                   Wasadvies
                 </AccordionTrigger>
                 <AccordionContent className="pb-5 text-sm leading-6 text-brand-black/65">
-                  {product.care}
+                  {local.care}
                 </AccordionContent>
               </AccordionItem>
+              ) : null}
             </Accordion>
             </article>
           </Reveal>
@@ -284,13 +320,14 @@ export default async function ProductPage({ params }: ProductPageProps) {
         </Container>
       </section>
 
+      {local?.story ? (
       <section className="py-16 lg:py-24">
         <Container>
           <Reveal>
             <div className="rounded-[2rem] border border-border bg-brand-beige p-8 md:p-10">
               <Leaf className="h-6 w-6 text-brand-green" />
               <p className="serif mt-6 text-3xl leading-tight text-brand-black md:text-4xl">
-                {product.story}
+                {local.story}
               </p>
               <p className="mt-6 text-sm leading-6 text-brand-black/62">
                 Bewaar de lijn na gebruik rustig op in een droge kast of lade. Zo
@@ -301,6 +338,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
           </Reveal>
         </Container>
       </section>
+      ) : null}
 
       <section className="bg-[#F2EDE3] py-16 lg:py-24">
         <Container>
@@ -319,11 +357,11 @@ export default async function ProductPage({ params }: ProductPageProps) {
             </div>
           </Reveal>
           <div className="mt-10 grid gap-8 md:grid-cols-3">
-            {relatedProducts.map((relatedProduct, index) => (
+            {relatedProducts.map(({ product: relatedProduct, imageSrc }, index) => (
               <Reveal key={relatedProduct.handle} delayMs={index * 60}>
                 <ProductCard
                   product={relatedProduct}
-                  imageSrc={imageByHandle[relatedProduct.handle]}
+                  imageSrc={imageSrc}
                   showDetails={false}
                 />
               </Reveal>
@@ -336,7 +374,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
         action={addToCart}
         canAddToCart={canAddToCart}
         price={displayPrice}
-        productName={product.name}
+        productName={productName}
         returnPath="/cart"
         variantId={activeVariant?.id}
       />

@@ -10,7 +10,7 @@ import { Container } from "./container";
 
 export function ContactPageContent() {
   return (
-    <main className="min-h-screen bg-brand-off-white pb-20 pt-20 text-brand-black md:pt-24">
+    <main className="min-h-screen bg-brand-off-white pb-20 pt-24 text-brand-black md:pt-28">
       <Container className="max-w-3xl">
         <header>
           <p className="text-xs uppercase tracking-[0.34em] text-brand-purple">

@@ -16,7 +16,6 @@ const footerLinkGroups = [
   {
     title: "Service",
     links: [
-      { label: "Wasvoorschriften", href: "/care" },
       { label: "Veelgestelde vragen", href: "/faq" },
       { label: "Contact", href: "/contact" },
     ],
