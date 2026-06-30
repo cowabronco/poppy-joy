@@ -10,6 +10,7 @@ import type { Product } from "@/lib/products";
 import { ArrowUpRight, Flag, Ruler } from "lucide-react";
 import Link from "next/link";
 
+import { Price } from "./price";
 import { ResponsiveImage } from "./responsive-image";
 
 const productCardFacts = [
@@ -28,6 +29,8 @@ export function ProductCard({
   imageSrc,
   showDetails = true,
 }: ProductCardProps) {
+  const isCompact = !showDetails;
+
   return (
     <Link
       href={`/products/${product.handle}`}
@@ -61,12 +64,22 @@ export function ProductCard({
           </span>
         </CardHeader>
         <CardContent className="flex flex-1 flex-col pb-6">
-          <div className="mt-6">
+          <div className="mt-6 flex items-start justify-between gap-3">
             <CardTitle className="serif text-3xl font-semibold text-brand-black transition-colors duration-300 group-hover:text-brand-purple">
               {product.name}
             </CardTitle>
+            {!isCompact ? (
+              <Price className="pt-1 text-right whitespace-nowrap">
+                {product.price}
+              </Price>
+            ) : null}
           </div>
-          {!showDetails ? (
+          {!isCompact ? (
+            <p className="mt-5 flex-1 text-sm leading-6 text-brand-black/70">
+              {product.description}
+            </p>
+          ) : null}
+          {isCompact ? (
             <div className="mt-5 grid grid-cols-2 gap-3">
               {productCardFacts.map(({ label, value, Icon }) => (
                 <div

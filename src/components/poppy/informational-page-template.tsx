@@ -44,7 +44,7 @@ type InformationalPageCta = {
 };
 
 export type InformationalPageTemplateProps = {
-  title: string;
+  title?: string;
   heroBackgroundImage?: string;
   sections: InformationalPageSection[];
   milestones?: InformationalPageMilestone[];
@@ -63,6 +63,7 @@ export function InformationalPageTemplate({
   className,
 }: InformationalPageTemplateProps) {
   const hasImageSection = sections.some((section) => section.image);
+  const showHero = Boolean(title || heroBackgroundImage);
   const ctaVariant = cta?.variant ?? (cta?.backgroundColor ? "solid" : "image");
   const isLightCta = ctaVariant === "solid" || ctaVariant === "outline";
 
@@ -141,42 +142,51 @@ export function InformationalPageTemplate({
   return (
     <main
       className={cn(
-        "min-h-screen bg-brand-off-white text-brand-black",
+        "bg-brand-off-white text-brand-black",
         className
       )}
     >
-      <section className="relative isolate overflow-hidden pt-20 md:pt-24">
-        {heroBackgroundImage ? (
-          <>
-            <div
-              aria-hidden
-              className="absolute inset-0 bg-cover bg-center"
-              style={{ backgroundImage: `url('${heroBackgroundImage}')` }}
-            />
-            <div aria-hidden className="absolute inset-0 bg-brand-black/56" />
-          </>
-        ) : null}
+      {showHero ? (
+        <section className="relative isolate overflow-hidden pt-20 md:pt-24">
+          {heroBackgroundImage ? (
+            <>
+              <div
+                aria-hidden
+                className="absolute inset-0 bg-cover bg-center"
+                style={{ backgroundImage: `url('${heroBackgroundImage}')` }}
+              />
+              <div aria-hidden className="absolute inset-0 bg-brand-black/56" />
+            </>
+          ) : null}
 
-        <Container
-          className={cn(
-            "relative",
-            heroBackgroundImage ? "py-16 md:py-20" : "py-20 md:py-28",
-          )}
-        >
-          <h1
+          <Container
             className={cn(
-              "serif max-w-4xl text-5xl font-semibold leading-[0.95] md:text-7xl",
-              heroBackgroundImage
-                ? "max-w-2xl text-brand-off-white"
-                : "text-brand-black",
+              "relative",
+              heroBackgroundImage ? "py-16 md:py-20" : "py-20 md:py-28",
             )}
           >
-            {title}
-          </h1>
-        </Container>
-      </section>
+            {title ? (
+              <h1
+                className={cn(
+                  "serif max-w-4xl text-5xl font-semibold leading-[0.95] md:text-7xl",
+                  heroBackgroundImage
+                    ? "max-w-2xl text-brand-off-white"
+                    : "text-brand-black",
+                )}
+              >
+                {title}
+              </h1>
+            ) : null}
+          </Container>
+        </section>
+      ) : null}
 
-      <section className="border-y border-border bg-card">
+      <section
+        className={cn(
+          "border-y border-border bg-card",
+          !showHero && "pt-20 md:pt-24",
+        )}
+      >
         <Container className="py-14">
           <div className="grid gap-6 lg:grid-cols-2">
             {sections.map((section) =>

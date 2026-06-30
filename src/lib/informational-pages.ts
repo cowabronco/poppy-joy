@@ -1,9 +1,6 @@
 import type { InformationalPageTemplateProps } from "@/components/poppy/informational-page-template";
 
 export const storyPageContent: InformationalPageTemplateProps = {
-  title: "For moments that deserve joy. Designed to stay. Made with love.",
-  heroBackgroundImage:
-    "https://cdn.shopify.com/s/files/1/0971/3359/2909/files/hero-bg.png?v=1778763881",
   sections: [
     {
       title: "Het begin van iets moois",

@@ -5,9 +5,6 @@ import { pageDescriptions, pageMetadata } from "@/lib/site-metadata";
 import { publishedProducts } from "@/lib/products";
 import { getFeaturedImageByHandle } from "@/lib/shopify/products";
 
-const shopHeroImage =
-  "https://cdn.shopify.com/s/files/1/0971/3359/2909/files/hero-bg.png?v=1778763881";
-
 const productFilterMetadata = {
   "zig-zag": {
     colors: ["Warm", "Limoen"],
@@ -42,42 +39,27 @@ export default async function ShopPage() {
   }));
 
   return (
-    <main className="min-h-screen bg-brand-off-white pb-20 text-brand-black">
-      <section className="relative isolate overflow-hidden pt-20 md:pt-24">
-        <div
-          aria-hidden
-          className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: `url('${shopHeroImage}')` }}
-        />
-        <div aria-hidden className="absolute inset-0 bg-brand-black/56" />
-
-        <Container className="relative py-16 md:py-20">
-          <div className="max-w-3xl">
-            <p className="text-xs uppercase tracking-[0.32em] text-brand-off-white/80">
-              Shop
-            </p>
-            <h1 className="serif mt-5 max-w-2xl text-5xl font-semibold leading-[0.95] text-brand-off-white md:text-7xl">
-              Celebrate Joy{" "}
-              <span
-                aria-hidden
-                className="font-sans text-[0.34em] font-light text-brand-off-white/35"
-              >
-                |
-              </span>{" "}
-              <span className="font-sans text-[0.3em] font-medium uppercase tracking-[0.34em] text-brand-off-white/80 md:text-[0.26em]">
-                Drop 1
-              </span>
-            </h1>
-            <p className="mt-6 max-w-2xl text-lg leading-8 text-brand-off-white/85">
-              Vier tijdloze vlaggenlijnen in verfijnde stoffen. Gemaakt om keer
-              op keer opnieuw te gebruiken, van kleine rituelen tot grote
-              vieringen.
-            </p>
-          </div>
-        </Container>
-      </section>
-
+    <main className="min-h-screen bg-brand-off-white pb-16 pt-20 text-brand-black md:pb-20 md:pt-24">
       <Container>
+        <header className="pb-5 pt-4 md:pb-6 md:pt-6">
+          <h1 className="serif max-w-2xl text-4xl font-semibold leading-[1.05] text-brand-black sm:text-[2.625rem] md:text-6xl lg:text-7xl">
+            Celebrate Joy{" "}
+            <span
+              aria-hidden
+              className="font-sans text-[0.34em] font-light text-brand-black/35"
+            >
+              |
+            </span>{" "}
+            <span className="font-sans text-[0.28em] font-medium uppercase tracking-[0.28em] text-brand-black/65 sm:text-[0.3em] md:tracking-[0.34em] lg:text-[0.26em]">
+              Drop 1
+            </span>
+          </h1>
+          <p className="mt-4 max-w-2xl text-base leading-7 text-brand-black/70 md:mt-5 md:text-lg md:leading-8">
+            Ontdek de eerste Poppy Joy collectie. Tijdloze stoffen vlaggenlijnen,
+            ontworpen om de mooiste momenten keer op keer te vieren.
+          </p>
+        </header>
+
         <ShopFilterableGrid products={entries} />
       </Container>
     </main>
