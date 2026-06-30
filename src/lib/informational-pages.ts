@@ -38,6 +38,7 @@ export const storyPageContent: InformationalPageTemplateProps = {
     title: "Klaar om jouw moment opnieuw en opnieuw te vieren?",
     description:
       "Ontdek de eerste collectie stoffen vlaggenlijnen en kies een ontwerp dat je jarenlang blijft gebruiken.",
+    backgroundImage: "/story/cta-bg.jpg",
     primaryAction: {
       label: "Shop de collectie",
       href: "/shop",

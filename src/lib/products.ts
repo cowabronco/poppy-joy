@@ -17,7 +17,7 @@ export const products: Product[] = [
   {
     handle: "zig-zag",
     name: "Zig Zag",
-    price: "€49,95",
+    price: "€64,95",
     subtitle: "Gobelin + limoen groene keperband",
     description:
       "Een levendige zig zag print in warme kleuren, gemaakt van gobelin jacquard met diepte en textuur. De lijn is vastgenaaid aan een soepel geweven limoen groene keperband.",
@@ -34,7 +34,7 @@ export const products: Product[] = [
   {
     handle: "double-joy",
     name: "Double Joy",
-    price: "€49,95",
+    price: "€64,95",
     subtitle: "Linnen + ecru keperband",
     description:
       "Een linnen vlaggenlijn met pistachegroene en paarse vlaggetjes die elkaar afwisselen, afgewerkt met een soepel geweven ecru keperband.",
@@ -51,7 +51,7 @@ export const products: Product[] = [
   {
     handle: "poppy-dots",
     name: "Poppy Dots",
-    price: "€49,95",
+    price: "€64,95",
     subtitle: "Velours stippen + mosgroene keperband",
     description:
       "Een zachte velours stof met speelse zwart-witte dalmatiër stippenprint. Minimalistisch, maar met een twist en afgewerkt met een mosgroene keperband.",
@@ -68,7 +68,7 @@ export const products: Product[] = [
   {
     handle: "wavy-joy",
     name: "Wavy Joy",
-    price: "€49,95",
+    price: "€64,95",
     subtitle: "Gobelin + turquoise keperband",
     description:
       "Een gobelin jacquard met een zachte flow van aardse tinten. De golvende organische print brengt rust en karakter, afgewerkt met een turquoise keperband.",
@@ -85,7 +85,7 @@ export const products: Product[] = [
   {
     handle: "cobalt-blue",
     name: "Cobalt Blue",
-    price: "€49,95",
+    price: "€64,95",
     subtitle: "Velours golf + ecru keperband",
     description:
       "De Cobalt Blue vlaggenlijn is een zachte velours stof met een mooie blauwe golvende print. De vlaggenlijn is dubbelzijdig gestikt, vastgenaaid aan een soepel geweven ecru katoenen band, en bestaat uit 12 vlaggetjes met een lengte van 450 cm.",
@@ -128,8 +128,6 @@ export function formatProductDescription(text: string) {
 export const values = [
   "Herbruikbare decoratie",
   "Dubbelzijdig en hoogwaardig afgewerkt",
-  "Design-first benadering",
   "Voor kleine en grote momenten",
   "Handgemaakt in small batches",
-  "Kwalitatief verfijnde stoffen",
 ];

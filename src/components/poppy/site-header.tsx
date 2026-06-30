@@ -19,8 +19,8 @@ import { CartNavLink } from "./cart-nav-link";
 
 const primaryNavLinks = [
   { label: "Home", href: "/" },
-  { label: "Story", href: "/story" },
   { label: "Shop", href: "/shop" },
+  { label: "Story", href: "/story" },
 ] as const;
 
 export function SiteHeader() {
@@ -75,7 +75,7 @@ export function SiteHeader() {
       className={`fixed left-0 right-0 top-0 z-50 transition-all duration-500 ease-out ${
         useSolidHeader
           ? "bg-brand-off-white/95 shadow-lg backdrop-blur-md"
-          : "bg-transparent"
+          : "bg-gradient-to-b from-black/50 to-transparent"
       }`}
     >
       <Container

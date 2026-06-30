@@ -24,6 +24,7 @@ type InformationalPageCta = {
   eyebrow?: string;
   title: string;
   description: string;
+  backgroundImage?: string;
   primaryAction: {
     label: string;
     href: string;
@@ -250,8 +251,7 @@ export function InformationalPageTemplate({
                 aria-hidden
                 className="absolute inset-0 bg-cover bg-center"
                 style={{
-                  backgroundImage:
-                    "url('https://cdn.shopify.com/s/files/1/0971/3359/2909/files/conversion-container-bg.png?v=1778763671')",
+                  backgroundImage: `url('${cta.backgroundImage ?? "https://cdn.shopify.com/s/files/1/0971/3359/2909/files/conversion-container-bg.png?v=1778763671"}')`,
                 }}
               />
               <div
