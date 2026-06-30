@@ -373,7 +373,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
       <ProductPurchaseToolbar
         action={addToCart}
         canAddToCart={canAddToCart}
-        price={displayPrice}
+        price={displayPrice ?? ""}
         productName={productName}
         returnPath="/cart"
         variantId={activeVariant?.id}

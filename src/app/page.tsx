@@ -148,7 +148,7 @@ export default async function Home() {
           </Reveal>
 
           <div className="grid grid-auto-rows-fr gap-5 md:grid-cols-2 xl:grid-cols-4">
-            {homeProducts.map(({ product, imageSrc }, index) => (
+            {homeProducts.slice(0, 4).map(({ product, imageSrc }, index) => (
               <Reveal key={product.handle} delayMs={index * 60}>
                 <ProductCard
                   product={product}
@@ -255,7 +255,7 @@ export default async function Home() {
           className="object-cover md:hidden"
         />
         <Image
-          src="/brand/homepage-lifestyle-desktop.png"
+          src="/brand/homepage-lifestyle-desktop.jpg"
           alt="Stoffen vlaggenlijn opgehangen in een warme ruimte met planten"
           fill
           quality={100}
