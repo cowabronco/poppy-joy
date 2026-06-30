@@ -120,8 +120,8 @@ export default async function Home() {
           <Reveal className="mb-12 flex flex-col justify-between gap-6 md:flex-row md:items-end">
             <EditorialHeading eyebrow="Drop 1" title="Celebrate Joy" />
             <p className="max-w-md leading-7 text-brand-black/70">
-              Vier unieke ontwerpen, elk dubbelzijdig gestikt en gemaakt voor
-              interieur, tuinfeest, verjaardag of spontaan diner.
+              De eerste Poppy Joy collectie. Tijdloze stoffen vlaggenlijnen,
+              ontworpen om de mooiste momenten keer op keer te vieren.
             </p>
           </Reveal>
 

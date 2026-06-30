@@ -50,7 +50,7 @@ export default async function ShopPage() {
             >
               |
             </span>{" "}
-            <span className="font-sans text-[0.28em] font-medium uppercase tracking-[0.28em] text-brand-black/65 sm:text-[0.3em] md:tracking-[0.34em] lg:text-[0.26em]">
+            <span className="font-sans text-[0.28em] font-medium uppercase tracking-[0.28em] text-brand-purple sm:text-[0.3em] md:tracking-[0.34em] lg:text-[0.26em]">
               Drop 1
             </span>
           </h1>

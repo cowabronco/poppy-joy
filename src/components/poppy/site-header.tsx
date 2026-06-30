@@ -156,8 +156,8 @@ export function SiteHeader() {
 
         <div className="relative hidden items-center justify-center lg:flex">
           <nav className="flex items-center justify-center gap-6 text-xs uppercase tracking-[0.28em]">
-            <Link className={navLinkClassName("/story")} href="/story">
-              Story
+            <Link className={navLinkClassName("/shop")} href="/shop">
+              Shop
             </Link>
             <Link href="/" className="mx-3">
               <Image
@@ -169,8 +169,8 @@ export function SiteHeader() {
                 priority
               />
             </Link>
-            <Link className={navLinkClassName("/shop")} href="/shop">
-              Shop
+            <Link className={navLinkClassName("/story")} href="/story">
+              Story
             </Link>
           </nav>
 
