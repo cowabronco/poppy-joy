@@ -19,8 +19,9 @@ import {
 import { pageDescriptions, pageMetadata } from "@/lib/site-metadata";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { publishedProducts, values } from "@/lib/products";
-import { getFeaturedImageByHandle } from "@/lib/shopify/products";
+import { getProductByHandle, values, type Product } from "@/lib/products";
+import { getStorefrontProducts } from "@/lib/shopify/products";
+import { formatMoney } from "@/lib/money";
 
 export const metadata: Metadata = pageMetadata(
   "Poppy Joy | For moments that deserve joy · Designed to stay",
@@ -63,7 +64,28 @@ const homeLifestyleImage =
   "https://cdn.shopify.com/s/files/1/0971/3359/2909/files/hompage-support-foto.jpg?v=1782844633";
 
 export default async function Home() {
-  const imageByHandle = await getFeaturedImageByHandle();
+  const storefrontProducts = await getStorefrontProducts(50);
+  const homeProducts: Array<{ product: Product; imageSrc?: string }> =
+    storefrontProducts.map((sp) => {
+      const local = getProductByHandle(sp.handle);
+      return {
+        product: {
+          handle: sp.handle,
+          name: sp.title,
+          price: formatMoney(sp.price) ?? `€${Number(sp.price.amount).toFixed(2).replace(".", ",")}`,
+          subtitle: local?.subtitle ?? "",
+          description: sp.description || local?.description || "",
+          details: local?.details ?? "",
+          materialTags: local?.materialTags ?? [],
+          materials: local?.materials ?? "",
+          dimensions: local?.dimensions ?? "",
+          care: local?.care ?? "",
+          story: local?.story ?? "",
+          published: true,
+        },
+        imageSrc: sp.featuredImage?.url ?? sp.images[0]?.url,
+      };
+    });
 
   return (
     <main className="min-h-screen overflow-hidden text-brand-black">
@@ -126,11 +148,11 @@ export default async function Home() {
           </Reveal>
 
           <div className="grid grid-auto-rows-fr gap-5 md:grid-cols-2 xl:grid-cols-4">
-            {publishedProducts.map((product, index) => (
-              <Reveal key={product.name} delayMs={index * 60}>
+            {homeProducts.map(({ product, imageSrc }, index) => (
+              <Reveal key={product.handle} delayMs={index * 60}>
                 <ProductCard
                   product={product}
-                  imageSrc={imageByHandle[product.handle]}
+                  imageSrc={imageSrc}
                   showDetails={false}
                 />
               </Reveal>
@@ -230,7 +252,15 @@ export default async function Home() {
           fill
           quality={100}
           sizes="100vw"
-          className="object-cover"
+          className="object-cover md:hidden"
+        />
+        <Image
+          src="/brand/homepage-lifestyle-desktop.png"
+          alt="Stoffen vlaggenlijn opgehangen in een warme ruimte met planten"
+          fill
+          quality={100}
+          sizes="100vw"
+          className="hidden object-cover md:block"
         />
       </section>
 
