@@ -155,7 +155,7 @@ export function SiteHeader() {
         </div>
 
         <div className="relative hidden items-center justify-center lg:flex">
-          <nav className="flex items-center justify-center gap-6 text-xs uppercase tracking-[0.28em]">
+          <nav className="flex items-center justify-center gap-6 text-[0.975rem] uppercase tracking-[0.28em]">
             <Link className={navLinkClassName("/shop")} href="/shop">
               Shop
             </Link>
