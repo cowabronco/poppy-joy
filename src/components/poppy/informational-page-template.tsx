@@ -1,17 +1,19 @@
 import Link from "next/link";
-import { HeartHandshake, Leaf, Sparkles } from "lucide-react";
+import Image from "next/image";
 
 import { cn } from "@/lib/utils";
 
 import { Container } from "./container";
 import { DrawnHeart } from "./drawn-heart";
-import { EditorialHeading } from "./editorial-heading";
-
 type InformationalPageSection = {
   title: string;
   paragraphs: string[];
   variant?: "default" | "italic";
   signature?: string;
+  image?: string;
+  imageAlt?: string;
+  imageWidth?: number;
+  imageHeight?: number;
 };
 
 type InformationalPageMilestone = {
@@ -24,7 +26,9 @@ type InformationalPageCta = {
   eyebrow?: string;
   title: string;
   description: string;
+  variant?: "image" | "solid" | "outline";
   backgroundImage?: string;
+  backgroundColor?: string;
   primaryAction: {
     label: string;
     href: string;
@@ -40,10 +44,7 @@ type InformationalPageCta = {
 };
 
 export type InformationalPageTemplateProps = {
-  eyebrow: string;
   title: string;
-  intro: string;
-  highlights?: string[];
   heroBackgroundImage?: string;
   sections: InformationalPageSection[];
   milestones?: InformationalPageMilestone[];
@@ -53,10 +54,7 @@ export type InformationalPageTemplateProps = {
 };
 
 export function InformationalPageTemplate({
-  eyebrow,
   title,
-  intro,
-  highlights = [],
   heroBackgroundImage,
   sections,
   milestones = [],
@@ -64,11 +62,81 @@ export function InformationalPageTemplate({
   cta,
   className,
 }: InformationalPageTemplateProps) {
-  const supportingPointIcons = {
-    sparkles: Sparkles,
-    leaf: Leaf,
-    heart: HeartHandshake,
-  } as const;
+  const hasImageSection = sections.some((section) => section.image);
+  const ctaVariant = cta?.variant ?? (cta?.backgroundColor ? "solid" : "image");
+  const isLightCta = ctaVariant === "solid" || ctaVariant === "outline";
+
+  const ctaBlock = cta ? (
+    <div
+      className={cn(
+        "relative overflow-hidden rounded-[2.2rem] p-7 md:p-9",
+        ctaVariant === "outline" && "border border-border bg-transparent",
+        ctaVariant === "solid" && "border border-border",
+        ctaVariant === "image" &&
+          "border border-white/20 shadow-[0_18px_48px_-28px_rgba(36,32,32,0.7)]",
+      )}
+      style={
+        ctaVariant === "solid" && cta.backgroundColor
+          ? { backgroundColor: cta.backgroundColor }
+          : undefined
+      }
+    >
+      {ctaVariant === "image" ? (
+        <>
+          <div
+            aria-hidden
+            className="absolute inset-0 bg-cover bg-center"
+            style={{
+              backgroundImage: `url('${cta.backgroundImage ?? "https://cdn.shopify.com/s/files/1/0971/3359/2909/files/conversion-container-bg.png?v=1778763671"}')`,
+            }}
+          />
+          <div aria-hidden className="absolute inset-0 bg-brand-black/52" />
+        </>
+      ) : null}
+
+      <div className="relative max-w-xl">
+        <h2
+          className={cn(
+            "serif whitespace-pre-line text-4xl leading-tight md:text-5xl",
+            isLightCta ? "text-brand-black" : "text-brand-off-white",
+          )}
+        >
+          {cta.title}
+        </h2>
+        {cta.description ? (
+          <p
+            className={cn(
+              "mt-4 text-base leading-7",
+              isLightCta ? "text-brand-black/75" : "text-brand-off-white/85",
+            )}
+          >
+            {cta.description}
+          </p>
+        ) : null}
+        <div className="mt-6">
+          <Link
+            href={cta.primaryAction.href}
+            className="inline-flex rounded-full bg-brand-purple px-6 py-3 text-xs uppercase tracking-[0.22em] text-brand-off-white transition hover:bg-brand-purple/90"
+          >
+            {cta.primaryAction.label}
+          </Link>
+          {cta.secondaryAction ? (
+            <Link
+              href={cta.secondaryAction.href}
+              className={cn(
+                "ml-3 inline-flex rounded-full px-6 py-3 text-xs uppercase tracking-[0.22em] transition",
+                isLightCta
+                  ? "border border-brand-black/15 bg-brand-off-white/60 text-brand-black hover:bg-brand-off-white"
+                  : "border border-white/35 bg-white/10 text-brand-off-white hover:bg-white/20",
+              )}
+            >
+              {cta.secondaryAction.label}
+            </Link>
+          ) : null}
+        </div>
+      </div>
+    </div>
+  ) : null;
 
   return (
     <main
@@ -77,12 +145,7 @@ export function InformationalPageTemplate({
         className
       )}
     >
-      <section
-        className={cn(
-          "relative isolate overflow-hidden pt-20 md:pt-24",
-          heroBackgroundImage ? "" : "",
-        )}
-      >
+      <section className="relative isolate overflow-hidden pt-20 md:pt-24">
         {heroBackgroundImage ? (
           <>
             <div
@@ -100,81 +163,104 @@ export function InformationalPageTemplate({
             heroBackgroundImage ? "py-16 md:py-20" : "py-20 md:py-28",
           )}
         >
-          {heroBackgroundImage ? (
-            <div className="max-w-3xl">
-              <p className="text-xs uppercase tracking-[0.32em] text-brand-off-white/80">
-                {eyebrow}
-              </p>
-              <h1 className="serif mt-5 max-w-2xl text-5xl font-semibold leading-[0.95] text-brand-off-white md:text-7xl">
-                {title}
-              </h1>
-              <p className="mt-6 max-w-2xl text-lg leading-8 text-brand-off-white/85">
-                {intro}
-              </p>
-            </div>
-          ) : (
-            <EditorialHeading
-              eyebrow={eyebrow}
-              title={title}
-              description={intro}
-              className="max-w-4xl"
-            />
-          )}
-
-          {highlights.length > 0 ? (
-            <ul
-              className={cn(
-                "flex flex-wrap gap-3",
-                heroBackgroundImage ? "mt-6" : "mt-10",
-              )}
-            >
-              {highlights.map((highlight) => (
-                <li
-                  key={highlight}
-                  className={cn(
-                    "rounded-full px-4 py-2 text-[11px] uppercase tracking-[0.2em]",
-                    heroBackgroundImage
-                      ? "border border-white/30 bg-black/22 text-brand-off-white/90"
-                      : "border border-border bg-brand-beige text-brand-black/70",
-                  )}
-                >
-                  {highlight}
-                </li>
-              ))}
-            </ul>
-          ) : null}
+          <h1
+            className={cn(
+              "serif max-w-4xl text-5xl font-semibold leading-[0.95] md:text-7xl",
+              heroBackgroundImage
+                ? "max-w-2xl text-brand-off-white"
+                : "text-brand-black",
+            )}
+          >
+            {title}
+          </h1>
         </Container>
       </section>
 
       <section className="border-y border-border bg-card">
-        <Container className="grid gap-6 py-14 lg:grid-cols-2">
-          {sections.map((section) => (
-            <article
-              key={section.title}
-              className="rounded-[1.75rem] border border-border bg-brand-off-white/90 p-7 md:p-9"
-            >
-              <h2 className="serif text-3xl font-semibold text-brand-black md:text-4xl">
-                {section.title}
-              </h2>
+        <Container className="py-14">
+          <div className="grid gap-6 lg:grid-cols-2">
+            {sections.map((section) =>
+            section.image ? (
               <div
-                className={cn(
-                  "mt-5 space-y-4 text-base leading-7 text-brand-black/75",
-                  section.variant === "italic" &&
-                    "serif text-lg italic leading-[1.65] text-brand-black/85 md:text-[1.2rem] md:leading-[1.7]",
-                )}
+                key={section.title}
+                className="grid gap-6 lg:col-span-2 lg:grid-cols-2 lg:items-stretch"
               >
-                {section.paragraphs.map((paragraph) => (
-                  <p key={paragraph}>{paragraph}</p>
-                ))}
-                {section.signature ? (
-                  <p className="flex items-center gap-2 pt-2">
-                    <span>{section.signature}</span>
-                    <DrawnHeart className="h-[1.1em] w-[1.1em] translate-y-px text-brand-purple/75" />
-                  </p>
-                ) : null}
+                <div className="relative order-2 overflow-hidden rounded-[1.25rem] max-lg:aspect-[2/3] lg:order-1 lg:min-h-full">
+                  <Image
+                    src={section.image}
+                    alt={
+                      section.imageAlt ??
+                      "Sfeerbeeld bij het verhaal van Poppy Joy"
+                    }
+                    fill
+                    sizes="(min-width: 1024px) 50vw, 100vw"
+                    className="object-cover object-top"
+                  />
+                </div>
+
+                <div className="order-1 flex flex-col gap-6 lg:order-2">
+                  <article className="rounded-[1.75rem] border border-border bg-brand-off-white/90 p-7 md:p-9">
+                    <h2 className="serif text-3xl font-semibold text-brand-black md:text-4xl">
+                      {section.title}
+                    </h2>
+                    <div
+                      className={cn(
+                        "mt-5 space-y-4 text-base leading-7 text-brand-black/75",
+                        section.variant === "italic" &&
+                          "serif text-lg italic leading-[1.65] text-brand-black/85 md:text-[1.2rem] md:leading-[1.7]",
+                      )}
+                    >
+                      {section.paragraphs.map((paragraph) => (
+                        <p key={paragraph}>{paragraph}</p>
+                      ))}
+                      {section.signature ? (
+                        <p className="flex items-center gap-2 pt-2">
+                          <span>{section.signature}</span>
+                          <DrawnHeart
+                            animated
+                            className="h-[1.1em] w-[1.1em] translate-y-px text-brand-purple/75"
+                          />
+                        </p>
+                      ) : null}
+                    </div>
+                  </article>
+                  {ctaBlock}
+                </div>
               </div>
-            </article>
-          ))}
+            ) : (
+              <article
+                key={section.title}
+                className="rounded-[1.75rem] border border-border bg-brand-off-white/90 p-7 md:p-9"
+              >
+                <h2 className="serif text-3xl font-semibold text-brand-black md:text-4xl">
+                  {section.title}
+                </h2>
+                <div
+                  className={cn(
+                    "mt-5 space-y-4 text-base leading-7 text-brand-black/75",
+                    section.variant === "italic" &&
+                      "serif text-lg italic leading-[1.65] text-brand-black/85 md:text-[1.2rem] md:leading-[1.7]",
+                  )}
+                >
+                  {section.paragraphs.map((paragraph) => (
+                    <p key={paragraph}>{paragraph}</p>
+                  ))}
+                  {section.signature ? (
+                    <p className="flex items-center gap-2 pt-2">
+                      <span>{section.signature}</span>
+                      <DrawnHeart
+                        animated
+                        className="h-[1.1em] w-[1.1em] translate-y-px text-brand-purple/75"
+                      />
+                    </p>
+                  ) : null}
+                </div>
+              </article>
+            )
+          )}
+          </div>
+
+          {!hasImageSection ? ctaBlock : null}
         </Container>
       </section>
 
@@ -238,85 +324,6 @@ export function InformationalPageTemplate({
                   </li>
                 ))}
               </ol>
-            </div>
-          </Container>
-        </section>
-      ) : null}
-
-      {cta ? (
-        <section className="pt-10 pb-20 md:pt-14">
-          <Container>
-            <div className="relative overflow-hidden rounded-[2.2rem] border border-white/20 p-7 shadow-[0_18px_48px_-28px_rgba(36,32,32,0.7)] md:p-9">
-              <div
-                aria-hidden
-                className="absolute inset-0 bg-cover bg-center"
-                style={{
-                  backgroundImage: `url('${cta.backgroundImage ?? "https://cdn.shopify.com/s/files/1/0971/3359/2909/files/conversion-container-bg.png?v=1778763671"}')`,
-                }}
-              />
-              <div
-                aria-hidden
-                className="absolute inset-0 bg-brand-black/52"
-              />
-
-              <div className="relative grid gap-6 lg:grid-cols-[1.1fr_0.9fr] lg:gap-8">
-                <div className="flex flex-col">
-                  <div className="max-w-xl">
-                    {cta.eyebrow ? (
-                      <p className="inline-flex rounded-full border border-white/30 bg-white/10 px-3 py-1 text-[11px] uppercase tracking-[0.24em] text-brand-off-white/90">
-                        {cta.eyebrow}
-                      </p>
-                    ) : null}
-                    <h2 className="serif mt-3 max-w-lg text-4xl leading-tight text-brand-off-white md:text-5xl">
-                      {cta.title}
-                    </h2>
-                    <p className="mt-4 max-w-xl text-base leading-7 text-brand-off-white/85">
-                      {cta.description}
-                    </p>
-                  </div>
-
-                  <div className="mt-6 flex flex-col items-start gap-3">
-                    <Link
-                      href={cta.primaryAction.href}
-                      className="inline-flex rounded-full bg-brand-purple px-6 py-3 text-xs uppercase tracking-[0.22em] text-brand-off-white transition hover:bg-brand-purple/90"
-                    >
-                      {cta.primaryAction.label}
-                    </Link>
-                    {cta.secondaryAction ? (
-                      <Link
-                        href={cta.secondaryAction.href}
-                      className="inline-flex rounded-full border border-white/35 bg-white/10 px-6 py-3 text-xs uppercase tracking-[0.22em] text-brand-off-white transition hover:bg-white/20"
-                      >
-                        {cta.secondaryAction.label}
-                      </Link>
-                    ) : null}
-                  </div>
-                </div>
-
-                {cta.supportingPoints?.length ? (
-                  <ul className="grid content-center gap-3 lg:max-w-sm lg:justify-self-end">
-                    {cta.supportingPoints.map((point) => {
-                      const Icon = supportingPointIcons[point.icon ?? "sparkles"];
-
-                      return (
-                        <li
-                          key={point.label}
-                          className="rounded-2xl border border-white/25 bg-black/18 px-4 py-4 backdrop-blur-sm"
-                        >
-                          <div className="flex items-center gap-3">
-                            <span className="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-white/14 text-brand-off-white">
-                              <Icon size={16} />
-                            </span>
-                            <p className="text-xs uppercase tracking-[0.18em] text-brand-off-white/90">
-                              {point.label}
-                            </p>
-                          </div>
-                        </li>
-                      );
-                    })}
-                  </ul>
-                ) : null}
-              </div>
             </div>
           </Container>
         </section>

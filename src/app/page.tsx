@@ -59,6 +59,9 @@ const careCards = [
 const homeHeroImage =
   "https://cdn.shopify.com/s/files/1/0971/3359/2909/files/hero.jpg?v=1779897558";
 
+const homeLifestyleImage =
+  "https://cdn.shopify.com/s/files/1/0971/3359/2909/files/hompage-support-foto.jpg?v=1782844633";
+
 export default async function Home() {
   const imageByHandle = await getFeaturedImageByHandle();
 
@@ -222,7 +225,7 @@ export default async function Home() {
 
       <section className="relative h-[50vh] min-h-[320px] w-full md:h-[60vh]">
         <Image
-          src="/story/home-lifestyle.jpg"
+          src={homeLifestyleImage}
           alt="Sfeerbeeld van een gedekte tafel met stoffen vlaggenlijn in een warme ruimte"
           fill
           quality={90}

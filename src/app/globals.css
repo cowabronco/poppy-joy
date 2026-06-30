@@ -144,6 +144,21 @@ body {
   }
 }
 
+.drawn-heart-beat {
+  animation: drawnHeartBeat 2.8s ease-in-out infinite;
+  transform-origin: center;
+}
+
+@keyframes drawnHeartBeat {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.12);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .loading-sheen {
     animation: none;
@@ -163,6 +178,10 @@ body {
     opacity: 1;
     transform: none;
     transition: none;
+  }
+
+  .drawn-heart-beat {
+    animation: none;
   }
 }
 
