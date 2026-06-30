@@ -52,7 +52,7 @@ export function SiteHeader() {
     const isActive =
       href === "/" ? pathname === "/" : pathname.startsWith(href);
 
-    return `relative font-medium transition-colors duration-300 after:absolute after:bottom-0 after:left-0 after:h-[1px] after:w-full after:origin-left after:transition-transform after:duration-300 after:ease-out hover:after:scale-x-100 ${
+    return `relative font-semibold transition-colors duration-300 after:absolute after:bottom-0 after:left-0 after:h-[1px] after:w-full after:origin-left after:transition-transform after:duration-300 after:ease-out hover:after:scale-x-100 ${
       isActive ? "after:scale-x-100" : "after:scale-x-0"
     } ${
       useSolidHeader
