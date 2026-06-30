@@ -2,12 +2,12 @@ import { Container } from "@/components/poppy";
 
 export default function ProductLoading() {
   return (
-    <main className="min-h-screen bg-brand-off-white pt-28 text-brand-black md:pt-32">
+    <main className="min-h-screen bg-brand-off-white pt-24 text-brand-black md:pt-28">
       <Container className="pb-16 lg:pb-24">
         <div className="loading-sheen h-4 w-32 rounded-full" />
 
-        <div className="mt-8 grid gap-10 lg:grid-cols-[minmax(0,1.15fr)_minmax(400px,0.85fr)] xl:grid-cols-[minmax(0,1.2fr)_minmax(420px,0.8fr)] lg:items-start">
-          <div className="loading-sheen aspect-[4/5] rounded-[2rem]" />
+        <div className="mt-5 grid gap-10 lg:mt-6 lg:grid-cols-[minmax(0,1.15fr)_minmax(400px,0.85fr)] xl:grid-cols-[minmax(0,1.2fr)_minmax(420px,0.8fr)] lg:items-start">
+          <div className="loading-sheen h-[calc(100svh-11.5rem)] min-h-48 rounded-[2rem] sm:h-[calc(100svh-10.5rem)] lg:h-[calc(100svh-9rem)]" />
 
           <div className="rounded-[2rem] border border-border bg-[#F2EDE3] p-6 sm:p-8">
             <div className="loading-sheen h-3 w-28 rounded-full" />

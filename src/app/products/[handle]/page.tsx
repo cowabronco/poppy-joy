@@ -123,7 +123,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
   ];
 
   return (
-    <main className="min-h-screen bg-brand-off-white pt-28 text-brand-black md:pt-32">
+    <main className="min-h-screen bg-brand-off-white pt-24 text-brand-black md:pt-28">
       <Container className="pb-16 lg:pb-24">
         <Reveal>
           <Link
@@ -134,7 +134,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
           </Link>
         </Reveal>
 
-        <section className="mt-8 grid gap-10 lg:grid-cols-[minmax(0,1.15fr)_minmax(400px,0.85fr)] xl:grid-cols-[minmax(0,1.2fr)_minmax(420px,0.8fr)] lg:items-start">
+        <section className="mt-5 grid gap-10 lg:mt-6 lg:grid-cols-[minmax(0,1.15fr)_minmax(400px,0.85fr)] xl:grid-cols-[minmax(0,1.2fr)_minmax(420px,0.8fr)] lg:items-start">
           <Reveal>
             <ProductGallery media={galleryImages} productName={product.name} />
           </Reveal>

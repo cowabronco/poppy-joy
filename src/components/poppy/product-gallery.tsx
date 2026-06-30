@@ -10,9 +10,14 @@ import { cn } from "@/lib/utils";
 type ProductGalleryProps = {
   media: MediaAsset[];
   productName: string;
+  className?: string;
 };
 
-export function ProductGallery({ media, productName }: ProductGalleryProps) {
+export function ProductGallery({
+  media,
+  productName,
+  className,
+}: ProductGalleryProps) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isImageLoaded, setIsImageLoaded] = useState(false);
   const activeMedia = media[activeIndex] ?? media[0];
@@ -69,8 +74,13 @@ export function ProductGallery({ media, productName }: ProductGalleryProps) {
   }, [goToNext, goToPrevious, hasMultipleImages]);
 
   return (
-    <div className="space-y-4">
-      <div className="relative aspect-[4/5] overflow-hidden rounded-[2rem] border border-border bg-brand-beige">
+    <div
+      className={cn(
+        "flex h-[calc(100svh-11.5rem)] min-h-0 flex-col gap-3 sm:h-[calc(100svh-10.5rem)] lg:h-[calc(100svh-9rem)]",
+        className
+      )}
+    >
+      <div className="relative min-h-0 flex-1 overflow-hidden rounded-[2rem] border border-border bg-brand-beige">
         {activeMedia?.src ? (
           <>
             {!isImageLoaded ? (
@@ -127,7 +137,7 @@ export function ProductGallery({ media, productName }: ProductGalleryProps) {
 
       {hasMultipleImages ? (
         <div
-          className="flex gap-3 overflow-x-auto pb-1"
+          className="flex shrink-0 gap-2.5 overflow-x-auto pb-1 sm:gap-3"
           aria-label={`${productName} afbeeldingen`}
         >
           {media.map((item, index) => {
