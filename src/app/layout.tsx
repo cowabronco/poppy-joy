@@ -1,4 +1,5 @@
 import { Cormorant_Garamond, Instrument_Sans } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 import { PageMotion } from "@/components/poppy/page-motion";
 import { SiteFooter } from "@/components/poppy/site-footer";
@@ -36,6 +37,7 @@ export default function RootLayout({
         <SiteHeader />
         <PageMotion>{children}</PageMotion>
         <SiteFooter />
+        <Analytics />
       </body>
     </html>
   );
