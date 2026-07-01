@@ -42,7 +42,7 @@ import {
   getProductByHandle,
   type Product,
 } from "@/lib/products";
-import { pageMetadata } from "@/lib/site-metadata";
+import { pageMetadata, defaultSocialImage } from "@/lib/site-metadata";
 
 type ProductPageProps = {
   params: Promise<{ handle: string }>;
@@ -58,14 +58,25 @@ export async function generateMetadata({
 }: ProductPageProps): Promise<Metadata> {
   const { handle } = await params;
   const local = getProductByHandle(handle);
-
-  if (local) {
-    return pageMetadata(local.name, local.description);
-  }
-
   const sp = await getStorefrontProductByHandle(handle);
-  if (!sp) return {};
-  return pageMetadata(sp.title, sp.description);
+
+  const title = local?.name ?? sp?.title;
+  const description = local?.description ?? sp?.description;
+  if (!title || !description) return {};
+
+  const featured = sp?.featuredImage ?? sp?.images[0];
+  const images = featured
+    ? [
+        {
+          url: featured.url,
+          width: featured.width ?? defaultSocialImage.width,
+          height: featured.height ?? defaultSocialImage.height,
+          alt: featured.altText ?? title,
+        },
+      ]
+    : undefined;
+
+  return pageMetadata(title, description, images ? { images } : undefined);
 }
 
 function formatPrice(price?: { amount: string; currencyCode: string }) {

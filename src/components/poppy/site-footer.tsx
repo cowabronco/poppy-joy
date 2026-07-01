@@ -87,6 +87,17 @@ export function SiteFooter() {
             </svg>
           </a>
         </div>
+        <p className="mt-8 text-center text-[11px] tracking-[0.18em] text-brand-black/45">
+          Built by{" "}
+          <a
+            href="https://blablabuild.com/"
+            target="_blank"
+            rel="noreferrer"
+            className="transition hover:text-brand-purple"
+          >
+            blablabuild
+          </a>
+        </p>
       </Container>
     </footer>
   );

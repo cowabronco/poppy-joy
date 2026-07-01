@@ -6,6 +6,32 @@ const defaultTitle = "Poppy Joy | Designed to stay";
 const defaultDescription =
   "Handgemaakte herbruikbare stoffen vlaggenlijnen voor momenten die vreugde verdienen. Designed to stay. Made with love.";
 
+export const defaultSocialImage = {
+  url: "/brand/featured-image.jpg",
+  width: 1200,
+  height: 630,
+  alt: "Poppy Joy featured image",
+} as const;
+
+type SocialImage = {
+  url: string;
+  width?: number;
+  height?: number;
+  alt?: string;
+};
+
+function socialMetadata(images: SocialImage[] = [defaultSocialImage]) {
+  return {
+    openGraph: {
+      images,
+    },
+    twitter: {
+      card: "summary_large_image" as const,
+      images: images.map((image) => image.url),
+    },
+  };
+}
+
 export const rootMetadata: Metadata = {
   metadataBase: new URL("https://poppyjoy.nl"),
   title: {
@@ -19,40 +45,37 @@ export const rootMetadata: Metadata = {
     siteName: "Poppy Joy",
     title: defaultTitle,
     description: defaultDescription,
-    images: [
-      {
-        url: "/brand/featured-image.jpg",
-        width: 1200,
-        height: 630,
-        alt: "Poppy Joy featured image",
-      },
-    ],
+    ...socialMetadata().openGraph,
   },
   twitter: {
-    card: "summary_large_image",
     title: defaultTitle,
     description: defaultDescription,
-    images: ["/brand/featured-image.jpg"],
+    ...socialMetadata().twitter,
   },
 };
 
 export function pageMetadata(
   title: string,
   description: string,
-  options?: { absolute?: boolean }
+  options?: { absolute?: boolean; images?: SocialImage[] }
 ): Metadata {
+  const resolvedTitle = options?.absolute
+    ? title
+    : `${title} | Poppy Joy · Designed to stay`;
+  const social = socialMetadata(options?.images);
+
   return {
-    title: options?.absolute
-      ? { absolute: title }
-      : title,
+    title: options?.absolute ? { absolute: title } : title,
     description,
     openGraph: {
-      title: options?.absolute ? title : `${title} | Poppy Joy · Designed to stay`,
+      title: resolvedTitle,
       description,
+      ...social.openGraph,
     },
     twitter: {
-      title: options?.absolute ? title : `${title} | Poppy Joy · Designed to stay`,
+      title: resolvedTitle,
       description,
+      ...social.twitter,
     },
   };
 }
