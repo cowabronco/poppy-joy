@@ -37,16 +37,17 @@ import {
   isProductAvailableForPurchase,
 } from "@/lib/shopify/availability";
 import {
-  getFeaturedImageByHandle,
   getStorefrontProductByHandle,
   getStorefrontProducts,
 } from "@/lib/shopify/products";
-import type { ShopifyImage, StorefrontProduct } from "@/lib/shopify/types";
 import {
-  formatProductDescription,
-  getProductByHandle,
-  type Product,
-} from "@/lib/products";
+  buildProductFactList,
+  getGalleryImages,
+  getPrimaryImageUrl,
+  getProductSummaryFacts,
+  mapStorefrontToDisplayProduct,
+} from "@/lib/shopify/to-product";
+import { formatProductDescription } from "@/lib/products";
 import { pageMetadata, defaultSocialImage } from "@/lib/site-metadata";
 
 type ProductPageProps = {
@@ -59,71 +60,48 @@ export async function generateMetadata({
   params,
 }: ProductPageProps): Promise<Metadata> {
   const { handle } = await params;
-  const local = getProductByHandle(handle);
   const sp = await getStorefrontProductByHandle(handle);
 
-  const title = sp?.title ?? local?.name;
-  const description = sp?.description || local?.description;
-  if (!title || !description) return {};
+  if (!sp?.title || !sp.description) {
+    return {};
+  }
 
-  const featured = sp?.featuredImage ?? sp?.images[0];
+  const featured = sp.featuredImage ?? sp.images[0];
   const images = featured
     ? [
         {
           url: featured.url,
           width: featured.width ?? defaultSocialImage.width,
           height: featured.height ?? defaultSocialImage.height,
-          alt: featured.altText ?? title,
+          alt: featured.altText ?? sp.title,
         },
       ]
     : undefined;
 
-  return pageMetadata(title, description, images ? { images } : undefined);
+  return pageMetadata(sp.title, sp.description, images ? { images } : undefined);
 }
 
 function formatPrice(price?: { amount: string; currencyCode: string }) {
   return formatMoney(price ?? null);
 }
 
-function getGalleryImages(images: ShopifyImage[], productName: string) {
-  return images.map((image, index) => ({
-    type: "image" as const,
-    src: image.url,
-    alt: image.altText ?? `${productName} productafbeelding ${index + 1}`,
-    aspectRatio: "4:5" as const,
-  }));
-}
-
-function buildProductFacts(local: Product | undefined, sp: StorefrontProduct | null) {
-  const facts: string[] = [];
-  const materials = local?.materials?.replace(/\.$/, "");
-  if (materials) facts.push(materials);
-  facts.push("Dubbelzijdig gestikt");
-  facts.push("Handgemaakt in small batches");
-  return facts;
-}
-
 export default async function ProductPage({ params }: ProductPageProps) {
   const { handle } = await params;
-  const local = getProductByHandle(handle);
 
-  let storefrontProduct: StorefrontProduct | null = null;
-  let imageByHandle: Record<string, string> = {};
+  let storefrontProduct = null;
 
   try {
-    [storefrontProduct, imageByHandle] = await Promise.all([
-      getStorefrontProductByHandle(handle),
-      getFeaturedImageByHandle(),
-    ]);
+    storefrontProduct = await getStorefrontProductByHandle(handle);
   } catch (error) {
     console.error(`Unable to load Shopify product ${handle}.`, error);
   }
 
-  if (!local && !storefrontProduct) {
+  if (!storefrontProduct) {
     notFound();
   }
 
-  const productName = storefrontProduct?.title ?? local?.name ?? handle;
+  const displayProduct = mapStorefrontToDisplayProduct(storefrontProduct);
+  const productName = storefrontProduct.title;
   const {
     canAddToCart,
     isSoldOut,
@@ -132,7 +110,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
     availabilityLabel,
   } = getProductPurchaseState(storefrontProduct);
   const galleryImages = getGalleryImages(
-    storefrontProduct?.images ?? [],
+    storefrontProduct.images,
     productName
   );
 
@@ -140,45 +118,22 @@ export default async function ProductPage({ params }: ProductPageProps) {
   const relatedSPs = allStorefrontProducts
     .filter((p) => p.handle !== handle)
     .slice(0, 3);
-  const relatedProducts: Array<{
-    product: Product;
-    imageSrc?: string;
-    soldOut: boolean;
-  }> = relatedSPs.map((sp) => {
-      const relLocal = getProductByHandle(sp.handle);
-      return {
-        product: {
-          handle: sp.handle,
-          name: sp.title,
-          price: formatMoney(sp.price) ?? `€${Number(sp.price.amount).toFixed(2).replace(".", ",")}`,
-          subtitle: relLocal?.subtitle ?? "",
-          description: sp.description || relLocal?.description || "",
-          details: relLocal?.details ?? "",
-          materialTags: relLocal?.materialTags ?? [],
-          materials: relLocal?.materials ?? "",
-          dimensions: relLocal?.dimensions ?? "",
-          care: relLocal?.care ?? "",
-          story: relLocal?.story ?? "",
-          published: true,
-        },
-        imageSrc: imageByHandle[sp.handle] ?? sp.featuredImage?.url,
-        soldOut: !isProductAvailableForPurchase(sp),
-      };
-    });
+  const relatedProducts = relatedSPs.map((sp) => ({
+    product: mapStorefrontToDisplayProduct(sp),
+    imageSrc: getPrimaryImageUrl(sp),
+    soldOut: !isProductAvailableForPurchase(sp),
+  }));
 
-  const displayPrice =
-    formatPrice(displayVariant?.price) ??
-    local?.price ??
-    formatPrice(storefrontProduct?.price);
+  const displayPrice = formatPrice(displayVariant?.price);
   const addToCartLabel = getAddToCartLabel(canAddToCart, isSoldOut);
-  const productDescription = formatProductDescription(
-    storefrontProduct?.description || local?.description || ""
-  );
+  const productDescription = formatProductDescription(displayProduct.description);
+  const { flagCount, productLength } = getProductSummaryFacts(storefrontProduct);
   const productSummaryFacts = [
-    { label: "Vlaggetjes", value: "12", Icon: Flag },
-    { label: "Totale lengte", value: "450 cm", Icon: Ruler },
+    { label: "Vlaggetjes", value: String(flagCount), Icon: Flag },
+    { label: "Totale lengte", value: `${productLength} cm`, Icon: Ruler },
   ];
-  const productFacts = buildProductFacts(local, storefrontProduct);
+  const productFacts = buildProductFactList(displayProduct);
+  const dropLabel = storefrontProduct.metafields.drop ?? "Celebrate Joy";
 
   return (
     <main className="min-h-screen bg-brand-off-white pt-24 text-brand-black md:pt-28">
@@ -200,7 +155,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
           <Reveal delayMs={80}>
             <article className="rounded-[2rem] border border-border bg-[#F2EDE3] p-6 sm:p-8 lg:sticky lg:top-28 xl:top-32">
             <p className="text-xs uppercase tracking-[0.28em] text-brand-purple">
-              Celebrate Joy
+              {dropLabel}
             </p>
             <div className="mt-5 grid gap-3">
               <div>
@@ -306,23 +261,23 @@ export default async function ProductPage({ params }: ProductPageProps) {
                   {productDescription}
                 </AccordionContent>
               </AccordionItem>
-              {(local?.details) ? (
+              {(displayProduct.details) ? (
               <AccordionItem value="details" className="border-border">
                 <AccordionTrigger className="py-4 text-xs uppercase tracking-[0.22em] text-brand-black/70 hover:no-underline">
                   Productdetails
                 </AccordionTrigger>
                 <AccordionContent className="pb-5 text-sm leading-6 text-brand-black/65">
-                  {local.details}
+                  {displayProduct.details}
                 </AccordionContent>
               </AccordionItem>
               ) : null}
-              {(local?.care) ? (
+              {(displayProduct.care) ? (
               <AccordionItem value="care" className="border-border">
                 <AccordionTrigger className="py-4 text-xs uppercase tracking-[0.22em] text-brand-black/70 hover:no-underline">
                   Wasadvies
                 </AccordionTrigger>
                 <AccordionContent className="pb-5 text-sm leading-6 text-brand-black/65">
-                  {local.care}
+                  {displayProduct.care}
                 </AccordionContent>
               </AccordionItem>
               ) : null}
@@ -352,14 +307,14 @@ export default async function ProductPage({ params }: ProductPageProps) {
         </Container>
       </section>
 
-      {local?.story ? (
+      {displayProduct.story ? (
       <section className="py-16 lg:py-24">
         <Container>
           <Reveal>
             <div className="rounded-[2rem] border border-border bg-brand-beige p-8 md:p-10">
               <Leaf className="h-6 w-6 text-brand-green" />
               <p className="serif mt-6 text-3xl leading-tight text-brand-black md:text-4xl">
-                {local.story}
+                {displayProduct.story}
               </p>
               <p className="mt-6 text-sm leading-6 text-brand-black/62">
                 Bewaar de lijn na gebruik rustig op in een droge kast of lade. Zo

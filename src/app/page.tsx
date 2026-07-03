@@ -19,9 +19,12 @@ import {
 import { pageDescriptions, pageMetadata } from "@/lib/site-metadata";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { getProductByHandle, values, type Product } from "@/lib/products";
+import { values } from "@/lib/products";
 import { getStorefrontProducts } from "@/lib/shopify/products";
-import { formatMoney } from "@/lib/money";
+import {
+  getPrimaryImageUrl,
+  mapStorefrontToDisplayProduct,
+} from "@/lib/shopify/to-product";
 
 export const metadata: Metadata = pageMetadata(
   "Poppy Joy | For moments that deserve joy · Designed to stay",
@@ -67,27 +70,10 @@ const homeLifestyleImage =
 
 export default async function Home() {
   const storefrontProducts = await getStorefrontProducts(50);
-  const homeProducts: Array<{ product: Product; imageSrc?: string }> =
-    storefrontProducts.map((sp) => {
-      const local = getProductByHandle(sp.handle);
-      return {
-        product: {
-          handle: sp.handle,
-          name: sp.title,
-          price: formatMoney(sp.price) ?? `€${Number(sp.price.amount).toFixed(2).replace(".", ",")}`,
-          subtitle: local?.subtitle ?? "",
-          description: sp.description || local?.description || "",
-          details: local?.details ?? "",
-          materialTags: local?.materialTags ?? [],
-          materials: local?.materials ?? "",
-          dimensions: local?.dimensions ?? "",
-          care: local?.care ?? "",
-          story: local?.story ?? "",
-          published: true,
-        },
-        imageSrc: sp.featuredImage?.url ?? sp.images[0]?.url,
-      };
-    });
+  const homeProducts = storefrontProducts.map((sp) => ({
+    product: mapStorefrontToDisplayProduct(sp),
+    imageSrc: getPrimaryImageUrl(sp),
+  }));
 
   return (
     <main className="min-h-screen overflow-hidden text-brand-black">

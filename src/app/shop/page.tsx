@@ -2,12 +2,12 @@ import type { Metadata } from "next";
 
 import { Container, ShopFilterableGrid } from "@/components/poppy";
 import { pageDescriptions, pageMetadata } from "@/lib/site-metadata";
-import { getProductByHandle } from "@/lib/products";
 import { getStorefrontProducts } from "@/lib/shopify/products";
-import { formatMoney } from "@/lib/money";
 import { getProductAvailabilityLabel, isProductAvailableForPurchase } from "@/lib/shopify/availability";
-import type { StorefrontProduct } from "@/lib/shopify/types";
-import type { Product } from "@/lib/products";
+import {
+  getPrimaryImageUrl,
+  mapStorefrontToDisplayProduct,
+} from "@/lib/shopify/to-product";
 
 const productFilterMetadata: Record<string, { colors: string[] }> = {
   "zig-zag": { colors: ["Warm", "Limoen"] },
@@ -17,25 +17,6 @@ const productFilterMetadata: Record<string, { colors: string[] }> = {
   "cobalt-blue": { colors: ["Cobalt"] },
 };
 
-function storefrontToProduct(sp: StorefrontProduct): Product {
-  const local = getProductByHandle(sp.handle);
-
-  return {
-    handle: sp.handle,
-    name: sp.title,
-    price: formatMoney(sp.price) ?? `€${Number(sp.price.amount).toFixed(2).replace(".", ",")}`,
-    subtitle: local?.subtitle ?? "",
-    description: sp.description || local?.description || "",
-    details: local?.details ?? "",
-    materialTags: local?.materialTags ?? [],
-    materials: local?.materials ?? "",
-    dimensions: local?.dimensions ?? "",
-    care: local?.care ?? "",
-    story: local?.story ?? "",
-    published: true,
-  };
-}
-
 export const metadata: Metadata = pageMetadata("Shop", pageDescriptions.shop);
 
 export const dynamic = "force-dynamic";
@@ -44,12 +25,12 @@ export default async function ShopPage() {
   const storefrontProducts = await getStorefrontProducts(50);
 
   const entries = storefrontProducts.map((sp) => {
-    const product = storefrontToProduct(sp);
+    const product = mapStorefrontToDisplayProduct(sp);
     const filterMeta = productFilterMetadata[sp.handle];
 
     return {
       product,
-      imageSrc: sp.featuredImage?.url ?? sp.images[0]?.url,
+      imageSrc: getPrimaryImageUrl(sp),
       filters: {
         collection: "Celebrate Joy" as const,
         materials: product.materialTags,

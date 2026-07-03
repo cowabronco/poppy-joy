@@ -12,6 +12,10 @@ export {
   getStorefrontProductByHandle,
   getStorefrontProducts,
 } from "./products";
+export {
+  getPrimaryImageUrl,
+  mapStorefrontToDisplayProduct,
+} from "./to-product";
 export type { CartLineInput } from "./cart";
 export type {
   ShopifyCart,

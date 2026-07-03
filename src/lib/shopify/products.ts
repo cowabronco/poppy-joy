@@ -99,23 +99,3 @@ export async function isStorefrontVariantAvailableForSale(
 
   return Boolean(data?.node?.availableForSale);
 }
-
-export async function getFeaturedImageByHandle(): Promise<Record<string, string>> {
-  try {
-    const storefrontProducts = await getStorefrontProducts(20);
-
-    return storefrontProducts.reduce<Record<string, string>>((acc, product) => {
-      const imageUrl =
-        product.featuredImage?.url ?? product.images[0]?.url ?? null;
-
-      if (imageUrl) {
-        acc[product.handle] = imageUrl;
-      }
-
-      return acc;
-    }, {});
-  } catch (error) {
-    console.error("Unable to load Shopify product images.", error);
-    return {};
-  }
-}
