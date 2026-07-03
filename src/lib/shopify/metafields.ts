@@ -61,13 +61,19 @@ function parseMetafieldInteger(value: string): number | null {
 }
 
 export function parseProductMetafields(
-  metafields: ShopifyMetafieldNode[] | null | undefined
+  metafields: (ShopifyMetafieldNode | null)[] | null | undefined
 ): StorefrontProductMetafields {
-  if (!metafields?.length) {
+  const definedMetafields = metafields?.filter(
+    (metafield): metafield is ShopifyMetafieldNode => metafield != null
+  );
+
+  if (!definedMetafields?.length) {
     return EMPTY_METAFIELDS;
   }
 
-  const byKey = new Map(metafields.map((metafield) => [metafield.key, metafield]));
+  const byKey = new Map(
+    definedMetafields.map((metafield) => [metafield.key, metafield])
+  );
 
   return {
     material: byKey.get("material")?.value ?? null,

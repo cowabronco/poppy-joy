@@ -52,7 +52,7 @@ export type ShopifyProductNode = {
       node: ShopifyProductVariant;
     }>;
   };
-  metafields: ShopifyMetafield[];
+  metafields: (ShopifyMetafield | null)[];
 };
 
 export type StorefrontProduct = {
