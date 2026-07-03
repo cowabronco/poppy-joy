@@ -1,3 +1,5 @@
+import type { StorefrontProductMetafields } from "./metafields";
+
 export type ShopifyMoney = {
   amount: string;
   currencyCode: string;
@@ -19,6 +21,13 @@ export type ShopifyProductVariant = {
     name: string;
     value: string;
   }>;
+};
+
+export type ShopifyMetafield = {
+  namespace: string;
+  key: string;
+  value: string;
+  type: string;
 };
 
 export type ShopifyProductNode = {
@@ -43,6 +52,7 @@ export type ShopifyProductNode = {
       node: ShopifyProductVariant;
     }>;
   };
+  metafields: ShopifyMetafield[];
 };
 
 export type StorefrontProduct = {
@@ -56,6 +66,7 @@ export type StorefrontProduct = {
   featuredImage: ShopifyImage | null;
   images: ShopifyImage[];
   variants: ShopifyProductVariant[];
+  metafields: StorefrontProductMetafields;
 };
 
 export type ShopifyCollectionNode = {

@@ -5,18 +5,16 @@ import { pageDescriptions, pageMetadata } from "@/lib/site-metadata";
 import { getProductByHandle } from "@/lib/products";
 import { getStorefrontProducts } from "@/lib/shopify/products";
 import { formatMoney } from "@/lib/money";
+import { getProductAvailabilityLabel, isProductAvailableForPurchase } from "@/lib/shopify/availability";
 import type { StorefrontProduct } from "@/lib/shopify/types";
 import type { Product } from "@/lib/products";
 
-const productFilterMetadata: Record<
-  string,
-  { colors: string[]; availability: "Op voorraad" | "Binnenkort" }
-> = {
-  "zig-zag": { colors: ["Warm", "Limoen"], availability: "Op voorraad" },
-  "double-joy": { colors: ["Pistache", "Paars"], availability: "Op voorraad" },
-  "poppy-dots": { colors: ["Mosgroen"], availability: "Op voorraad" },
-  "wavy-joy": { colors: ["Aardetinten", "Turquoise"], availability: "Op voorraad" },
-  "cobalt-blue": { colors: ["Cobalt"], availability: "Op voorraad" },
+const productFilterMetadata: Record<string, { colors: string[] }> = {
+  "zig-zag": { colors: ["Warm", "Limoen"] },
+  "double-joy": { colors: ["Pistache", "Paars"] },
+  "poppy-dots": { colors: ["Mosgroen"] },
+  "wavy-joy": { colors: ["Aardetinten", "Turquoise"] },
+  "cobalt-blue": { colors: ["Cobalt"] },
 };
 
 function storefrontToProduct(sp: StorefrontProduct): Product {
@@ -40,6 +38,8 @@ function storefrontToProduct(sp: StorefrontProduct): Product {
 
 export const metadata: Metadata = pageMetadata("Shop", pageDescriptions.shop);
 
+export const dynamic = "force-dynamic";
+
 export default async function ShopPage() {
   const storefrontProducts = await getStorefrontProducts(50);
 
@@ -54,11 +54,9 @@ export default async function ShopPage() {
         collection: "Celebrate Joy" as const,
         materials: product.materialTags,
         colors: filterMeta?.colors ?? [],
-        availability: (filterMeta?.availability ??
-          (sp.availableForSale ? "Op voorraad" : "Binnenkort")) as
-          | "Op voorraad"
-          | "Binnenkort",
+        availability: getProductAvailabilityLabel(sp),
       },
+      soldOut: !isProductAvailableForPurchase(sp),
     };
   });
 

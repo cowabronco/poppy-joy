@@ -32,6 +32,11 @@ import {
 import { addToCart } from "@/lib/cart/actions";
 import { formatMoney } from "@/lib/money";
 import {
+  getAddToCartLabel,
+  getProductPurchaseState,
+  isProductAvailableForPurchase,
+} from "@/lib/shopify/availability";
+import {
   getFeaturedImageByHandle,
   getStorefrontProductByHandle,
   getStorefrontProducts,
@@ -48,10 +53,7 @@ type ProductPageProps = {
   params: Promise<{ handle: string }>;
 };
 
-export async function generateStaticParams() {
-  const storefrontProducts = await getStorefrontProducts(50);
-  return storefrontProducts.map((p) => ({ handle: p.handle }));
-}
+export const dynamic = "force-dynamic";
 
 export async function generateMetadata({
   params,
@@ -60,8 +62,8 @@ export async function generateMetadata({
   const local = getProductByHandle(handle);
   const sp = await getStorefrontProductByHandle(handle);
 
-  const title = local?.name ?? sp?.title;
-  const description = local?.description ?? sp?.description;
+  const title = sp?.title ?? local?.name;
+  const description = sp?.description || local?.description;
   if (!title || !description) return {};
 
   const featured = sp?.featuredImage ?? sp?.images[0];
@@ -122,9 +124,13 @@ export default async function ProductPage({ params }: ProductPageProps) {
   }
 
   const productName = storefrontProduct?.title ?? local?.name ?? handle;
-  const activeVariant = storefrontProduct?.variants.find(
-    (variant) => variant.availableForSale
-  );
+  const {
+    canAddToCart,
+    isSoldOut,
+    displayVariant,
+    purchasableVariant,
+    availabilityLabel,
+  } = getProductPurchaseState(storefrontProduct);
   const galleryImages = getGalleryImages(
     storefrontProduct?.images ?? [],
     productName
@@ -134,8 +140,11 @@ export default async function ProductPage({ params }: ProductPageProps) {
   const relatedSPs = allStorefrontProducts
     .filter((p) => p.handle !== handle)
     .slice(0, 3);
-  const relatedProducts: Array<{ product: Product; imageSrc?: string }> =
-    relatedSPs.map((sp) => {
+  const relatedProducts: Array<{
+    product: Product;
+    imageSrc?: string;
+    soldOut: boolean;
+  }> = relatedSPs.map((sp) => {
       const relLocal = getProductByHandle(sp.handle);
       return {
         product: {
@@ -153,12 +162,15 @@ export default async function ProductPage({ params }: ProductPageProps) {
           published: true,
         },
         imageSrc: imageByHandle[sp.handle] ?? sp.featuredImage?.url,
+        soldOut: !isProductAvailableForPurchase(sp),
       };
     });
 
   const displayPrice =
-    formatPrice(activeVariant?.price) ?? local?.price ?? formatPrice(storefrontProduct?.price);
-  const canAddToCart = Boolean(activeVariant && storefrontProduct?.availableForSale);
+    formatPrice(displayVariant?.price) ??
+    local?.price ??
+    formatPrice(storefrontProduct?.price);
+  const addToCartLabel = getAddToCartLabel(canAddToCart, isSoldOut);
   const productDescription = formatProductDescription(
     storefrontProduct?.description || local?.description || ""
   );
@@ -202,6 +214,11 @@ export default async function ProductPage({ params }: ProductPageProps) {
                 </Price>
                 <span className="text-xs text-brand-black/50">Inclusief BTW</span>
               </div>
+              {isSoldOut ? (
+                <p className="text-xs uppercase tracking-[0.22em] text-brand-black/55">
+                  {availabilityLabel}
+                </p>
+              ) : null}
             </div>
 
             <div className="mt-7 grid gap-3 sm:grid-cols-2">
@@ -238,7 +255,11 @@ export default async function ProductPage({ params }: ProductPageProps) {
             </ul>
 
             <form action={addToCart} className="mt-8">
-              <input type="hidden" name="variantId" value={activeVariant?.id ?? ""} />
+              <input
+                type="hidden"
+                name="variantId"
+                value={purchasableVariant?.id ?? ""}
+              />
               <input type="hidden" name="returnPath" value="/cart" />
               <div className="grid gap-3 sm:grid-cols-[112px_minmax(0,1fr)]">
                 <label className="sr-only" htmlFor="quantity">
@@ -267,7 +288,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
                   disabled={!canAddToCart}
                   className="h-13 w-full rounded-full bg-brand-purple px-8 text-xs uppercase tracking-[0.22em] text-brand-off-white hover:bg-brand-purple/90 disabled:bg-brand-black/20"
                 >
-                  {canAddToCart ? "In winkelwagen" : "Binnenkort beschikbaar"}
+                  {addToCartLabel}
                 </Button>
               </div>
             </form>
@@ -368,12 +389,13 @@ export default async function ProductPage({ params }: ProductPageProps) {
             </div>
           </Reveal>
           <div className="mt-10 grid gap-8 md:grid-cols-3">
-            {relatedProducts.map(({ product: relatedProduct, imageSrc }, index) => (
+            {relatedProducts.map(({ product: relatedProduct, imageSrc, soldOut }, index) => (
               <Reveal key={relatedProduct.handle} delayMs={index * 60}>
                 <ProductCard
                   product={relatedProduct}
                   imageSrc={imageSrc}
                   showDetails={false}
+                  soldOut={soldOut}
                 />
               </Reveal>
             ))}
@@ -383,11 +405,12 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
       <ProductPurchaseToolbar
         action={addToCart}
+        addToCartLabel={addToCartLabel}
         canAddToCart={canAddToCart}
         price={displayPrice ?? ""}
         productName={productName}
         returnPath="/cart"
-        variantId={activeVariant?.id}
+        variantId={purchasableVariant?.id}
       />
     </main>
   );

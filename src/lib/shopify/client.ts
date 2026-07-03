@@ -1,6 +1,14 @@
-import { createStorefrontApiClient } from "@shopify/storefront-api-client";
+import {
+  createStorefrontApiClient,
+  type StorefrontApiClient,
+} from "@shopify/storefront-api-client";
 
 const DEFAULT_API_VERSION = "2026-01";
+
+const shopifyFetch: typeof fetch = (input, init) =>
+  fetch(input, { ...init, cache: "no-store" });
+
+let shopifyClient: StorefrontApiClient | null = null;
 
 export function hasShopifyConfig() {
   return Boolean(
@@ -10,6 +18,10 @@ export function hasShopifyConfig() {
 }
 
 export function getShopifyClient() {
+  if (shopifyClient) {
+    return shopifyClient;
+  }
+
   const storeDomain = process.env.SHOPIFY_STORE_DOMAIN;
   const publicAccessToken = process.env.SHOPIFY_STOREFRONT_ACCESS_TOKEN;
 
@@ -19,9 +31,12 @@ export function getShopifyClient() {
     );
   }
 
-  return createStorefrontApiClient({
+  shopifyClient = createStorefrontApiClient({
     storeDomain,
     apiVersion: process.env.SHOPIFY_API_VERSION ?? DEFAULT_API_VERSION,
     publicAccessToken,
+    customFetchApi: shopifyFetch,
   });
+
+  return shopifyClient;
 }

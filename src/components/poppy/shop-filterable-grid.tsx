@@ -17,8 +17,9 @@ type ShopProduct = {
     collection: "Celebrate Joy";
     materials: string[];
     colors: string[];
-    availability: "Op voorraad" | "Binnenkort";
+    availability: "Op voorraad" | "Uitverkocht";
   };
+  soldOut?: boolean;
 };
 
 type ShopFilterableGridProps = {
@@ -54,7 +55,7 @@ const filterGroupConfig: Array<{
   {
     key: "availability",
     label: "Beschikbaarheid",
-    optionOrder: ["Op voorraad", "Binnenkort"],
+    optionOrder: ["Op voorraad", "Uitverkocht"],
   },
 ];
 
@@ -239,6 +240,7 @@ export function ShopFilterableGrid({ products }: ShopFilterableGridProps) {
             <ProductCard
               product={entry.product}
               imageSrc={entry.imageSrc}
+              soldOut={entry.soldOut}
             />
           </Reveal>
         ))}

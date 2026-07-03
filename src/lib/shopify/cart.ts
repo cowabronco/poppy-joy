@@ -2,6 +2,7 @@ import { getShopifyClient, hasShopifyConfig } from "./client";
 import {
   CART_CREATE_MUTATION,
   CART_LINES_ADD_MUTATION,
+  CART_LINES_REMOVE_MUTATION,
   CART_QUERY,
 } from "./queries";
 import type { ShopifyCart } from "./types";
@@ -25,6 +26,13 @@ type CartCreateResponse = {
 
 type CartLinesAddResponse = {
   cartLinesAdd: {
+    cart: ShopifyCart | null;
+    userErrors: CartUserError[];
+  };
+};
+
+type CartLinesRemoveResponse = {
+  cartLinesRemove: {
     cart: ShopifyCart | null;
     userErrors: CartUserError[];
   };
@@ -93,6 +101,34 @@ export async function addLinesToStorefrontCart(
 
   assertNoCartErrors(data.cartLinesAdd.userErrors);
   return data.cartLinesAdd.cart;
+}
+
+export async function removeLinesFromStorefrontCart(
+  cartId: string,
+  lineIds: string[]
+): Promise<ShopifyCart | null> {
+  if (!hasShopifyConfig() || lineIds.length === 0) {
+    return null;
+  }
+
+  const client = getShopifyClient();
+  const { data, errors } = await client.request<CartLinesRemoveResponse>(
+    CART_LINES_REMOVE_MUTATION,
+    {
+      variables: { cartId, lineIds },
+    }
+  );
+
+  if (errors) {
+    throw new Error(`Shopify cart lines remove failed: ${errors.message}`);
+  }
+
+  if (!data) {
+    throw new Error("Shopify cart lines remove returned no data.");
+  }
+
+  assertNoCartErrors(data.cartLinesRemove.userErrors);
+  return data.cartLinesRemove.cart;
 }
 
 type CartQueryResponse = {

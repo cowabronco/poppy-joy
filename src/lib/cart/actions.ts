@@ -6,7 +6,9 @@ import { redirect } from "next/navigation";
 import {
   addLinesToStorefrontCart,
   createStorefrontCart,
+  removeLinesFromStorefrontCart,
 } from "@/lib/shopify/cart";
+import { isStorefrontVariantAvailableForSale } from "@/lib/shopify/products";
 
 import { getCartIdFromCookies, setCartIdCookie } from "./cookie";
 
@@ -34,6 +36,14 @@ export async function addToCart(formData: FormData) {
     return;
   }
 
+  const isAvailable = await isStorefrontVariantAvailableForSale(variantId).catch(
+    () => false
+  );
+
+  if (!isAvailable) {
+    return;
+  }
+
   const quantity = parseQuantity(formData.get("quantity"));
   const returnPath = parseReturnPath(formData.get("returnPath"));
   const lines = [{ merchandiseId: variantId, quantity }];
@@ -54,6 +64,31 @@ export async function addToCart(formData: FormData) {
 
   revalidatePath("/cart");
   redirect(returnPath);
+}
+
+export async function removeFromCart(formData: FormData) {
+  const lineId = formData.get("lineId");
+
+  if (typeof lineId !== "string" || !lineId) {
+    return;
+  }
+
+  const cartId = await getCartIdFromCookies();
+
+  if (!cartId) {
+    return;
+  }
+
+  const cart = await removeLinesFromStorefrontCart(cartId, [lineId]).catch(
+    () => null
+  );
+
+  if (cart?.id) {
+    await setCartIdCookie(cart.id);
+  }
+
+  revalidatePath("/cart");
+  revalidatePath("/", "layout");
 }
 
 export async function goToCheckout() {

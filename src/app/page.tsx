@@ -29,6 +29,8 @@ export const metadata: Metadata = pageMetadata(
   { absolute: true }
 );
 
+export const dynamic = "force-dynamic";
+
 const uspIcons = [RefreshCw, Scissors, PartyPopper, HeartHandshake] as const;
 
 const usps = values.map((label, index) => ({

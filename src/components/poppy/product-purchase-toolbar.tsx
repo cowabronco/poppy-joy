@@ -9,6 +9,7 @@ import { cn } from "@/lib/utils";
 
 type ProductPurchaseToolbarProps = {
   action: (formData: FormData) => void | Promise<void>;
+  addToCartLabel: string;
   canAddToCart: boolean;
   price: string;
   productName: string;
@@ -18,6 +19,7 @@ type ProductPurchaseToolbarProps = {
 
 export function ProductPurchaseToolbar({
   action,
+  addToCartLabel,
   canAddToCart,
   price,
   productName,
@@ -86,7 +88,7 @@ export function ProductPurchaseToolbar({
             disabled={!canAddToCart}
             className="h-12 w-full rounded-full bg-brand-purple px-8 text-xs uppercase tracking-[0.22em] text-brand-off-white hover:bg-brand-purple/90 disabled:bg-brand-black/20"
           >
-            {canAddToCart ? "In winkelwagen" : "Binnenkort beschikbaar"}
+            {addToCartLabel}
           </Button>
         </form>
       </div>

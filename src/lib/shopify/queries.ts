@@ -32,6 +32,25 @@ export const PRODUCT_FRAGMENT = `#graphql
         }
       }
     }
+    metafields(
+      identifiers: [
+        { namespace: "custom", key: "material" }
+        { namespace: "custom", key: "composition" }
+        { namespace: "custom", key: "dimensions" }
+        { namespace: "custom", key: "product_length" }
+        { namespace: "custom", key: "flag_count" }
+        { namespace: "custom", key: "washing_care" }
+        { namespace: "custom", key: "craft_note" }
+        { namespace: "custom", key: "color_story" }
+        { namespace: "custom", key: "drop" }
+        { namespace: "custom", key: "certifications" }
+      ]
+    ) {
+      namespace
+      key
+      value
+      type
+    }
     variants(first: 100) {
       edges {
         node {
@@ -76,6 +95,17 @@ export const PRODUCT_BY_HANDLE_QUERY = `#graphql
   query ProductByHandle($handle: String!) {
     product(handle: $handle) {
       ...ProductFragment
+    }
+  }
+`;
+
+export const VARIANT_BY_ID_QUERY = `#graphql
+  query VariantById($id: ID!) {
+    node(id: $id) {
+      ... on ProductVariant {
+        id
+        availableForSale
+      }
     }
   }
 `;
@@ -199,6 +229,22 @@ export const CART_LINES_ADD_MUTATION = `#graphql
 
   mutation CartLinesAdd($cartId: ID!, $lines: [CartLineInput!]!) {
     cartLinesAdd(cartId: $cartId, lines: $lines) {
+      cart {
+        ...CartFragment
+      }
+      userErrors {
+        field
+        message
+      }
+    }
+  }
+`;
+
+export const CART_LINES_REMOVE_MUTATION = `#graphql
+  ${CART_FRAGMENT}
+
+  mutation CartLinesRemove($cartId: ID!, $lineIds: [ID!]!) {
+    cartLinesRemove(cartId: $cartId, lineIds: $lineIds) {
       cart {
         ...CartFragment
       }

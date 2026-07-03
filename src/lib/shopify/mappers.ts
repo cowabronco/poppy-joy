@@ -1,3 +1,4 @@
+import { parseProductMetafields } from "./metafields";
 import type {
   ShopifyCollectionNode,
   ShopifyProductNode,
@@ -19,6 +20,7 @@ export function mapShopifyProduct(
     featuredImage: product.featuredImage,
     images: product.images.edges.map(({ node }) => node),
     variants: product.variants.edges.map(({ node }) => node),
+    metafields: parseProductMetafields(product.metafields),
   };
 }
 

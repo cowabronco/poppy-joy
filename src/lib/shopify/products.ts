@@ -1,6 +1,10 @@
 import { getShopifyClient, hasShopifyConfig } from "./client";
 import { mapShopifyProduct } from "./mappers";
-import { PRODUCT_BY_HANDLE_QUERY, PRODUCTS_QUERY } from "./queries";
+import {
+  PRODUCT_BY_HANDLE_QUERY,
+  PRODUCTS_QUERY,
+  VARIANT_BY_ID_QUERY,
+} from "./queries";
 import type { ShopifyProductNode, StorefrontProduct } from "./types";
 
 type ProductsResponse = {
@@ -13,6 +17,13 @@ type ProductsResponse = {
 
 type ProductByHandleResponse = {
   product: ShopifyProductNode | null;
+};
+
+type VariantByIdResponse = {
+  node: {
+    id: string;
+    availableForSale: boolean;
+  } | null;
 };
 
 export async function getStorefrontProducts(
@@ -65,6 +76,28 @@ export async function getStorefrontProductByHandle(
   }
 
   return data.product ? mapShopifyProduct(data.product) : null;
+}
+
+export async function isStorefrontVariantAvailableForSale(
+  variantId: string
+): Promise<boolean> {
+  if (!hasShopifyConfig()) {
+    return false;
+  }
+
+  const client = getShopifyClient();
+  const { data, errors } = await client.request<VariantByIdResponse>(
+    VARIANT_BY_ID_QUERY,
+    {
+      variables: { id: variantId },
+    }
+  );
+
+  if (errors) {
+    throw new Error(`Shopify variant query failed: ${errors.message}`);
+  }
+
+  return Boolean(data?.node?.availableForSale);
 }
 
 export async function getFeaturedImageByHandle(): Promise<Record<string, string>> {

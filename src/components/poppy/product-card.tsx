@@ -22,12 +22,14 @@ type ProductCardProps = {
   product: Product;
   imageSrc?: string;
   showDetails?: boolean;
+  soldOut?: boolean;
 };
 
 export function ProductCard({
   product,
   imageSrc,
   showDetails = true,
+  soldOut = false,
 }: ProductCardProps) {
   const isCompact = !showDetails;
 
@@ -50,6 +52,11 @@ export function ProductCard({
             frameClassName="rounded-none border-0"
           />
           <div className="absolute bottom-4 left-4 flex flex-wrap gap-2">
+            {soldOut ? (
+              <Badge className="bg-brand-off-white/95 text-[10px] uppercase tracking-[0.18em] text-brand-black/65 shadow-sm hover:bg-brand-off-white">
+                Uitverkocht
+              </Badge>
+            ) : null}
             {product.materialTags.map((material) => (
               <Badge
                 key={material}

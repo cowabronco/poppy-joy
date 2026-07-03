@@ -3,7 +3,7 @@ import Link from "next/link";
 
 import { Container, EditorialHeading, Price } from "@/components/poppy";
 import { Button } from "@/components/ui/button";
-import { goToCheckout } from "@/lib/cart/actions";
+import { goToCheckout, removeFromCart } from "@/lib/cart/actions";
 import { formatMoney } from "@/lib/money";
 import type { ShopifyCart } from "@/lib/shopify/types";
 
@@ -103,6 +103,16 @@ export function CartPageContent({ cart }: CartPageContentProps) {
                       ) : null}
                       {lineTotal ? <Price className="text-lg">{lineTotal}</Price> : null}
                     </div>
+                    <form action={removeFromCart}>
+                      <input type="hidden" name="lineId" value={line.id} />
+                      <Button
+                        type="submit"
+                        variant="ghost"
+                        className="h-10 rounded-full px-4 text-xs uppercase tracking-[0.18em] text-brand-black/55 hover:bg-brand-black/5 hover:text-brand-black"
+                      >
+                        Verwijderen
+                      </Button>
+                    </form>
                   </div>
                 </div>
               </article>
