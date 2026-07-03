@@ -23,6 +23,7 @@ type VariantByIdResponse = {
   node: {
     id: string;
     availableForSale: boolean;
+    quantityAvailable: number | null;
   } | null;
 };
 
@@ -78,11 +79,9 @@ export async function getStorefrontProductByHandle(
   return data.product ? mapShopifyProduct(data.product) : null;
 }
 
-export async function isStorefrontVariantAvailableForSale(
-  variantId: string
-): Promise<boolean> {
+export async function getStorefrontVariantById(variantId: string) {
   if (!hasShopifyConfig()) {
-    return false;
+    return null;
   }
 
   const client = getShopifyClient();
@@ -97,5 +96,12 @@ export async function isStorefrontVariantAvailableForSale(
     throw new Error(`Shopify variant query failed: ${errors.message}`);
   }
 
-  return Boolean(data?.node?.availableForSale);
+  return data?.node ?? null;
+}
+
+export async function isStorefrontVariantAvailableForSale(
+  variantId: string
+): Promise<boolean> {
+  const variant = await getStorefrontVariantById(variantId).catch(() => null);
+  return Boolean(variant?.availableForSale);
 }

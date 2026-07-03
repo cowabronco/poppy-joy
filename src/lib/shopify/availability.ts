@@ -2,13 +2,33 @@ import type { ShopifyProductVariant, StorefrontProduct } from "./types";
 
 export type ProductAvailabilityLabel = "Op voorraad" | "Uitverkocht";
 
+const DEFAULT_MAX_QUANTITY = 12;
+
 export type ProductPurchaseState = {
   canAddToCart: boolean;
   isSoldOut: boolean;
   displayVariant: ShopifyProductVariant | null;
   purchasableVariant: ShopifyProductVariant | null;
   availabilityLabel: ProductAvailabilityLabel;
+  maxQuantity: number;
 };
+
+export function getMaxPurchasableQuantity(
+  variant:
+    | Pick<ShopifyProductVariant, "availableForSale" | "quantityAvailable">
+    | null
+    | undefined
+): number {
+  if (!variant?.availableForSale) {
+    return 0;
+  }
+
+  if (typeof variant.quantityAvailable === "number") {
+    return Math.max(0, variant.quantityAvailable);
+  }
+
+  return DEFAULT_MAX_QUANTITY;
+}
 
 export function isVariantAvailableForPurchase(
   variant: Pick<ShopifyProductVariant, "availableForSale"> | null | undefined
@@ -40,6 +60,7 @@ export function getProductPurchaseState(
     product?.variants.find((variant) => variant.availableForSale) ?? null;
   const canAddToCart = isProductAvailableForPurchase(product);
   const isSoldOut = Boolean(product) && !canAddToCart;
+  const maxQuantity = getMaxPurchasableQuantity(purchasableVariant);
 
   return {
     canAddToCart,
@@ -47,6 +68,7 @@ export function getProductPurchaseState(
     displayVariant,
     purchasableVariant,
     availabilityLabel: getProductAvailabilityLabel(product),
+    maxQuantity,
   };
 }
 

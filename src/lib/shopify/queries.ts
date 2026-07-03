@@ -57,6 +57,7 @@ export const PRODUCT_FRAGMENT = `#graphql
           id
           title
           availableForSale
+          quantityAvailable
           price {
             amount
             currencyCode
@@ -105,6 +106,7 @@ export const VARIANT_BY_ID_QUERY = `#graphql
       ... on ProductVariant {
         id
         availableForSale
+        quantityAvailable
       }
     }
   }

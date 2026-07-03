@@ -3,7 +3,6 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import {
   Check,
-  ChevronDown,
   Flag,
   HeartHandshake,
   Leaf,
@@ -21,6 +20,7 @@ import {
   ProductGallery,
   Reveal,
 } from "@/components/poppy";
+import { ProductQuantitySelect } from "@/components/poppy/product-quantity-select";
 import { ProductPurchaseToolbar } from "@/components/poppy/product-purchase-toolbar";
 import { Button } from "@/components/ui/button";
 import {
@@ -108,6 +108,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
     displayVariant,
     purchasableVariant,
     availabilityLabel,
+    maxQuantity,
   } = getProductPurchaseState(storefrontProduct);
   const galleryImages = getGalleryImages(
     storefrontProduct.images,
@@ -217,27 +218,11 @@ export default async function ProductPage({ params }: ProductPageProps) {
               />
               <input type="hidden" name="returnPath" value="/cart" />
               <div className="grid gap-3 sm:grid-cols-[112px_minmax(0,1fr)]">
-                <label className="sr-only" htmlFor="quantity">
-                  Aantal
-                </label>
-                <span className="relative">
-                  <select
-                    id="quantity"
-                    name="quantity"
-                    defaultValue="1"
-                    disabled={!canAddToCart}
-                    className="h-13 w-full appearance-none rounded-full border border-border bg-brand-off-white px-5 pr-10 text-center text-sm font-medium text-brand-black outline-none transition focus:border-brand-purple focus:ring-2 focus:ring-brand-purple/20 disabled:opacity-50"
-                  >
-                    {Array.from({ length: 12 }, (_, index) => index + 1).map(
-                      (quantity) => (
-                        <option key={quantity} value={quantity}>
-                          {quantity}
-                        </option>
-                      )
-                    )}
-                  </select>
-                  <ChevronDown className="pointer-events-none absolute right-4 top-1/2 h-4 w-4 -translate-y-1/2 text-brand-black/45" />
-                </span>
+                <ProductQuantitySelect
+                  id="quantity"
+                  maxQuantity={maxQuantity}
+                  disabled={!canAddToCart}
+                />
                 <Button
                   type="submit"
                   disabled={!canAddToCart}
@@ -362,6 +347,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
         action={addToCart}
         addToCartLabel={addToCartLabel}
         canAddToCart={canAddToCart}
+        maxQuantity={maxQuantity}
         price={displayPrice ?? ""}
         productName={productName}
         returnPath="/cart"

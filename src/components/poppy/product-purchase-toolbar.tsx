@@ -1,9 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { ChevronDown } from "lucide-react";
 
 import { Price } from "@/components/poppy/price";
+import { ProductQuantitySelect } from "@/components/poppy/product-quantity-select";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
@@ -11,6 +11,7 @@ type ProductPurchaseToolbarProps = {
   action: (formData: FormData) => void | Promise<void>;
   addToCartLabel: string;
   canAddToCart: boolean;
+  maxQuantity: number;
   price: string;
   productName: string;
   returnPath: string;
@@ -21,6 +22,7 @@ export function ProductPurchaseToolbar({
   action,
   addToCartLabel,
   canAddToCart,
+  maxQuantity,
   price,
   productName,
   returnPath,
@@ -62,27 +64,12 @@ export function ProductPurchaseToolbar({
         <form action={action} className="grid gap-3 sm:min-w-[420px] sm:grid-cols-[112px_minmax(0,1fr)]">
           <input type="hidden" name="variantId" value={variantId} />
           <input type="hidden" name="returnPath" value={returnPath} />
-          <label className="sr-only" htmlFor="toolbar-quantity">
-            Aantal
-          </label>
-          <span className="relative">
-            <select
-              id="toolbar-quantity"
-              name="quantity"
-              defaultValue="1"
-              disabled={!canAddToCart}
-              className="h-12 w-full appearance-none rounded-full border border-border bg-brand-off-white px-5 pr-10 text-center text-sm font-medium text-brand-black outline-none transition focus:border-brand-purple focus:ring-2 focus:ring-brand-purple/20 disabled:opacity-50"
-            >
-              {Array.from({ length: 12 }, (_, index) => index + 1).map(
-                (quantity) => (
-                  <option key={quantity} value={quantity}>
-                    {quantity}
-                  </option>
-                )
-              )}
-            </select>
-            <ChevronDown className="pointer-events-none absolute right-4 top-1/2 h-4 w-4 -translate-y-1/2 text-brand-black/45" />
-          </span>
+          <ProductQuantitySelect
+            id="toolbar-quantity"
+            maxQuantity={maxQuantity}
+            disabled={!canAddToCart}
+            selectClassName="h-12"
+          />
           <Button
             type="submit"
             disabled={!canAddToCart}

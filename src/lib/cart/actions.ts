@@ -8,17 +8,21 @@ import {
   createStorefrontCart,
   removeLinesFromStorefrontCart,
 } from "@/lib/shopify/cart";
-import { isStorefrontVariantAvailableForSale } from "@/lib/shopify/products";
+import { getMaxPurchasableQuantity } from "@/lib/shopify/availability";
+import { getStorefrontVariantById } from "@/lib/shopify/products";
 
 import { getCartIdFromCookies, setCartIdCookie } from "./cookie";
 
-function parseQuantity(rawQuantity: FormDataEntryValue | null) {
+function parseQuantity(
+  rawQuantity: FormDataEntryValue | null,
+  maxQuantity: number
+) {
   const quantity = Number(rawQuantity);
-  if (!Number.isFinite(quantity)) {
+  if (!Number.isFinite(quantity) || maxQuantity < 1) {
     return 1;
   }
 
-  return Math.min(Math.max(Math.trunc(quantity), 1), 12);
+  return Math.min(Math.max(Math.trunc(quantity), 1), maxQuantity);
 }
 
 function parseReturnPath(rawReturnPath: FormDataEntryValue | null) {
@@ -36,15 +40,19 @@ export async function addToCart(formData: FormData) {
     return;
   }
 
-  const isAvailable = await isStorefrontVariantAvailableForSale(variantId).catch(
-    () => false
-  );
+  const variant = await getStorefrontVariantById(variantId).catch(() => null);
 
-  if (!isAvailable) {
+  if (!variant?.availableForSale) {
     return;
   }
 
-  const quantity = parseQuantity(formData.get("quantity"));
+  const maxQuantity = getMaxPurchasableQuantity(variant);
+  const quantity = parseQuantity(formData.get("quantity"), maxQuantity);
+
+  if (quantity < 1 || quantity > maxQuantity) {
+    return;
+  }
+
   const returnPath = parseReturnPath(formData.get("returnPath"));
   const lines = [{ merchandiseId: variantId, quantity }];
 
