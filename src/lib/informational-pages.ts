@@ -14,7 +14,7 @@ export const storyPageContent: InformationalPageTemplateProps = {
         "Poppy Joy begon vanuit een gemis. Waarom worden de mooiste momenten vaak aangekleed met iets tijdelijks?",
         "Ik verlangde naar decoratie die je niet na één dag opbergt of weg gooit om te vergeten. Maar iets dat je bewaart, steeds opnieuw ophangt en dat met de jaren een vertrouwd onderdeel wordt van bijzondere momenten.",
         "Vanuit die gedachte maak ik vlaggenlijnen van verfijnde stoffen: zacht van uitstraling, zorgvuldig afgewerkt en ontworpen om jaren lang mee te gaan.",
-        "Ik hoop dat elke vlaggenlijn niet alleen een ruimte versierd, maar een vaste plek krijgt in de mooie verhalen die zich eronder afspelen.",
+        "Ik hoop dat elke vlaggenlijn niet alleen een ruimte versiert, maar een vaste plek krijgt in de mooie verhalen die zich eronder afspelen.",
         "With love,",
       ],
       signature: "Chloé",
