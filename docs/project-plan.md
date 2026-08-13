@@ -109,8 +109,8 @@ This document tracks the build order for the Poppy Joy website.
 
 - [ ] Add metadata per page.
 - [ ] Add Open Graph image.
-- [ ] Add sitemap.
-- [ ] Add robots.txt.
+- [x] Add sitemap.
+- [x] Add robots.txt.
 - [ ] Add product JSON-LD once Shopify data is live.
 - [ ] Add analytics if desired.
 - [ ] Test mobile and desktop layouts.
