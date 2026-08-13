@@ -1,7 +1,9 @@
 import type { MetadataRoute } from "next";
-import { getStorefrontProducts } from "@/lib/shopify/products";
+import { getStorefrontProductHandles } from "@/lib/shopify/products";
 
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://poppyjoy.nl";
+
+export const revalidate = 3600;
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const staticPages: MetadataRoute.Sitemap = [
@@ -55,19 +57,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
   ];
 
-  let productPages: MetadataRoute.Sitemap = [];
-
-  try {
-    const products = await getStorefrontProducts(100);
-    productPages = products.map((product) => ({
-      url: `${BASE_URL}/products/${product.handle}`,
-      lastModified: new Date(),
-      changeFrequency: "weekly" as const,
-      priority: 0.8,
-    }));
-  } catch {
-    // Shopify not configured or unavailable, skip product pages
-  }
+  const productHandles = await getStorefrontProductHandles(100);
+  const productPages: MetadataRoute.Sitemap = productHandles.map((handle) => ({
+    url: `${BASE_URL}/products/${handle}`,
+    lastModified: new Date(),
+    changeFrequency: "weekly",
+    priority: 0.8,
+  }));
 
   return [...staticPages, ...productPages];
 }

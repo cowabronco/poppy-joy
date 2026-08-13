@@ -2,6 +2,7 @@ import { getShopifyClient, hasShopifyConfig } from "./client";
 import { mapShopifyProduct } from "./mappers";
 import {
   PRODUCT_BY_HANDLE_QUERY,
+  PRODUCT_HANDLES_QUERY,
   PRODUCTS_QUERY,
   VARIANT_BY_ID_QUERY,
 } from "./queries";
@@ -11,6 +12,16 @@ type ProductsResponse = {
   products: {
     edges: Array<{
       node: ShopifyProductNode;
+    }>;
+  };
+};
+
+type ProductHandlesResponse = {
+  products: {
+    edges: Array<{
+      node: {
+        handle: string;
+      };
     }>;
   };
 };
@@ -51,6 +62,34 @@ export async function getStorefrontProducts(
   }
 
   return data.products.edges.map(({ node }) => mapShopifyProduct(node));
+}
+
+export async function getStorefrontProductHandles(
+  first = 100
+): Promise<string[]> {
+  if (!hasShopifyConfig()) {
+    return [];
+  }
+
+  try {
+    const client = getShopifyClient();
+    const { data, errors } = await client.request<ProductHandlesResponse>(
+      PRODUCT_HANDLES_QUERY,
+      {
+        variables: { first },
+      }
+    );
+
+    if (errors || !data) {
+      return [];
+    }
+
+    return data.products.edges
+      .map(({ node }) => node.handle)
+      .filter(Boolean);
+  } catch {
+    return [];
+  }
 }
 
 export async function getStorefrontProductByHandle(

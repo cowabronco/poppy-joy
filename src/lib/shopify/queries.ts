@@ -90,6 +90,18 @@ export const PRODUCTS_QUERY = `#graphql
   }
 `;
 
+export const PRODUCT_HANDLES_QUERY = `#graphql
+  query ProductHandles($first: Int!) {
+    products(first: $first) {
+      edges {
+        node {
+          handle
+        }
+      }
+    }
+  }
+`;
+
 export const PRODUCT_BY_HANDLE_QUERY = `#graphql
   ${PRODUCT_FRAGMENT}
 
