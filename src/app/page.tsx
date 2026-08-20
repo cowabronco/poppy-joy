@@ -16,7 +16,7 @@ import {
   ProductCard,
   Reveal,
 } from "@/components/poppy";
-import { pageDescriptions, pageMetadata } from "@/lib/site-metadata";
+import { pageDescriptions, pageMetadata, pageTitles } from "@/lib/site-metadata";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { values } from "@/lib/products";
@@ -27,9 +27,9 @@ import {
 } from "@/lib/shopify/to-product";
 
 export const metadata: Metadata = pageMetadata(
-  "Poppy Joy | For moments that deserve joy · Designed to stay",
+  pageTitles.home,
   pageDescriptions.home,
-  { absolute: true }
+  { absolute: true, path: "/" }
 );
 
 export const dynamic = "force-dynamic";

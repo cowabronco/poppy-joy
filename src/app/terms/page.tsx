@@ -2,11 +2,12 @@ import type { Metadata } from "next";
 
 import { ContentPageTemplate } from "@/components/poppy";
 import { termsPageContent } from "@/lib/content-pages";
-import { pageDescriptions, pageMetadata } from "@/lib/site-metadata";
+import { pageDescriptions, pageMetadata, pageTitles } from "@/lib/site-metadata";
 
 export const metadata: Metadata = pageMetadata(
-  "Algemene voorwaarden",
-  pageDescriptions.terms
+  pageTitles.terms,
+  pageDescriptions.terms,
+  { path: "/terms" }
 );
 
 export default function TermsPage() {

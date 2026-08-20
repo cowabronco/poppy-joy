@@ -3,11 +3,15 @@ import type { Metadata } from "next";
 import { CartPageContent } from "@/components/poppy/cart-page-content";
 import { getCartIdFromCookies } from "@/lib/cart/cookie";
 import { getStorefrontCartById } from "@/lib/shopify/cart";
-import { pageDescriptions, pageMetadata } from "@/lib/site-metadata";
+import { pageDescriptions, pageMetadata, pageTitles } from "@/lib/site-metadata";
 
 export const metadata: Metadata = pageMetadata(
-  "Winkelwagen",
-  pageDescriptions.cart
+  pageTitles.cart,
+  pageDescriptions.cart,
+  {
+    path: "/cart",
+    robots: { index: false, follow: false },
+  }
 );
 
 export default async function CartPage() {

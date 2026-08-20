@@ -1,40 +1,21 @@
 import type { Metadata } from "next";
 
+import { JsonLd } from "@/components/poppy/json-ld";
 import { FaqPageContent } from "@/components/poppy";
 import { faqItems } from "@/lib/content-pages";
-import { pageDescriptions, pageMetadata } from "@/lib/site-metadata";
+import { pageDescriptions, pageMetadata, pageTitles } from "@/lib/site-metadata";
+import { faqJsonLd } from "@/lib/structured-data";
 
 export const metadata: Metadata = pageMetadata(
-  "Veelgestelde vragen",
-  pageDescriptions.faq
+  pageTitles.faq,
+  pageDescriptions.faq,
+  { path: "/faq" }
 );
-
-function FaqJsonLd() {
-  const schema = {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    mainEntity: faqItems.map((item) => ({
-      "@type": "Question",
-      name: item.question,
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: item.answer,
-      },
-    })),
-  };
-
-  return (
-    <script
-      type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
-    />
-  );
-}
 
 export default function FaqPage() {
   return (
     <>
-      <FaqJsonLd />
+      <JsonLd data={faqJsonLd(faqItems)} />
       <FaqPageContent items={faqItems} />
     </>
   );

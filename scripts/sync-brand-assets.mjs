@@ -56,6 +56,10 @@ async function main() {
     const appIconTarget = path.join(appDir, "icon.png");
     await copyFile(path.join(sourceDir, logo.source), appIconTarget);
     copied.push({ source: logo.source, target: "src/app/icon.png" });
+
+    const appleIconTarget = path.join(appDir, "apple-icon.png");
+    await copyFile(path.join(sourceDir, logo.source), appleIconTarget);
+    copied.push({ source: logo.source, target: "src/app/apple-icon.png" });
   } else {
     missing.push("logo (expected: logo.png)");
   }

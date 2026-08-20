@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
 
-const titleTemplate = "%s | Poppy Joy · Designed to stay";
-const defaultTitle = "Poppy Joy | Designed to stay";
+export const SITE_URL = "https://poppyjoy.nl";
+
+const titleTemplate = "%s | Poppy Joy";
+const defaultTitle = "Poppy Joy | Herbruikbare stoffen vlaggenlijnen";
 
 const defaultDescription =
-  "Handgemaakte herbruikbare stoffen vlaggenlijnen voor momenten die vreugde verdienen. Designed to stay. Made with love.";
+  "Handgemaakte herbruikbare stoffen vlaggenlijnen uit Amsterdam. Dubbelzijdig afgewerkt en gemaakt om feest na feest opnieuw op te hangen.";
 
 export const defaultSocialImage = {
   url: "/brand/featured-image.jpg",
@@ -20,6 +22,19 @@ type SocialImage = {
   alt?: string;
 };
 
+function toMetaDescription(text: string, max = 160) {
+  const compact = text.replace(/\s+/g, " ").trim();
+
+  if (compact.length <= max) {
+    return compact;
+  }
+
+  const sliced = compact.slice(0, max - 1);
+  const lastSpace = sliced.lastIndexOf(" ");
+
+  return `${sliced.slice(0, lastSpace > 80 ? lastSpace : max - 1).trimEnd()}…`;
+}
+
 function socialMetadata(images: SocialImage[] = [defaultSocialImage]) {
   return {
     openGraph: {
@@ -33,15 +48,28 @@ function socialMetadata(images: SocialImage[] = [defaultSocialImage]) {
 }
 
 export const rootMetadata: Metadata = {
-  metadataBase: new URL("https://poppyjoy.nl"),
+  metadataBase: new URL(SITE_URL),
   title: {
     default: defaultTitle,
     template: titleTemplate,
   },
   description: defaultDescription,
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "48x48", type: "image/x-icon" },
+      { url: "/favicon-48x48.png", sizes: "48x48", type: "image/png" },
+      { url: "/icon.png", sizes: "986x986", type: "image/png" },
+    ],
+    shortcut: "/favicon.ico",
+    apple: [{ url: "/apple-icon.png", sizes: "180x180", type: "image/png" }],
+  },
+  alternates: {
+    canonical: "/",
+  },
   openGraph: {
     type: "website",
     locale: "nl_NL",
+    url: SITE_URL,
     siteName: "Poppy Joy",
     title: defaultTitle,
     description: defaultDescription,
@@ -57,39 +85,63 @@ export const rootMetadata: Metadata = {
 export function pageMetadata(
   title: string,
   description: string,
-  options?: { absolute?: boolean; images?: SocialImage[] }
+  options?: {
+    absolute?: boolean;
+    images?: SocialImage[];
+    path?: string;
+    robots?: Metadata["robots"];
+  }
 ): Metadata {
-  const resolvedTitle = options?.absolute
-    ? title
-    : `${title} | Poppy Joy · Designed to stay`;
+  const resolvedTitle = options?.absolute ? title : `${title} | Poppy Joy`;
   const social = socialMetadata(options?.images);
+  const metaDescription = toMetaDescription(description);
+  const canonicalPath = options?.path;
 
   return {
     title: options?.absolute ? { absolute: title } : title,
-    description,
+    description: metaDescription,
+    ...(canonicalPath
+      ? {
+          alternates: { canonical: canonicalPath },
+        }
+      : {}),
+    ...(options?.robots ? { robots: options.robots } : {}),
     openGraph: {
       title: resolvedTitle,
-      description,
+      description: metaDescription,
+      ...(canonicalPath ? { url: canonicalPath } : {}),
       ...social.openGraph,
     },
     twitter: {
       title: resolvedTitle,
-      description,
+      description: metaDescription,
       ...social.twitter,
     },
   };
 }
 
+export const pageTitles = {
+  home: "Poppy Joy | Herbruikbare stoffen vlaggenlijnen",
+  shop: "Stoffen vlaggenlijnen",
+  story: "Ons verhaal",
+  faq: "Veelgestelde vragen",
+  contact: "Contact",
+  shipping: "Verzenden & retourneren",
+  privacy: "Privacybeleid",
+  terms: "Algemene voorwaarden",
+  cart: "Winkelwagen",
+} as const;
+
 export const pageDescriptions = {
-  home: "Tijdloze stoffen vlaggenlijnen voor vieringen groot en klein, handgemaakt van verfijnde materialen die keer op keer opnieuw gebruikt mogen worden.",
-  shop: "Shop de Celebrate Joy collectie: unieke stoffen vlaggenlijnen, dubbelzijdig afgewerkt en gemaakt om steeds opnieuw te gebruiken.",
+  home: "Handgemaakte herbruikbare stoffen vlaggenlijnen uit Amsterdam. Dubbelzijdig afgewerkt en gemaakt om feest na feest opnieuw op te hangen.",
+  shop: "Shop de Celebrate Joy collectie: handgemaakte stoffen vlaggenlijnen van linnen, jacquard en velours. Dubbelzijdig afgewerkt om steeds opnieuw te gebruiken.",
   story:
-    "Lees hoe Poppy Joy in Amsterdam ontstond als een warm, blijvend alternatief voor wegwerp plastic vlaggenlijnen.",
+    "Het verhaal van Poppy Joy: stoffen vlaggenlijnen uit Amsterdam, ontstaan uit liefde voor textiel en momenten die mogen blijven.",
   contact:
-    "Neem contact op met Poppy Joy via e-mail of Instagram voor vragen over bestellingen en vlaggenlijnen.",
-  faq: "Antwoorden op veelgestelde vragen over herbruikbare stoffen vlaggenlijnen, verzending, verzorging en retourneren.",
+    "Vragen over een vlaggenlijn of bestelling? Mail shop@poppyjoy.nl of stuur een bericht via Instagram.",
+  faq: "Antwoorden over herbruikbare stoffen vlaggenlijnen, materialen, wassen, verzending binnen 5 werkdagen en retourneren.",
   shipping:
-    "Informatie over verzending binnen 5 werkdagen, retourneren binnen 14 dagen en het verzorgen van onze stoffen vlaggenlijnen.",
+    "Verzending binnen 5 werkdagen en retourneren binnen 14 dagen. Zo gaat Poppy Joy om met verzenden, retourneren en de verzorging van stoffen vlaggenlijnen.",
   privacy:
     "Lees hoe Poppy Joy omgaat met persoonsgegevens, cookies en jouw privacyrechten.",
   terms:

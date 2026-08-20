@@ -49,6 +49,15 @@ import {
 } from "@/lib/shopify/to-product";
 import { formatProductDescription } from "@/lib/products";
 import { pageMetadata, defaultSocialImage } from "@/lib/site-metadata";
+import {
+  productMetaDescription,
+  productMetaTitle,
+} from "@/lib/product-seo";
+import {
+  productBreadcrumbJsonLd,
+  productJsonLd,
+} from "@/lib/structured-data";
+import { JsonLd } from "@/components/poppy/json-ld";
 
 type ProductPageProps = {
   params: Promise<{ handle: string }>;
@@ -78,7 +87,14 @@ export async function generateMetadata({
       ]
     : undefined;
 
-  return pageMetadata(sp.title, sp.description, images ? { images } : undefined);
+  return pageMetadata(
+    productMetaTitle(sp.title),
+    productMetaDescription(sp),
+    {
+      path: `/products/${handle}`,
+      ...(images ? { images } : {}),
+    }
+  );
 }
 
 function formatPrice(price?: { amount: string; currencyCode: string }) {
@@ -138,6 +154,8 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
   return (
     <main className="min-h-screen bg-brand-off-white pt-24 text-brand-black md:pt-28">
+      <JsonLd data={productJsonLd(storefrontProduct)} />
+      <JsonLd data={productBreadcrumbJsonLd(productName, handle)} />
       <Container className="pb-16 lg:pb-24">
         <Reveal>
           <Link

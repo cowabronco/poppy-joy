@@ -1,13 +1,21 @@
 import type { Metadata } from "next";
 
 import { ContactPageContent } from "@/components/poppy";
-import { pageDescriptions, pageMetadata } from "@/lib/site-metadata";
+import { JsonLd } from "@/components/poppy/json-ld";
+import { pageDescriptions, pageMetadata, pageTitles } from "@/lib/site-metadata";
+import { contactPageJsonLd } from "@/lib/structured-data";
 
 export const metadata: Metadata = pageMetadata(
-  "Contact",
-  pageDescriptions.contact
+  pageTitles.contact,
+  pageDescriptions.contact,
+  { path: "/contact" }
 );
 
 export default function ContactPage() {
-  return <ContactPageContent />;
+  return (
+    <>
+      <JsonLd data={contactPageJsonLd()} />
+      <ContactPageContent />
+    </>
+  );
 }
