@@ -3,6 +3,7 @@ import Link from "next/link";
 
 import { INSTAGRAM_URL } from "@/lib/site-contact";
 
+import { CookiePreferencesButton } from "./cookie-consent";
 import { Container } from "./container";
 
 const footerLinkGroups = [
@@ -52,6 +53,10 @@ export function SiteFooter() {
                     {link.label}
                   </Link>
                 ))}
+                {group.title === "Juridisch" &&
+                process.env.NEXT_PUBLIC_META_PIXEL_ID ? (
+                  <CookiePreferencesButton />
+                ) : null}
               </div>
             </div>
           ))}

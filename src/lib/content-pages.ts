@@ -49,7 +49,7 @@ export const shippingReturnsPageContent: ContentPageTemplateProps = {
 export const privacyPageContent: ContentPageTemplateProps = {
   eyebrow: "Juridisch",
   title: "Privacybeleid",
-  lastUpdated: "15 mei 2026",
+  lastUpdated: "11 september 2026",
   intro:
     "Bij Poppy Joy vinden we jouw privacy belangrijk. In dit privacybeleid leggen we kort uit welke gegevens wij verzamelen en waarom.",
   sections: [
@@ -87,6 +87,7 @@ export const privacyPageContent: ContentPageTemplateProps = {
         "Betaalproviders",
         "Verzendpartijen",
         "Website- en hostingdiensten",
+        "Meta (Facebook en Instagram), via Shopify, voor advertentie-attributie",
       ],
       paragraphsAfterBullets: [
         "Wij verkopen jouw gegevens nooit aan derden.",
@@ -111,7 +112,8 @@ export const privacyPageContent: ContentPageTemplateProps = {
     {
       title: "Cookies",
       paragraphs: [
-        "Onze website gebruikt alleen functionele en analytische cookies om de website goed te laten werken en te verbeteren.",
+        "We gebruiken noodzakelijke cookies om je winkelwagen en het afrekenen te laten werken. Als je daarvoor toestemming geeft, laden we ook de Meta-pixel. Die meet pageviews, productweergaven, winkelwagenacties en het starten van checkout op poppyjoy.nl. Aankopen zelf worden vanuit Shopify naar Meta gestuurd, niet vanaf deze website.",
+        "Wanneer je via een Meta-advertentie op de site komt, bewaren we de klik-id (fbclid) zodat Shopify de bestelling aan die campagne kan koppelen.",
       ],
     },
     {

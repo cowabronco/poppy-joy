@@ -1,5 +1,6 @@
 import { getShopifyClient, hasShopifyConfig } from "./client";
 import {
+  CART_ATTRIBUTES_UPDATE_MUTATION,
   CART_CREATE_MUTATION,
   CART_LINES_ADD_MUTATION,
   CART_LINES_REMOVE_MUTATION,
@@ -10,6 +11,11 @@ import type { ShopifyCart } from "./types";
 export type CartLineInput = {
   merchandiseId: string;
   quantity: number;
+};
+
+export type CartAttributeInput = {
+  key: string;
+  value: string;
 };
 
 type CartUserError = {
@@ -38,6 +44,13 @@ type CartLinesRemoveResponse = {
   };
 };
 
+type CartAttributesUpdateResponse = {
+  cartAttributesUpdate: {
+    cart: ShopifyCart | null;
+    userErrors: CartUserError[];
+  };
+};
+
 function assertNoCartErrors(errors: CartUserError[]) {
   if (errors.length > 0) {
     throw new Error(
@@ -49,7 +62,8 @@ function assertNoCartErrors(errors: CartUserError[]) {
 }
 
 export async function createStorefrontCart(
-  lines: CartLineInput[] = []
+  lines: CartLineInput[] = [],
+  attributes: CartAttributeInput[] = []
 ): Promise<ShopifyCart | null> {
   if (!hasShopifyConfig()) {
     return null;
@@ -59,7 +73,12 @@ export async function createStorefrontCart(
   const { data, errors } = await client.request<CartCreateResponse>(
     CART_CREATE_MUTATION,
     {
-      variables: { lines },
+      variables: {
+        input: {
+          lines,
+          ...(attributes.length > 0 ? { attributes } : {}),
+        },
+      },
     }
   );
 
@@ -134,6 +153,34 @@ export async function removeLinesFromStorefrontCart(
 type CartQueryResponse = {
   cart: ShopifyCart | null;
 };
+
+export async function updateStorefrontCartAttributes(
+  cartId: string,
+  attributes: CartAttributeInput[]
+): Promise<ShopifyCart | null> {
+  if (!hasShopifyConfig() || attributes.length === 0) {
+    return null;
+  }
+
+  const client = getShopifyClient();
+  const { data, errors } = await client.request<CartAttributesUpdateResponse>(
+    CART_ATTRIBUTES_UPDATE_MUTATION,
+    {
+      variables: { cartId, attributes },
+    }
+  );
+
+  if (errors) {
+    throw new Error(`Shopify cart attributes update failed: ${errors.message}`);
+  }
+
+  if (!data) {
+    throw new Error("Shopify cart attributes update returned no data.");
+  }
+
+  assertNoCartErrors(data.cartAttributesUpdate.userErrors);
+  return data.cartAttributesUpdate.cart;
+}
 
 export async function getStorefrontCartById(
   cartId: string

@@ -2,9 +2,11 @@
 
 import { useEffect, useState } from "react";
 
+import { AddToCartForm } from "@/components/poppy/add-to-cart-form";
 import { Price } from "@/components/poppy/price";
 import { ProductQuantitySelect } from "@/components/poppy/product-quantity-select";
 import { Button } from "@/components/ui/button";
+import type { MetaCommerceEvent } from "@/lib/meta/pixel";
 import { cn } from "@/lib/utils";
 
 type ProductPurchaseToolbarProps = {
@@ -15,6 +17,7 @@ type ProductPurchaseToolbarProps = {
   price: string;
   productName: string;
   returnPath: string;
+  trackingEvent?: MetaCommerceEvent;
   variantId?: string;
 };
 
@@ -26,6 +29,7 @@ export function ProductPurchaseToolbar({
   price,
   productName,
   returnPath,
+  trackingEvent,
   variantId = "",
 }: ProductPurchaseToolbarProps) {
   const [isVisible, setIsVisible] = useState(false);
@@ -61,7 +65,11 @@ export function ProductPurchaseToolbar({
           </div>
         </div>
 
-        <form action={action} className="grid gap-3 sm:min-w-[420px] sm:grid-cols-[112px_minmax(0,1fr)]">
+        <AddToCartForm
+          action={action}
+          event={trackingEvent}
+          className="grid gap-3 sm:min-w-[420px] sm:grid-cols-[112px_minmax(0,1fr)]"
+        >
           <input type="hidden" name="variantId" value={variantId} />
           <input type="hidden" name="returnPath" value={returnPath} />
           <ProductQuantitySelect
@@ -77,7 +85,7 @@ export function ProductPurchaseToolbar({
           >
             {addToCartLabel}
           </Button>
-        </form>
+        </AddToCartForm>
       </div>
     </div>
   );

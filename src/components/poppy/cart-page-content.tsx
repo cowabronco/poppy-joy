@@ -1,9 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
 
+import { CheckoutForm } from "@/components/poppy/checkout-form";
 import { Container, EditorialHeading, Price } from "@/components/poppy";
 import { Button } from "@/components/ui/button";
-import { goToCheckout, removeFromCart } from "@/lib/cart/actions";
+import { removeFromCart } from "@/lib/cart/actions";
 import { formatMoney } from "@/lib/money";
 import type { ShopifyCart } from "@/lib/shopify/types";
 
@@ -141,14 +142,21 @@ export function CartPageContent({ cart }: CartPageContentProps) {
             >
               <Link href="/shop">Verder winkelen</Link>
             </Button>
-            <form action={goToCheckout} className="sm:flex-1">
+            <CheckoutForm
+              className="sm:flex-1"
+              event={{
+                currency: cart.cost.subtotalAmount.currencyCode,
+                numItems: cart.totalQuantity,
+                value: Number(cart.cost.subtotalAmount.amount),
+              }}
+            >
               <Button
                 type="submit"
                 className="h-12 w-full rounded-full bg-brand-purple px-8 text-xs uppercase tracking-[0.22em] text-brand-off-white hover:bg-brand-purple/90"
               >
                 Afrekenen
               </Button>
-            </form>
+            </CheckoutForm>
           </div>
         </div>
       </div>

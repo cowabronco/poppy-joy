@@ -225,8 +225,24 @@ export const CART_FRAGMENT = `#graphql
 export const CART_CREATE_MUTATION = `#graphql
   ${CART_FRAGMENT}
 
-  mutation CartCreate($lines: [CartLineInput!]) {
-    cartCreate(input: { lines: $lines }) {
+  mutation CartCreate($input: CartInput!) {
+    cartCreate(input: $input) {
+      cart {
+        ...CartFragment
+      }
+      userErrors {
+        field
+        message
+      }
+    }
+  }
+`;
+
+export const CART_ATTRIBUTES_UPDATE_MUTATION = `#graphql
+  ${CART_FRAGMENT}
+
+  mutation CartAttributesUpdate($cartId: ID!, $attributes: [AttributeInput!]!) {
+    cartAttributesUpdate(cartId: $cartId, attributes: $attributes) {
       cart {
         ...CartFragment
       }

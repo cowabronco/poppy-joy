@@ -64,6 +64,23 @@ Checklist:
 - [ ] Confirm whether prices include tax.
 - [ ] Confirm cross-border duties if selling outside the Netherlands.
 
+## Meta ads
+
+Checkout stays on Shopify. Purchase conversions should come from Shopify's
+Facebook & Instagram data sharing (Enhanced or Maximum), not from a second
+Purchase event on this website.
+
+The storefront does three things:
+
+- Stores `fbclid` from Meta ad landings and appends it to `checkoutUrl`.
+- Writes `fbclid`, `_fbc`, and `_fbp` onto the Shopify cart as attributes.
+- Loads the Meta Pixel only after marketing consent, for PageView, ViewContent,
+  AddToCart, and InitiateCheckout.
+
+Set `NEXT_PUBLIC_META_PIXEL_ID` in `.env.local` and Vercel to the same Pixel
+connected in Shopify. Leave it empty to keep the pixel and cookie banner off;
+the `fbclid` checkout handoff still works.
+
 ## Storefront Validation
 
 The frontend should validate:

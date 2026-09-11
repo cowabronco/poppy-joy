@@ -20,8 +20,10 @@ import {
   ProductGallery,
   Reveal,
 } from "@/components/poppy";
+import { AddToCartForm } from "@/components/poppy/add-to-cart-form";
 import { ProductQuantitySelect } from "@/components/poppy/product-quantity-select";
 import { ProductPurchaseToolbar } from "@/components/poppy/product-purchase-toolbar";
+import { ProductViewTracker } from "@/components/poppy/product-view-tracker";
 import { Button } from "@/components/ui/button";
 import {
   Accordion,
@@ -30,6 +32,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { addToCart } from "@/lib/cart/actions";
+import { shopifyNumericId } from "@/lib/meta/attribution";
 import { formatMoney } from "@/lib/money";
 import {
   getAddToCartLabel,
@@ -151,11 +154,24 @@ export default async function ProductPage({ params }: ProductPageProps) {
   ];
   const productFacts = buildProductFactList(displayProduct);
   const dropLabel = storefrontProduct.metafields.drop ?? "Celebrate Joy";
+  const trackingEvent = {
+    contentIds: [shopifyNumericId(storefrontProduct.id)],
+    contentName: productName,
+    contentType: "product" as const,
+    currency: displayVariant?.price.currencyCode,
+    value: displayVariant ? Number(displayVariant.price.amount) : undefined,
+  };
 
   return (
     <main className="min-h-screen bg-brand-off-white pt-24 text-brand-black md:pt-28">
       <JsonLd data={productJsonLd(storefrontProduct)} />
       <JsonLd data={productBreadcrumbJsonLd(productName, handle)} />
+      <ProductViewTracker
+        contentId={trackingEvent.contentIds[0]}
+        contentName={productName}
+        currency={trackingEvent.currency}
+        value={trackingEvent.value}
+      />
       <Container className="pb-16 lg:pb-24">
         <Reveal>
           <Link
@@ -228,7 +244,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
               ))}
             </ul>
 
-            <form action={addToCart} className="mt-8">
+            <AddToCartForm action={addToCart} event={trackingEvent} className="mt-8">
               <input
                 type="hidden"
                 name="variantId"
@@ -249,7 +265,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
                   {addToCartLabel}
                 </Button>
               </div>
-            </form>
+            </AddToCartForm>
 
             <Accordion
               type="single"
@@ -369,6 +385,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
         price={displayPrice ?? ""}
         productName={productName}
         returnPath="/cart"
+        trackingEvent={trackingEvent}
         variantId={purchasableVariant?.id}
       />
     </main>

@@ -3,6 +3,7 @@ import type { Viewport } from "next";
 import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 import { JsonLd } from "@/components/poppy/json-ld";
+import { MetaTracking } from "@/components/poppy/meta-tracking";
 import { PageMotion } from "@/components/poppy/page-motion";
 import { SiteFooter } from "@/components/poppy/site-footer";
 import { SiteHeader } from "@/components/poppy/site-header";
@@ -47,6 +48,7 @@ export default function RootLayout({
         <SiteHeader />
         <PageMotion>{children}</PageMotion>
         <SiteFooter />
+        <MetaTracking />
         <Analytics />
       </body>
     </html>
