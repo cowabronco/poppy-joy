@@ -104,6 +104,17 @@ function formatPrice(price?: { amount: string; currencyCode: string }) {
   return formatMoney(price ?? null);
 }
 
+function BackToShopLink() {
+  return (
+    <Link
+      href="/shop"
+      className="inline-flex text-xs uppercase tracking-[0.24em] text-brand-black/55 transition hover:text-brand-purple"
+    >
+      Terug naar shop
+    </Link>
+  );
+}
+
 export default async function ProductPage({ params }: ProductPageProps) {
   const { handle } = await params;
 
@@ -172,23 +183,23 @@ export default async function ProductPage({ params }: ProductPageProps) {
         currency={trackingEvent.currency}
         value={trackingEvent.value}
       />
-      <Container className="pb-16 lg:pb-24">
-        <Reveal>
-          <Link
-            href="/shop"
-            className="inline-flex text-xs uppercase tracking-[0.24em] text-brand-black/55 transition hover:text-brand-purple"
-          >
-            Terug naar shop
-          </Link>
+      <Container className="pb-16 lg:max-w-[96rem] lg:pb-24">
+        <Reveal className="lg:hidden">
+          <BackToShopLink />
         </Reveal>
 
-        <section className="mt-5 grid gap-10 lg:mt-6 lg:grid-cols-[minmax(0,1.15fr)_minmax(400px,0.85fr)] xl:grid-cols-[minmax(0,1.2fr)_minmax(420px,0.8fr)] lg:items-start">
-          <Reveal>
-            <ProductGallery media={galleryImages} productName={productName} />
+        <section className="mt-5 grid gap-10 lg:mt-6 lg:grid-cols-[minmax(0,1.55fr)_minmax(360px,0.7fr)] lg:items-stretch xl:grid-cols-[minmax(0,1.7fr)_minmax(380px,0.62fr)]">
+          <Reveal className="min-h-0 lg:h-full">
+            <ProductGallery
+              media={galleryImages}
+              productName={productName}
+              className="lg:h-full"
+              topLeftSlot={<BackToShopLink />}
+            />
           </Reveal>
 
-          <Reveal delayMs={80}>
-            <article className="rounded-[2rem] border border-border bg-[#F2EDE3] p-6 sm:p-8 lg:sticky lg:top-28 xl:top-32">
+          <Reveal delayMs={80} className="min-h-0">
+            <article className="h-full rounded-[2rem] border border-border bg-[#F2EDE3] p-6 sm:p-8 lg:sticky lg:top-28 xl:top-32">
             <p className="text-xs uppercase tracking-[0.28em] text-brand-purple">
               {dropLabel}
             </p>

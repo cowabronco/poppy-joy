@@ -3,11 +3,13 @@ import { Container } from "@/components/poppy";
 export default function ProductLoading() {
   return (
     <main className="min-h-screen bg-brand-off-white pt-24 text-brand-black md:pt-28">
-      <Container className="pb-16 lg:pb-24">
-        <div className="loading-sheen h-4 w-32 rounded-full" />
+      <Container className="pb-16 lg:max-w-[96rem] lg:pb-24">
+        <div className="loading-sheen h-4 w-32 rounded-full lg:hidden" />
 
-        <div className="mt-5 grid gap-10 lg:mt-6 lg:grid-cols-[minmax(0,1.15fr)_minmax(400px,0.85fr)] xl:grid-cols-[minmax(0,1.2fr)_minmax(420px,0.8fr)] lg:items-start">
-          <div className="loading-sheen h-[calc(100svh-11.5rem)] min-h-48 rounded-[2rem] sm:h-[calc(100svh-10.5rem)] lg:h-[calc(100svh-9rem)]" />
+        <div className="mt-5 grid gap-10 lg:mt-6 lg:grid-cols-[minmax(0,1.55fr)_minmax(360px,0.7fr)] lg:items-stretch xl:grid-cols-[minmax(0,1.7fr)_minmax(380px,0.62fr)]">
+          <div className="relative loading-sheen aspect-square min-h-48 overflow-hidden rounded-[2rem] lg:aspect-auto lg:h-full lg:min-h-[28rem]">
+            <div className="absolute left-4 top-4 hidden h-7 w-36 rounded-full bg-brand-off-white/80 lg:block" />
+          </div>
 
           <div className="rounded-[2rem] border border-border bg-[#F2EDE3] p-6 sm:p-8">
             <div className="loading-sheen h-3 w-28 rounded-full" />
