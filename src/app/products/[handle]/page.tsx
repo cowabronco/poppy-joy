@@ -10,6 +10,7 @@ import {
   RefreshCw,
   Ruler,
   Sparkles,
+  Truck,
 } from "lucide-react";
 
 import {
@@ -195,55 +196,79 @@ export default async function ProductPage({ params }: ProductPageProps) {
               productName={productName}
               className="lg:h-full"
               topLeftSlot={<BackToShopLink />}
+              topRightSlot={
+                <span className="text-xs uppercase tracking-[0.24em]">
+                  {dropLabel}
+                </span>
+              }
             />
           </Reveal>
 
           <Reveal delayMs={80} className="min-h-0">
             <article className="h-full rounded-[2rem] border border-border bg-[#F2EDE3] p-6 sm:p-8 lg:sticky lg:top-28 xl:top-32">
-            <p className="text-xs uppercase tracking-[0.28em] text-brand-purple">
-              {dropLabel}
-            </p>
-            <div className="mt-5 grid gap-3">
-              <div>
+            <div className="grid gap-5">
+              <div className="grid gap-3">
                 <h1 className="serif text-5xl font-semibold leading-none md:text-6xl">
                   {productName}
                 </h1>
+                <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+                  <Price className="serif text-5xl font-semibold leading-none md:text-6xl">
+                    {displayPrice}
+                  </Price>
+                  <span className="text-xs text-brand-black/50">Inclusief BTW</span>
+                </div>
               </div>
-              <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-                <Price className="serif text-5xl font-semibold leading-none md:text-6xl">
-                  {displayPrice}
-                </Price>
-                <span className="text-xs text-brand-black/50">Inclusief BTW</span>
-              </div>
+              <p className="flex items-start gap-3 rounded-2xl bg-brand-off-white/70 p-4 text-sm leading-5 text-brand-black/72">
+                <Truck className="mt-0.5 h-4 w-4 shrink-0 text-brand-green" aria-hidden="true" />
+                Gratis verzending
+              </p>
               {isSoldOut ? (
                 <p className="text-xs uppercase tracking-[0.22em] text-brand-black/55">
                   {availabilityLabel}
                 </p>
               ) : null}
-            </div>
 
-            <div className="mt-7 grid gap-3 sm:grid-cols-2">
+            <AddToCartForm action={addToCart} event={trackingEvent}>
+              <input
+                type="hidden"
+                name="variantId"
+                value={purchasableVariant?.id ?? ""}
+              />
+              <input type="hidden" name="returnPath" value="/cart" />
+              <div className="grid grid-cols-[6.25rem_minmax(0,1fr)] gap-3">
+                <ProductQuantitySelect
+                  id="quantity"
+                  maxQuantity={maxQuantity}
+                  disabled={!canAddToCart}
+                />
+                <Button
+                  type="submit"
+                  disabled={!canAddToCart}
+                  className="h-13 w-full min-w-0 rounded-full bg-brand-purple px-4 text-xs uppercase tracking-[0.16em] text-brand-off-white hover:bg-brand-purple/90 disabled:bg-brand-black/20 sm:px-8 sm:tracking-[0.22em]"
+                >
+                  {addToCartLabel}
+                </Button>
+              </div>
+            </AddToCartForm>
+
+            <div className="grid grid-cols-2 gap-3">
               {productSummaryFacts.map(({ label, value, Icon }) => (
                 <div
                   key={label}
-                  className="flex items-center gap-4 rounded-2xl bg-brand-off-white/70 p-4"
+                  aria-label={`${label} ${value}`}
+                  className="flex items-center gap-3 rounded-2xl bg-brand-off-white/70 px-4 py-3"
                 >
-                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#F2EDE3] text-brand-purple">
-                    <Icon className="h-5 w-5" />
+                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#F2EDE3] text-brand-purple">
+                    <Icon className="h-4 w-4" aria-hidden="true" />
                   </span>
-                  <span>
-                    <span className="block text-[10px] uppercase tracking-[0.2em] text-brand-black/45">
-                      {label}
-                    </span>
-                    <span className="serif text-2xl font-semibold leading-none text-brand-black">
-                      {value}
-                    </span>
+                  <span className="serif text-2xl font-semibold leading-none text-brand-black">
+                    {value}
                   </span>
                 </div>
               ))}
             </div>
 
-            <ul className="mt-5 grid gap-3">
+            <ul className="grid gap-3">
               {productFacts.map((fact) => (
                 <li
                   key={fact}
@@ -254,29 +279,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
                 </li>
               ))}
             </ul>
-
-            <AddToCartForm action={addToCart} event={trackingEvent} className="mt-8">
-              <input
-                type="hidden"
-                name="variantId"
-                value={purchasableVariant?.id ?? ""}
-              />
-              <input type="hidden" name="returnPath" value="/cart" />
-              <div className="grid gap-3 sm:grid-cols-[112px_minmax(0,1fr)]">
-                <ProductQuantitySelect
-                  id="quantity"
-                  maxQuantity={maxQuantity}
-                  disabled={!canAddToCart}
-                />
-                <Button
-                  type="submit"
-                  disabled={!canAddToCart}
-                  className="h-13 w-full rounded-full bg-brand-purple px-8 text-xs uppercase tracking-[0.22em] text-brand-off-white hover:bg-brand-purple/90 disabled:bg-brand-black/20"
-                >
-                  {addToCartLabel}
-                </Button>
-              </div>
-            </AddToCartForm>
+            </div>
 
             <Accordion
               type="single"

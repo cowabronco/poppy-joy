@@ -68,7 +68,7 @@ export function ProductPurchaseToolbar({
         <AddToCartForm
           action={action}
           event={trackingEvent}
-          className="grid gap-3 sm:min-w-[420px] sm:grid-cols-[112px_minmax(0,1fr)]"
+          className="grid grid-cols-[6.25rem_minmax(0,1fr)] gap-3 sm:min-w-[420px]"
         >
           <input type="hidden" name="variantId" value={variantId} />
           <input type="hidden" name="returnPath" value={returnPath} />
@@ -81,7 +81,7 @@ export function ProductPurchaseToolbar({
           <Button
             type="submit"
             disabled={!canAddToCart}
-            className="h-12 w-full rounded-full bg-brand-purple px-8 text-xs uppercase tracking-[0.22em] text-brand-off-white hover:bg-brand-purple/90 disabled:bg-brand-black/20"
+            className="h-12 w-full min-w-0 rounded-full bg-brand-purple px-4 text-xs uppercase tracking-[0.16em] text-brand-off-white hover:bg-brand-purple/90 disabled:bg-brand-black/20 sm:px-8 sm:tracking-[0.22em]"
           >
             {addToCartLabel}
           </Button>

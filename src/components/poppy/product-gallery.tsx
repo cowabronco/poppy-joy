@@ -12,6 +12,7 @@ type ProductGalleryProps = {
   productName: string;
   className?: string;
   topLeftSlot?: ReactNode;
+  topRightSlot?: ReactNode;
 };
 
 export function ProductGallery({
@@ -19,6 +20,7 @@ export function ProductGallery({
   productName,
   className,
   topLeftSlot,
+  topRightSlot,
 }: ProductGalleryProps) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isImageLoaded, setIsImageLoaded] = useState(false);
@@ -142,6 +144,14 @@ export function ProductGallery({
         <div className="absolute left-3 top-3 z-20 hidden lg:block lg:left-4 lg:top-4">
           <div className="rounded-full border border-border bg-brand-off-white/90 px-3 py-1.5 shadow-sm backdrop-blur-sm">
             {topLeftSlot}
+          </div>
+        </div>
+      ) : null}
+
+      {topRightSlot ? (
+        <div className="absolute right-3 top-3 z-20 lg:right-4 lg:top-4">
+          <div className="rounded-full bg-brand-green px-3 py-1.5 text-brand-off-white">
+            {topRightSlot}
           </div>
         </div>
       ) : null}
