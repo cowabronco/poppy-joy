@@ -52,7 +52,7 @@ export function ProductQuantitySelect({
         <SelectPrimitive.Content
           position="popper"
           sideOffset={8}
-          className="z-50 max-h-64 min-w-(--radix-select-trigger-width) overflow-hidden rounded-2xl border border-brand-purple/20 bg-brand-off-white p-1.5 shadow-[0_12px_32px_-12px_rgba(40,20,50,0.25)] data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-[0.97]"
+          className="z-50 max-h-64 min-w-(--radix-select-trigger-width) overflow-hidden rounded-2xl border border-brand-purple/20 bg-brand-off-white p-1.5 shadow-[0_12px_32px_-12px_rgba(40,20,50,0.25)] data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95"
         >
           <SelectPrimitive.Viewport>
             {options.map((quantity) => (
