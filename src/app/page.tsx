@@ -23,6 +23,7 @@ import { values } from "@/lib/products";
 import { getStorefrontProducts } from "@/lib/shopify/products";
 import {
   getPrimaryImageUrl,
+  getProductSummaryFacts,
   mapStorefrontToDisplayProduct,
 } from "@/lib/shopify/to-product";
 
@@ -73,6 +74,7 @@ export default async function Home() {
   const homeProducts = storefrontProducts.map((sp) => ({
     product: mapStorefrontToDisplayProduct(sp),
     imageSrc: getPrimaryImageUrl(sp),
+    facts: getProductSummaryFacts(sp),
   }));
 
   return (
@@ -136,13 +138,13 @@ export default async function Home() {
           </Reveal>
 
           <div className="grid grid-auto-rows-fr gap-5 md:grid-cols-2 xl:grid-cols-4">
-            {homeProducts.slice(0, 4).map(({ product, imageSrc }, index) => (
+            {homeProducts.slice(0, 4).map(({ product, imageSrc, facts }, index) => (
               <Reveal key={product.handle} delayMs={index * 60}>
                 <ProductCard
                   product={product}
                   imageSrc={imageSrc}
+                  facts={facts}
                   sizes="(min-width: 1280px) 300px, (min-width: 768px) 50vw, 100vw"
-                  showDetails={false}
                 />
               </Reveal>
             ))}

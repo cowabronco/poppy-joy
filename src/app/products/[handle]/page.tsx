@@ -7,6 +7,7 @@ import {
   Leaf,
   PackageCheck,
   RefreshCw,
+  ShoppingBag,
   Sparkles,
   Truck,
 } from "lucide-react";
@@ -152,6 +153,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
   const relatedProducts = relatedSPs.map((sp) => ({
     product: mapStorefrontToDisplayProduct(sp),
     imageSrc: getPrimaryImageUrl(sp),
+    facts: getProductSummaryFacts(sp),
     soldOut: !isProductAvailableForPurchase(sp),
   }));
 
@@ -207,10 +209,18 @@ export default async function ProductPage({ params }: ProductPageProps) {
                   <span className="text-xs text-brand-black/50">Inclusief BTW</span>
                 </div>
               </div>
-              <p className="flex items-start gap-3 rounded-2xl bg-brand-off-white/70 p-4 text-sm leading-5 text-brand-black/72">
-                <Truck className="mt-0.5 h-4 w-4 shrink-0 text-brand-green" aria-hidden="true" />
-                Gratis verzending
-              </p>
+              <ProductFacts flagCount={flagCount} productLength={productLength} />
+              <ul className="grid gap-3">
+                {productFacts.map((fact) => (
+                  <li
+                    key={fact}
+                    className="flex items-start gap-3 rounded-2xl bg-brand-off-white/70 p-4 text-sm leading-5 text-brand-black/72"
+                  >
+                    <Check className="mt-0.5 h-4 w-4 shrink-0 text-brand-green" />
+                    <span>{fact}</span>
+                  </li>
+                ))}
+              </ul>
               {isSoldOut ? (
                 <p className="text-xs uppercase tracking-[0.22em] text-brand-black/55">
                   {availabilityLabel}
@@ -233,26 +243,26 @@ export default async function ProductPage({ params }: ProductPageProps) {
                 <Button
                   type="submit"
                   disabled={!canAddToCart}
-                  className="h-13 w-full min-w-0 rounded-full bg-brand-purple px-4 text-xs uppercase tracking-[0.16em] text-brand-off-white hover:bg-brand-purple/90 disabled:bg-brand-black/20 sm:px-8 sm:tracking-[0.22em]"
+                  className="h-13 w-full min-w-0 rounded-full bg-brand-purple px-4 text-xs uppercase tracking-[0.16em] cursor-pointer text-brand-off-white hover:bg-brand-purple/90 disabled:cursor-not-allowed disabled:bg-brand-black/20 sm:px-8 sm:tracking-[0.22em]"
                 >
                   {addToCartLabel}
                 </Button>
               </div>
             </AddToCartForm>
+              <ul className="space-y-3 rounded-2xl bg-brand-purple/10 p-5 text-sm font-medium leading-6 text-brand-black">
+                {[
+                  { icon: Truck, label: "Gratis verzending in 2 werkdagen" },
+                  { icon: ShoppingBag, label: "Gratis bewaarzakje" },
+                ].map(({ icon: Icon, label }) => (
+                  <li key={label} className="flex items-center gap-3">
+                    <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-brand-purple text-brand-off-white">
+                      <Icon aria-hidden="true" className="size-4" />
+                    </span>
+                    {label}
+                  </li>
+                ))}
+              </ul>
 
-            <ProductFacts flagCount={flagCount} productLength={productLength} />
-
-            <ul className="grid gap-3">
-              {productFacts.map((fact) => (
-                <li
-                  key={fact}
-                  className="flex items-start gap-3 rounded-2xl bg-brand-off-white/70 p-4 text-sm leading-5 text-brand-black/72"
-                >
-                  <Check className="mt-0.5 h-4 w-4 shrink-0 text-brand-green" />
-                  <span>{fact}</span>
-                </li>
-              ))}
-            </ul>
             </div>
 
             <Accordion
@@ -351,13 +361,13 @@ export default async function ProductPage({ params }: ProductPageProps) {
             </div>
           </Reveal>
           <div className="mt-10 grid gap-8 md:grid-cols-3">
-            {relatedProducts.map(({ product: relatedProduct, imageSrc, soldOut }, index) => (
+            {relatedProducts.map(({ product: relatedProduct, imageSrc, facts, soldOut }, index) => (
               <Reveal key={relatedProduct.handle} delayMs={index * 60}>
                 <ProductCard
                   product={relatedProduct}
                   imageSrc={imageSrc}
+                  facts={facts}
                   sizes="(min-width: 1280px) 400px, (min-width: 768px) 33vw, 100vw"
-                  showDetails={false}
                   soldOut={soldOut}
                 />
               </Reveal>

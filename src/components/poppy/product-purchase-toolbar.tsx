@@ -81,7 +81,7 @@ export function ProductPurchaseToolbar({
           <Button
             type="submit"
             disabled={!canAddToCart}
-            className="h-12 w-full min-w-0 rounded-full bg-brand-purple px-4 text-xs uppercase tracking-[0.16em] text-brand-off-white hover:bg-brand-purple/90 disabled:bg-brand-black/20 sm:px-8 sm:tracking-[0.22em]"
+            className="h-12 w-full min-w-0 rounded-full bg-brand-purple px-4 text-xs uppercase tracking-[0.16em] cursor-pointer text-brand-off-white hover:bg-brand-purple/90 disabled:cursor-not-allowed disabled:bg-brand-black/20 sm:px-8 sm:tracking-[0.22em]"
           >
             {addToCartLabel}
           </Button>

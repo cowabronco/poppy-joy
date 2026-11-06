@@ -48,19 +48,6 @@ export function SiteHeader() {
   const isHome = pathname === "/";
   const useSolidHeader = !isHome || isFloating;
 
-  const navLinkClassName = (href: string) => {
-    const isActive =
-      href === "/" ? pathname === "/" : pathname.startsWith(href);
-
-    return `relative font-semibold transition-colors duration-300 after:absolute after:bottom-0 after:left-0 after:h-[1px] after:w-full after:origin-left after:transition-transform after:duration-300 after:ease-out hover:after:scale-x-100 ${
-      isActive ? "after:scale-x-100" : "after:scale-x-0"
-    } ${
-      useSolidHeader
-        ? "text-brand-black/70 hover:text-brand-black after:bg-brand-black"
-        : "text-brand-off-white/80 hover:text-brand-off-white after:bg-brand-off-white"
-    }`;
-  };
-
   const iconButtonClassName = useSolidHeader
     ? "text-brand-black/70 hover:text-brand-black"
     : "text-brand-off-white/80 hover:text-brand-off-white";
@@ -75,7 +62,7 @@ export function SiteHeader() {
       className={`fixed left-0 right-0 top-0 z-50 transition-all duration-500 ease-out ${
         useSolidHeader
           ? "bg-brand-off-white/95 shadow-lg backdrop-blur-md"
-          : "bg-gradient-to-b from-black/50 to-transparent"
+          : "bg-gradient-to-b from-black/60 via-black/25 to-transparent"
       }`}
     >
       <Container
@@ -156,7 +143,10 @@ export function SiteHeader() {
 
         <div className="relative hidden items-center justify-center lg:flex">
           <nav className="flex items-center justify-center gap-6 text-[0.975rem] uppercase tracking-[0.28em]">
-            <Link className={navLinkClassName("/shop")} href="/shop">
+            <Link
+              className="rounded-full bg-brand-purple py-1.5 pl-5 pr-[calc(1.25rem-0.28em)] font-semibold text-brand-off-white shadow-md shadow-black/20 transition-colors duration-300 hover:bg-brand-purple/90"
+              href="/shop"
+            >
               Shop
             </Link>
             <Link href="/" className="mx-3">
@@ -169,7 +159,14 @@ export function SiteHeader() {
                 priority
               />
             </Link>
-            <Link className={navLinkClassName("/story")} href="/story">
+            <Link
+              className={`rounded-full border bg-transparent py-[calc(0.375rem-1px)] pl-[calc(1.25rem-1px)] pr-[calc(1.25rem-0.28em-1px)] font-semibold transition-colors duration-300 ${
+                useSolidHeader
+                  ? "border-brand-black/30 text-brand-black/70 hover:border-brand-black/60 hover:text-brand-black"
+                  : "border-white text-brand-off-white hover:bg-white/10"
+              }`}
+              href="/story"
+            >
               Story
             </Link>
           </nav>

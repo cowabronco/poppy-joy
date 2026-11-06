@@ -238,7 +238,7 @@ export function ShopFilterableGrid({ products }: ShopFilterableGridProps) {
 
       <section
         aria-label="Producten"
-        className="grid gap-x-6 gap-y-12 md:grid-cols-2 lg:grid-cols-3"
+        className="grid gap-5 md:grid-cols-2 lg:grid-cols-3"
       >
         {visibleProducts.map((entry, index) => (
           <Reveal key={entry.product.handle} delayMs={index * 60}>
