@@ -8,6 +8,7 @@ import { getStorefrontProducts } from "@/lib/shopify/products";
 import { getProductAvailabilityLabel, isProductAvailableForPurchase } from "@/lib/shopify/availability";
 import {
   getPrimaryImageUrl,
+  getProductSummaryFacts,
   mapStorefrontToDisplayProduct,
 } from "@/lib/shopify/to-product";
 
@@ -31,10 +32,14 @@ export default async function ShopPage() {
   const entries = storefrontProducts.map((sp) => {
     const product = mapStorefrontToDisplayProduct(sp);
     const filterMeta = productFilterMetadata[sp.handle];
+    const imageSrc = getPrimaryImageUrl(sp);
+    const hoverImageSrc = sp.images.find((image) => image.url !== imageSrc)?.url;
 
     return {
       product,
-      imageSrc: getPrimaryImageUrl(sp),
+      imageSrc,
+      hoverImageSrc,
+      facts: getProductSummaryFacts(sp),
       filters: {
         collection: "Celebrate Joy" as const,
         materials: product.materialTags,

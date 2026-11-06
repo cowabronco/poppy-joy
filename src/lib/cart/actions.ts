@@ -11,7 +11,9 @@ import { isValidFbclid } from "@/lib/meta/attribution";
 import {
   addLinesToStorefrontCart,
   createStorefrontCart,
+  getStorefrontCartById,
   removeLinesFromStorefrontCart,
+  updateLinesInStorefrontCart,
   updateStorefrontCartAttributes,
 } from "@/lib/shopify/cart";
 import { getMaxPurchasableQuantity } from "@/lib/shopify/availability";
@@ -112,6 +114,48 @@ export async function removeFromCart(formData: FormData) {
   revalidatePath("/", "layout");
 }
 
+export async function updateCartLineQuantity(formData: FormData) {
+  const lineId = formData.get("lineId");
+  const rawQuantity = Number(formData.get("quantity"));
+
+  if (typeof lineId !== "string" || !lineId || !Number.isFinite(rawQuantity)) {
+    return;
+  }
+
+  const cartId = await getCartIdFromCookies();
+
+  if (!cartId) {
+    return;
+  }
+
+  const currentCart = await getStorefrontCartById(cartId).catch(() => null);
+  const line = currentCart?.lines.edges.find(({ node }) => node.id === lineId)
+    ?.node;
+
+  if (!line) {
+    return;
+  }
+
+  const maxQuantity = getMaxPurchasableQuantity(line.merchandise);
+  const quantity = Math.min(Math.max(Math.trunc(rawQuantity), 0), maxQuantity);
+
+  if (quantity === line.quantity) {
+    return;
+  }
+
+  const cart = await (quantity === 0
+    ? removeLinesFromStorefrontCart(cartId, [lineId])
+    : updateLinesInStorefrontCart(cartId, [{ id: lineId, quantity }])
+  ).catch(() => null);
+
+  if (cart?.id) {
+    await setCartIdCookie(cart.id);
+  }
+
+  revalidatePath("/cart");
+  revalidatePath("/", "layout");
+}
+
 export async function goToCheckout(formData?: FormData) {
   const cartId = await getCartIdFromCookies();
 
@@ -130,7 +174,6 @@ export async function goToCheckout(formData?: FormData) {
     await updateStorefrontCartAttributes(cartId, attributes).catch(() => null);
   }
 
-  const { getStorefrontCartById } = await import("@/lib/shopify/cart");
   const cart = await getStorefrontCartById(cartId);
 
   if (cart?.checkoutUrl) {

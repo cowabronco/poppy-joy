@@ -23,28 +23,10 @@ export function ProductGallery({
   topRightSlot,
 }: ProductGalleryProps) {
   const [activeIndex, setActiveIndex] = useState(0);
-  const [isImageLoaded, setIsImageLoaded] = useState(false);
   const thumbnailStripRef = useRef<HTMLDivElement>(null);
   const thumbnailButtonRefs = useRef<Array<HTMLButtonElement | null>>([]);
   const activeMedia = media[activeIndex] ?? media[0];
   const hasMultipleImages = media.length > 1;
-
-  useEffect(() => {
-    setIsImageLoaded(false);
-
-    if (!activeMedia?.src) {
-      return;
-    }
-
-    const preload = new window.Image();
-    preload.src = activeMedia.src;
-
-    if (preload.complete) {
-      requestAnimationFrame(() => {
-        setIsImageLoaded(true);
-      });
-    }
-  }, [activeMedia?.src]);
 
   const goToPrevious = useCallback(() => {
     setActiveIndex((current) =>
@@ -116,22 +98,15 @@ export function ProductGallery({
     >
       {activeMedia?.src ? (
         <>
-          {!isImageLoaded ? (
-            <div aria-hidden className="loading-sheen absolute inset-0 z-10" />
-          ) : null}
+          {/* Sheen sits behind the image; never hide the image behind JS load state. */}
+          <div aria-hidden className="loading-sheen absolute inset-0" />
           <Image
             src={activeMedia.src}
             alt={activeMedia.alt}
             fill
             priority={activeIndex === 0}
             sizes="(min-width: 1280px) 58vw, (min-width: 1024px) 52vw, 100vw"
-            onLoad={() => setIsImageLoaded(true)}
-            className={cn(
-              "object-cover transition duration-700 ease-out",
-              isImageLoaded
-                ? "scale-100 opacity-100 blur-0"
-                : "scale-[1.03] opacity-0 blur-sm"
-            )}
+            className="object-cover"
           />
         </>
       ) : (

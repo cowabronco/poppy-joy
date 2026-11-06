@@ -141,6 +141,7 @@ export default async function Home() {
                 <ProductCard
                   product={product}
                   imageSrc={imageSrc}
+                  sizes="(min-width: 1280px) 300px, (min-width: 768px) 50vw, 100vw"
                   showDetails={false}
                 />
               </Reveal>

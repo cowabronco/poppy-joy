@@ -1,10 +1,10 @@
 "use client";
 
-import type { ComponentProps } from "react";
+import { useRef, type ComponentProps } from "react";
 
 import { trackAddToCart, type MetaCommerceEvent } from "@/lib/meta/pixel";
 
-type AddToCartFormProps = ComponentProps<"form"> & {
+type AddToCartFormProps = Omit<ComponentProps<"form">, "action"> & {
   action: (formData: FormData) => void | Promise<void>;
   event?: MetaCommerceEvent;
 };
@@ -12,19 +12,28 @@ type AddToCartFormProps = ComponentProps<"form"> & {
 export function AddToCartForm({
   action,
   event,
-  onSubmit,
   ...props
 }: AddToCartFormProps) {
-  return (
-    <form
-      {...props}
-      action={action}
-      onSubmit={(submitEvent) => {
-        if (event) {
-          trackAddToCart(event);
-        }
-        onSubmit?.(submitEvent);
-      }}
-    />
-  );
+  const pendingRef = useRef(false);
+
+  // Ignore extra submits (double-click / double-tap) while one is in flight,
+  // otherwise each click adds another banner to the cart.
+  async function guardedAction(formData: FormData) {
+    if (pendingRef.current) {
+      return;
+    }
+
+    pendingRef.current = true;
+    if (event) {
+      trackAddToCart(event);
+    }
+
+    try {
+      await action(formData);
+    } finally {
+      pendingRef.current = false;
+    }
+  }
+
+  return <form {...props} action={guardedAction} />;
 }

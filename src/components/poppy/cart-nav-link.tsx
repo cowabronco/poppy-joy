@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ShoppingBag } from "lucide-react";
 
+import { CART_COUNT_EVENT } from "@/components/poppy/cart-count-sync";
 import { cn } from "@/lib/utils";
 
 type CartNavLinkProps = {
@@ -38,10 +39,37 @@ export function CartNavLink({ className }: CartNavLinkProps) {
       }
     }
 
+    function handleCountEvent(event: Event) {
+      const count = (event as CustomEvent<number>).detail;
+      if (typeof count === "number") {
+        setItemCount(count);
+      }
+    }
+
+    // Mobile browsers often restore a closed/backgrounded tab from memory
+    // (bfcache) without re-running effects, which left a stale badge.
+    function handlePageShow(event: PageTransitionEvent) {
+      if (event.persisted) {
+        void loadCartCount();
+      }
+    }
+
+    function handleVisibilityChange() {
+      if (document.visibilityState === "visible") {
+        void loadCartCount();
+      }
+    }
+
     void loadCartCount();
+    window.addEventListener(CART_COUNT_EVENT, handleCountEvent);
+    window.addEventListener("pageshow", handlePageShow);
+    document.addEventListener("visibilitychange", handleVisibilityChange);
 
     return () => {
       isActive = false;
+      window.removeEventListener(CART_COUNT_EVENT, handleCountEvent);
+      window.removeEventListener("pageshow", handlePageShow);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
     };
   }, [pathname]);
 

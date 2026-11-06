@@ -13,6 +13,8 @@ type FilterGroupKey = "materials" | "colors" | "availability";
 type ShopProduct = {
   product: Product;
   imageSrc?: string;
+  hoverImageSrc?: string;
+  facts: { flagCount: number; productLength: number };
   filters: {
     collection: "Celebrate Joy";
     materials: string[];
@@ -234,12 +236,18 @@ export function ShopFilterableGrid({ products }: ShopFilterableGridProps) {
       </aside>
       ) : null}
 
-      <section aria-label="Producten" className="grid gap-8 md:grid-cols-2">
+      <section
+        aria-label="Producten"
+        className="grid gap-x-6 gap-y-12 md:grid-cols-2 lg:grid-cols-3"
+      >
         {visibleProducts.map((entry, index) => (
           <Reveal key={entry.product.handle} delayMs={index * 60}>
             <ProductCard
               product={entry.product}
               imageSrc={entry.imageSrc}
+              hoverImageSrc={entry.hoverImageSrc}
+              facts={entry.facts}
+              sizes="(min-width: 1280px) 400px, (min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
               soldOut={entry.soldOut}
             />
           </Reveal>

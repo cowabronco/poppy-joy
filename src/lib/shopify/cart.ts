@@ -4,6 +4,7 @@ import {
   CART_CREATE_MUTATION,
   CART_LINES_ADD_MUTATION,
   CART_LINES_REMOVE_MUTATION,
+  CART_LINES_UPDATE_MUTATION,
   CART_QUERY,
 } from "./queries";
 import type { ShopifyCart } from "./types";
@@ -42,6 +43,18 @@ type CartLinesRemoveResponse = {
     cart: ShopifyCart | null;
     userErrors: CartUserError[];
   };
+};
+
+type CartLinesUpdateResponse = {
+  cartLinesUpdate: {
+    cart: ShopifyCart | null;
+    userErrors: CartUserError[];
+  };
+};
+
+export type CartLineUpdateInput = {
+  id: string;
+  quantity: number;
 };
 
 type CartAttributesUpdateResponse = {
@@ -148,6 +161,34 @@ export async function removeLinesFromStorefrontCart(
 
   assertNoCartErrors(data.cartLinesRemove.userErrors);
   return data.cartLinesRemove.cart;
+}
+
+export async function updateLinesInStorefrontCart(
+  cartId: string,
+  lines: CartLineUpdateInput[]
+): Promise<ShopifyCart | null> {
+  if (!hasShopifyConfig() || lines.length === 0) {
+    return null;
+  }
+
+  const client = getShopifyClient();
+  const { data, errors } = await client.request<CartLinesUpdateResponse>(
+    CART_LINES_UPDATE_MUTATION,
+    {
+      variables: { cartId, lines },
+    }
+  );
+
+  if (errors) {
+    throw new Error(`Shopify cart lines update failed: ${errors.message}`);
+  }
+
+  if (!data) {
+    throw new Error("Shopify cart lines update returned no data.");
+  }
+
+  assertNoCartErrors(data.cartLinesUpdate.userErrors);
+  return data.cartLinesUpdate.cart;
 }
 
 type CartQueryResponse = {

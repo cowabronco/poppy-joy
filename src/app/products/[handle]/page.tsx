@@ -3,12 +3,10 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import {
   Check,
-  Flag,
   HeartHandshake,
   Leaf,
   PackageCheck,
   RefreshCw,
-  Ruler,
   Sparkles,
   Truck,
 } from "lucide-react";
@@ -23,6 +21,7 @@ import {
 } from "@/components/poppy";
 import { AddToCartForm } from "@/components/poppy/add-to-cart-form";
 import { ProductQuantitySelect } from "@/components/poppy/product-quantity-select";
+import { ProductFacts } from "@/components/poppy/product-facts";
 import { ProductPurchaseToolbar } from "@/components/poppy/product-purchase-toolbar";
 import { ProductViewTracker } from "@/components/poppy/product-view-tracker";
 import { Button } from "@/components/ui/button";
@@ -160,12 +159,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
   const addToCartLabel = getAddToCartLabel(canAddToCart, isSoldOut);
   const productDescription = formatProductDescription(displayProduct.description);
   const { flagCount, productLength } = getProductSummaryFacts(storefrontProduct);
-  const productSummaryFacts = [
-    { label: "Vlaggetjes", value: String(flagCount), Icon: Flag },
-    { label: "Totale lengte", value: `${productLength} cm`, Icon: Ruler },
-  ];
   const productFacts = buildProductFactList(displayProduct);
-  const dropLabel = storefrontProduct.metafields.drop ?? "Celebrate Joy";
   const trackingEvent = {
     contentIds: [shopifyNumericId(storefrontProduct.id)],
     contentName: productName,
@@ -196,11 +190,6 @@ export default async function ProductPage({ params }: ProductPageProps) {
               productName={productName}
               className="lg:h-full"
               topLeftSlot={<BackToShopLink />}
-              topRightSlot={
-                <span className="text-xs uppercase tracking-[0.24em]">
-                  {dropLabel}
-                </span>
-              }
             />
           </Reveal>
 
@@ -251,22 +240,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
               </div>
             </AddToCartForm>
 
-            <div className="grid grid-cols-2 gap-3">
-              {productSummaryFacts.map(({ label, value, Icon }) => (
-                <div
-                  key={label}
-                  aria-label={`${label} ${value}`}
-                  className="flex items-center gap-3 rounded-2xl bg-brand-off-white/70 px-4 py-3"
-                >
-                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#F2EDE3] text-brand-purple">
-                    <Icon className="h-4 w-4" aria-hidden="true" />
-                  </span>
-                  <span className="serif text-2xl font-semibold leading-none text-brand-black">
-                    {value}
-                  </span>
-                </div>
-              ))}
-            </div>
+            <ProductFacts flagCount={flagCount} productLength={productLength} />
 
             <ul className="grid gap-3">
               {productFacts.map((fact) => (
@@ -382,6 +356,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
                 <ProductCard
                   product={relatedProduct}
                   imageSrc={imageSrc}
+                  sizes="(min-width: 1280px) 400px, (min-width: 768px) 33vw, 100vw"
                   showDetails={false}
                   soldOut={soldOut}
                 />

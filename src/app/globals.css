@@ -80,17 +80,17 @@ body {
   animation: shimmer 1.6s linear infinite;
 }
 
+/* Content is visible by default; JS adds .reveal-pending only to elements that
+   start below the fold, so nothing stays hidden if hydration is slow or fails. */
 .reveal {
-  opacity: 0;
-  transform: translateY(16px);
   transition:
     opacity 0.7s ease,
     transform 0.7s ease;
 }
 
-.reveal-visible {
-  opacity: 1;
-  transform: translateY(0);
+.reveal-pending {
+  opacity: 0;
+  transform: translateY(16px);
 }
 
 .page-enter {
@@ -164,7 +164,8 @@ body {
     animation: none;
   }
 
-  .reveal {
+  .reveal,
+  .reveal-pending {
     opacity: 1;
     transform: none;
     transition: none;

@@ -1,11 +1,15 @@
 import Image from "next/image";
 import Link from "next/link";
+import { ShoppingBag, Truck } from "lucide-react";
 
+import { CartCountSync } from "@/components/poppy/cart-count-sync";
+import { CartLineQuantity } from "@/components/poppy/cart-line-quantity";
+import { CartRemoveButton } from "@/components/poppy/cart-remove-button";
 import { CheckoutForm } from "@/components/poppy/checkout-form";
 import { Container, EditorialHeading, Price } from "@/components/poppy";
 import { Button } from "@/components/ui/button";
-import { removeFromCart } from "@/lib/cart/actions";
 import { formatMoney } from "@/lib/money";
+import { getMaxPurchasableQuantity } from "@/lib/shopify/availability";
 import type { ShopifyCart } from "@/lib/shopify/types";
 
 type CartPageContentProps = {
@@ -19,6 +23,7 @@ export function CartPageContent({ cart }: CartPageContentProps) {
   if (!cart || lines.length === 0) {
     return (
       <Container className="px-6 py-24">
+        <CartCountSync totalQuantity={0} />
         <div className="mx-auto max-w-2xl rounded-3xl border border-border bg-brand-beige/50 px-8 py-16 text-center">
           <EditorialHeading
             eyebrow="Winkelwagen"
@@ -42,6 +47,7 @@ export function CartPageContent({ cart }: CartPageContentProps) {
 
   return (
     <Container className="px-6 py-24">
+      <CartCountSync totalQuantity={cart.totalQuantity} />
       <div className="mx-auto max-w-4xl">
         <EditorialHeading eyebrow="Winkelwagen" title="Je selectie" />
 
@@ -54,7 +60,6 @@ export function CartPageContent({ cart }: CartPageContentProps) {
               ).toFixed(2),
               currencyCode: line.merchandise.price.currencyCode,
             });
-            const unitPrice = formatMoney(line.merchandise.price);
             const image = product.featuredImage;
 
             return (
@@ -92,28 +97,29 @@ export function CartPageContent({ cart }: CartPageContentProps) {
                         {line.merchandise.title}
                       </p>
                     ) : null}
-                    <p className="mt-3 text-sm text-brand-black/60">
-                      Aantal: {line.quantity}
-                    </p>
+                    <div className="mt-4">
+                      <CartLineQuantity
+                        lineId={line.id}
+                        quantity={line.quantity}
+                        maxQuantity={Math.max(
+                          getMaxPurchasableQuantity(line.merchandise),
+                          line.quantity
+                        )}
+                        productTitle={product.title}
+                      />
+                    </div>
                   </div>
 
                   <div className="flex flex-wrap items-end justify-between gap-3">
-                    <div>
-                      {unitPrice ? (
-                        <p className="text-sm text-brand-black/60">{unitPrice}</p>
-                      ) : null}
-                      {lineTotal ? <Price className="text-lg">{lineTotal}</Price> : null}
-                    </div>
-                    <form action={removeFromCart}>
-                      <input type="hidden" name="lineId" value={line.id} />
-                      <Button
-                        type="submit"
-                        variant="ghost"
-                        className="h-10 rounded-full px-4 text-xs uppercase tracking-[0.18em] text-brand-black/55 hover:bg-brand-black/5 hover:text-brand-black"
-                      >
-                        Verwijderen
-                      </Button>
-                    </form>
+                    {lineTotal ? (
+                      <div className="flex flex-wrap items-baseline gap-x-2">
+                        <Price className="text-lg">{lineTotal}</Price>
+                        <span className="text-xs text-brand-black/50">
+                          Inclusief BTW
+                        </span>
+                      </div>
+                    ) : null}
+                    <CartRemoveButton lineId={line.id} />
                   </div>
                 </div>
               </article>
@@ -122,17 +128,41 @@ export function CartPageContent({ cart }: CartPageContentProps) {
         </div>
 
         <div className="mt-10 rounded-3xl border border-border bg-brand-off-white/80 p-6 sm:p-8">
-          <div className="flex items-center justify-between gap-4 border-b border-border pb-6">
+          <div className="flex items-center justify-between gap-4 pb-4">
             <p className="text-sm uppercase tracking-[0.22em] text-brand-black/60">
-              Subtotaal
+              Verzending
+            </p>
+            <p className="text-sm font-medium uppercase tracking-[0.22em] text-brand-purple">
+              Gratis
+            </p>
+          </div>
+          <div className="flex items-center justify-between gap-4 border-y border-border py-6">
+            <p className="text-sm uppercase tracking-[0.22em] text-brand-black/60">
+              Totaal
             </p>
             {subtotal ? (
-              <Price className="text-xl">{subtotal}</Price>
+              <div className="flex items-baseline gap-2">
+                <Price className="text-xl">{subtotal}</Price>
+                <span className="text-xs text-brand-black/60">incl. BTW</span>
+              </div>
             ) : null}
           </div>
-          <p className="mt-4 text-sm leading-6 text-brand-black/60">
-            Verzendkosten en btw worden tijdens het afrekenen berekend.
-          </p>
+          <ul className="mt-8 space-y-3 rounded-2xl bg-brand-purple/10 p-5 text-sm font-medium leading-6 text-brand-black">
+            {[
+              {
+                icon: Truck,
+                label: "Gratis verzending, binnen twee werkdagen verzonden",
+              },
+              { icon: ShoppingBag, label: "Gratis bewaarzakje" },
+            ].map(({ icon: Icon, label }) => (
+              <li key={label} className="flex items-center gap-3">
+                <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-brand-purple text-brand-off-white">
+                  <Icon aria-hidden="true" className="size-4" />
+                </span>
+                {label}
+              </li>
+            ))}
+          </ul>
 
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
             <Button

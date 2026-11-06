@@ -198,6 +198,7 @@ export const CART_FRAGMENT = `#graphql
               id
               title
               availableForSale
+              quantityAvailable
               selectedOptions {
                 name
                 value
@@ -275,6 +276,22 @@ export const CART_LINES_REMOVE_MUTATION = `#graphql
 
   mutation CartLinesRemove($cartId: ID!, $lineIds: [ID!]!) {
     cartLinesRemove(cartId: $cartId, lineIds: $lineIds) {
+      cart {
+        ...CartFragment
+      }
+      userErrors {
+        field
+        message
+      }
+    }
+  }
+`;
+
+export const CART_LINES_UPDATE_MUTATION = `#graphql
+  ${CART_FRAGMENT}
+
+  mutation CartLinesUpdate($cartId: ID!, $lines: [CartLineUpdateInput!]!) {
+    cartLinesUpdate(cartId: $cartId, lines: $lines) {
       cart {
         ...CartFragment
       }

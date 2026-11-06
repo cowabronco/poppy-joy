@@ -1,31 +1,29 @@
-"use client";
-
-import { useEffect, useState } from "react";
 import Image from "next/image";
 
 import { MediaFrame } from "@/components/poppy/media-frame";
 import type { MediaAsset } from "@/lib/media";
-import { cn } from "@/lib/utils";
 
 type ResponsiveImageProps = {
   media: MediaAsset;
   sizes?: string;
   priority?: boolean;
+  quality?: number;
   frameClassName?: string;
 };
 
+/**
+ * The loading sheen sits *behind* the image, and the image is never hidden by
+ * JS-controlled state. It paints over the sheen as soon as the browser has it,
+ * even before (or without) hydration. Gating visibility on onLoad left photos
+ * invisible whenever the load event was missed (cached / pre-hydration loads).
+ */
 export function ResponsiveImage({
   media,
   sizes = "(min-width: 1024px) 50vw, 100vw",
   priority = false,
+  quality,
   frameClassName,
 }: ResponsiveImageProps) {
-  const [isLoaded, setIsLoaded] = useState(false);
-
-  useEffect(() => {
-    setIsLoaded(false);
-  }, [media.src]);
-
   if (!media.src) {
     return (
       <MediaFrame
@@ -38,22 +36,15 @@ export function ResponsiveImage({
 
   return (
     <MediaFrame aspectRatio={media.aspectRatio} className={frameClassName}>
-      {!isLoaded ? <div aria-hidden className="loading-sheen absolute inset-0" /> : null}
+      <div aria-hidden className="loading-sheen absolute inset-0" />
       <Image
         src={media.src}
         alt={media.alt}
         fill
         priority={priority}
+        quality={quality}
         sizes={sizes}
-        onLoad={(event) => {
-          if (event.currentTarget.complete) {
-            setIsLoaded(true);
-          }
-        }}
-        className={cn(
-          "object-cover transition duration-700",
-          isLoaded ? "scale-100 opacity-100 blur-0" : "scale-[1.03] opacity-0 blur-sm"
-        )}
+        className="object-cover"
       />
     </MediaFrame>
   );
