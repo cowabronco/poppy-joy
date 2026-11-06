@@ -101,7 +101,6 @@ export default async function Home() {
             </h1>
             <div className="mt-10">
               <HoverFillLink
-                fill="green"
                 href="/shop"
                 className="h-12 pl-7 pr-[calc(1.75rem-0.22em)] text-xs font-medium uppercase tracking-[0.22em] shadow-md shadow-black/20"
               >

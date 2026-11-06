@@ -1,0 +1,127 @@
+/* Motion adapted from Magic UI's interactive-hover-button (MIT), see hover-fill.tsx. */
+
+.action {
+  --fill: var(--brand-green);
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  background: var(--brand-purple);
+  color: var(--brand-off-white);
+  cursor: pointer;
+  outline-offset: 4px;
+  touch-action: manipulation;
+}
+
+.first {
+  display: flex;
+  white-space: nowrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6em;
+}
+
+.dot {
+  position: relative;
+  z-index: -1;
+  width: 6px;
+  height: 6px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--fill);
+  transition: transform 300ms cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.firstText {
+  transition:
+    transform 250ms ease,
+    opacity 180ms ease;
+}
+
+.second {
+  position: absolute;
+  white-space: nowrap;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+  color: var(--brand-black);
+  opacity: 0;
+  transform: translateX(24px);
+  transition:
+    transform 300ms cubic-bezier(0.19, 1, 0.22, 1),
+    opacity 200ms ease;
+}
+
+/* The flood only runs for real hover pointers; touch keeps a plain pill. */
+@media (hover: hover) and (pointer: fine) {
+  .action:not(:disabled):hover .dot {
+    transform: scale(80);
+  }
+
+  .action:not(:disabled):hover .firstText {
+    opacity: 0;
+    transform: translateX(22px);
+  }
+
+  .action:not(:disabled):hover .second {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Keyboard and press get instant, non-animated feedback. */
+.action:focus-visible {
+  background: var(--fill);
+  color: var(--brand-black);
+  outline: 2px solid var(--fill);
+}
+
+.action:focus-visible .dot {
+  background: var(--brand-purple);
+}
+
+.action:not(:disabled):active {
+  background: color-mix(in srgb, var(--fill) 85%, var(--brand-black));
+  color: var(--brand-black);
+}
+
+.action:disabled {
+  cursor: not-allowed;
+  background: color-mix(in srgb, var(--brand-black) 20%, transparent);
+}
+
+.action:disabled .dot {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dot,
+  .firstText,
+  .second {
+    transition: none !important;
+  }
+
+  .action:not(:disabled):hover {
+    background: var(--fill);
+    color: var(--brand-black);
+  }
+
+  .action:hover .dot {
+    transform: none !important;
+    background: var(--brand-purple);
+  }
+
+  .action:hover .firstText {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .action:hover .second {
+    display: none;
+  }
+}

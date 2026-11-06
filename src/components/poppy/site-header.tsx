@@ -16,6 +16,7 @@ import {
 
 import { Container } from "./container";
 import { CartNavLink } from "./cart-nav-link";
+import { HoverFillLink } from "./hover-fill";
 
 const primaryNavLinks = [
   { label: "Home", href: "/" },
@@ -143,12 +144,12 @@ export function SiteHeader() {
 
         <div className="relative hidden items-center justify-center lg:flex">
           <nav className="flex items-center justify-center gap-6 text-[0.975rem] uppercase tracking-[0.28em]">
-            <Link
-              className="rounded-full bg-brand-purple py-1.5 pl-5 pr-[calc(1.25rem-0.28em)] font-semibold text-brand-off-white shadow-md shadow-black/20 transition-colors duration-300 hover:bg-brand-purple/90"
+            <HoverFillLink
+              className="py-1.5 pl-5 pr-[calc(1.25rem-0.28em)] font-semibold shadow-md shadow-black/20"
               href="/shop"
             >
               Shop
-            </Link>
+            </HoverFillLink>
             <Link href="/" className="mx-3">
               <Image
                 src="/brand/logo.png"

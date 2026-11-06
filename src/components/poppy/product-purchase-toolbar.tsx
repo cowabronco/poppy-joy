@@ -3,9 +3,9 @@
 import { useEffect, useState } from "react";
 
 import { AddToCartForm } from "@/components/poppy/add-to-cart-form";
+import { HoverFillButton } from "@/components/poppy/hover-fill";
 import { Price } from "@/components/poppy/price";
 import { ProductQuantitySelect } from "@/components/poppy/product-quantity-select";
-import { Button } from "@/components/ui/button";
 import type { MetaCommerceEvent } from "@/lib/meta/pixel";
 import { cn } from "@/lib/utils";
 
@@ -78,13 +78,13 @@ export function ProductPurchaseToolbar({
             disabled={!canAddToCart}
             selectClassName="h-12"
           />
-          <Button
+          <HoverFillButton
             type="submit"
             disabled={!canAddToCart}
-            className="h-12 w-full min-w-0 rounded-full bg-brand-purple px-4 text-xs uppercase tracking-[0.16em] cursor-pointer text-brand-off-white hover:bg-brand-purple/90 disabled:cursor-not-allowed disabled:bg-brand-black/20 sm:px-8 sm:tracking-[0.22em]"
+            className="h-12 w-full min-w-0 px-4 text-xs font-medium uppercase tracking-[0.16em] sm:px-8 sm:tracking-[0.22em]"
           >
             {addToCartLabel}
-          </Button>
+          </HoverFillButton>
         </AddToCartForm>
       </div>
     </div>

@@ -5,6 +5,7 @@ import { ShoppingBag, Truck } from "lucide-react";
 import { CartCountSync } from "@/components/poppy/cart-count-sync";
 import { CartLineQuantity } from "@/components/poppy/cart-line-quantity";
 import { CartRemoveButton } from "@/components/poppy/cart-remove-button";
+import { HoverFillLink } from "@/components/poppy/hover-fill";
 import { CheckoutForm } from "@/components/poppy/checkout-form";
 import { Container, EditorialHeading, Price } from "@/components/poppy";
 import { Button } from "@/components/ui/button";
@@ -34,12 +35,12 @@ export function CartPageContent({ cart }: CartPageContentProps) {
             Ontdek de Celebrate Joy collectie en voeg je favoriete vlaggenlijn
             toe.
           </p>
-          <Button
-            asChild
-            className="mt-8 rounded-full bg-brand-purple px-8 text-xs uppercase tracking-[0.22em] text-brand-off-white hover:bg-brand-purple/90"
+          <HoverFillLink
+            href="/shop"
+            className="mt-8 h-10 pl-8 pr-[calc(2rem-0.22em)] text-xs font-medium uppercase tracking-[0.22em]"
           >
-            <Link href="/shop">Naar de shop</Link>
-          </Button>
+            Naar de shop
+          </HoverFillLink>
         </div>
       </Container>
     );
