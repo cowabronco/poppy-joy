@@ -21,11 +21,11 @@ import {
   Reveal,
 } from "@/components/poppy";
 import { AddToCartForm } from "@/components/poppy/add-to-cart-form";
+import { HoverFillButton } from "@/components/poppy/hover-fill";
 import { ProductQuantitySelect } from "@/components/poppy/product-quantity-select";
 import { ProductFacts } from "@/components/poppy/product-facts";
 import { ProductPurchaseToolbar } from "@/components/poppy/product-purchase-toolbar";
 import { ProductViewTracker } from "@/components/poppy/product-view-tracker";
-import { Button } from "@/components/ui/button";
 import {
   Accordion,
   AccordionContent,
@@ -240,13 +240,13 @@ export default async function ProductPage({ params }: ProductPageProps) {
                   maxQuantity={maxQuantity}
                   disabled={!canAddToCart}
                 />
-                <Button
+                <HoverFillButton
                   type="submit"
                   disabled={!canAddToCart}
-                  className="h-13 w-full min-w-0 rounded-full bg-brand-purple px-4 text-xs uppercase tracking-[0.16em] cursor-pointer text-brand-off-white hover:bg-brand-purple/90 disabled:cursor-not-allowed disabled:bg-brand-black/20 sm:px-8 sm:tracking-[0.22em]"
+                  className="h-13 w-full min-w-0 px-4 text-xs font-medium uppercase tracking-[0.16em] sm:px-8 sm:tracking-[0.22em]"
                 >
                   {addToCartLabel}
-                </Button>
+                </HoverFillButton>
               </div>
             </AddToCartForm>
               <ul className="space-y-3 rounded-2xl bg-brand-purple/10 p-5 text-sm font-medium leading-6 text-brand-black">

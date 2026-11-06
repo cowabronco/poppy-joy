@@ -19,6 +19,7 @@ import {
 import { pageDescriptions, pageMetadata, pageTitles } from "@/lib/site-metadata";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { HoverFillLink } from "@/components/poppy/hover-fill";
 import { values } from "@/lib/products";
 import { getStorefrontProducts } from "@/lib/shopify/products";
 import {
@@ -99,12 +100,13 @@ export default async function Home() {
               For moments that deserve joy.
             </h1>
             <div className="mt-10">
-              <Button
-                asChild
-                className="rounded-full bg-brand-purple px-7 py-6 text-xs uppercase tracking-[0.22em] text-brand-off-white hover:bg-brand-purple/90"
+              <HoverFillLink
+                fill="green"
+                href="/shop"
+                className="h-12 pl-7 pr-[calc(1.75rem-0.22em)] text-xs font-medium uppercase tracking-[0.22em] shadow-md shadow-black/20"
               >
-                <a href="/shop">Shop de collectie</a>
-              </Button>
+                Shop de collectie
+              </HoverFillLink>
             </div>
           </Reveal>
         </Container>
