@@ -78,6 +78,11 @@ export function ProductCard({
             />
           ) : null}
           <div className="absolute bottom-4 left-4 flex flex-wrap gap-2">
+            {product.label ? (
+              <Badge className="bg-brand-purple text-[10px] uppercase tracking-[0.18em] text-brand-off-white shadow-sm hover:bg-brand-purple">
+                {product.label}
+              </Badge>
+            ) : null}
             {soldOut ? <Badge className={badgeClassName}>Uitverkocht</Badge> : null}
             {product.materialTags.map((material) => (
               <Badge key={material} className={badgeClassName}>

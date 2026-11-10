@@ -228,20 +228,51 @@ const products = [
     sku: "PJ-CJ-CB",
     certifications: [],
   },
-].map((product) => ({
-  ...product,
-  vendor: "Poppy Joy",
-  productType: "Fabric bunting",
-  tags: ["Celebrate Joy", "Reusable decoration", "Handmade", product.title],
-  price: "49.95",
-  drop: "Celebrate Joy",
-  washingCare: "Wassen op 30 graden. Laat bij voorkeur liggend drogen.",
-  craftNote:
-    "Met zorg samengesteld en dubbelzijdig afgewerkt voor momenten die mogen blijven.",
-  includedItems: ["1 stoffen vlaggenlijn", "12 dubbelzijdige vlaggetjes"],
-  productLength: 450,
-  flagCount: 12,
-}));
+  {
+    title: "Festive Velvet",
+    handle: "festive-velvet",
+    descriptionHtml:
+      "<p>De <strong>Festive Velvet</strong> is een handgemaakte blikvanger vervaardigd uit een luxueuze, zachte velours stof in een diepe burgundy (bordeauxrode) tint, afgewisseld met een warme zebraprint. De vlaggenlijn is zorgvuldig dubbelzijdig gestikt voor een prachtige afwerking en is vastgenaaid aan een soepel geweven, mosgroene keperband.</p><p>Met een totale lengte van 450 cm en verdeeld over 12 vlaggetjes is dit de ultieme finishing touch voor je woonkamer, feestdagendecoratie of een stijlvol najaarsinterieur.</p>",
+    material: "100% zacht velours",
+    composition: "100% zacht velours",
+    dimensions: "12 vlaggetjes, 450 cm lang",
+    colorStory: "Diepe burgundy met warme zebraprint en mosgroene keperband",
+    inventoryQuantity: 17,
+    status: "ACTIVE",
+    sku: "PJ-LE-FV",
+    price: "64.65",
+    washingCare:
+      "Met liefde behandelen: fijne was op 30°C en hangend laten drogen. Niet in de droger, zo blijft de stof mooi voor elk volgend feestje.",
+    craftNote:
+      "Handgemaakt van zacht velours, dubbelzijdig gestikt en vastgezet aan een mosgroene keperband.",
+    extraTags: ["Limited edition"],
+    certifications: [],
+  },
+].map((product) => {
+  const { extraTags = [], ...fields } = product;
+
+  return {
+    vendor: "Poppy Joy",
+    productType: "Fabric bunting",
+    drop: "Celebrate Joy",
+    washingCare: "Wassen op 30 graden. Laat bij voorkeur liggend drogen.",
+    craftNote:
+      "Met zorg samengesteld en dubbelzijdig afgewerkt voor momenten die mogen blijven.",
+    includedItems: ["1 stoffen vlaggenlijn", "12 dubbelzijdige vlaggetjes"],
+    productLength: 450,
+    flagCount: 12,
+    price: "49.95",
+    certifications: [],
+    ...fields,
+    tags: [
+      "Celebrate Joy",
+      "Reusable decoration",
+      "Handmade",
+      product.title,
+      ...extraTags,
+    ],
+  };
+});
 
 async function findMetafieldDefinition(key) {
   const data = await adminRequest(

@@ -16,6 +16,7 @@ export function mapShopifyProduct(
     description: product.description,
     descriptionHtml: product.descriptionHtml,
     availableForSale: product.availableForSale,
+    tags: product.tags ?? [],
     price: product.priceRange.minVariantPrice,
     featuredImage: product.featuredImage,
     images: product.images.edges.map(({ node }) => node),

@@ -139,7 +139,7 @@ export default async function Home() {
           </Reveal>
 
           <div className="grid grid-auto-rows-fr gap-5 md:grid-cols-2 xl:grid-cols-4">
-            {homeProducts.slice(0, 4).map(({ product, imageSrc, facts }, index) => (
+            {homeProducts.map(({ product, imageSrc, facts }, index) => (
               <Reveal key={product.handle} delayMs={index * 60}>
                 <ProductCard
                   product={product}

@@ -34,6 +34,11 @@ export function mapStorefrontToDisplayProduct(
     dimensions: metafields.dimensions ?? "",
     care: metafields.washingCare ?? "",
     story: metafields.craftNote ?? "",
+    label: product.tags.some(
+      (tag) => tag.toLowerCase() === "limited edition"
+    )
+      ? "Limited edition"
+      : "",
     published: product.availableForSale,
   };
 }

@@ -10,6 +10,7 @@ export type Product = {
   dimensions: string;
   care: string;
   story: string;
+  label: string;
   published: boolean;
 };
 

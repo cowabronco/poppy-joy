@@ -6,6 +6,7 @@ export const PRODUCT_FRAGMENT = `#graphql
     description
     descriptionHtml
     availableForSale
+    tags
     featuredImage {
       url
       altText
@@ -76,7 +77,7 @@ export const PRODUCTS_QUERY = `#graphql
   ${PRODUCT_FRAGMENT}
 
   query Products($first: Int!, $after: String) {
-    products(first: $first, after: $after) {
+    products(first: $first, after: $after, sortKey: CREATED_AT, reverse: true) {
       pageInfo {
         hasNextPage
         endCursor

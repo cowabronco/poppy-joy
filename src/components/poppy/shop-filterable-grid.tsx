@@ -52,6 +52,7 @@ const filterGroupConfig: Array<{
       "Turquoise",
       "Aardetinten",
       "Cobalt",
+      "Burgundy",
     ],
   },
   {

@@ -18,6 +18,7 @@ const productFilterMetadata: Record<string, { colors: string[] }> = {
   "poppy-dots": { colors: ["Mosgroen"] },
   "wavy-joy": { colors: ["Aardetinten", "Turquoise"] },
   "cobalt-blue": { colors: ["Cobalt"] },
+  "festive-velvet": { colors: ["Burgundy", "Mosgroen"] },
 };
 
 export const metadata: Metadata = pageMetadata(pageTitles.shop, pageDescriptions.shop, {

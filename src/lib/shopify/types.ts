@@ -38,6 +38,7 @@ export type ShopifyProductNode = {
   description: string;
   descriptionHtml: string;
   availableForSale: boolean;
+  tags: string[];
   priceRange: {
     minVariantPrice: ShopifyMoney;
     maxVariantPrice: ShopifyMoney;
@@ -63,6 +64,7 @@ export type StorefrontProduct = {
   description: string;
   descriptionHtml: string;
   availableForSale: boolean;
+  tags: string[];
   price: ShopifyMoney;
   featuredImage: ShopifyImage | null;
   images: ShopifyImage[];

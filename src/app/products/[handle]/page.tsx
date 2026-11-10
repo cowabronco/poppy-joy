@@ -199,6 +199,11 @@ export default async function ProductPage({ params }: ProductPageProps) {
             <article className="h-full rounded-[2rem] border border-border bg-[#F2EDE3] p-6 sm:p-8 lg:sticky lg:top-28 xl:top-32">
             <div className="grid gap-5">
               <div className="grid gap-3">
+                {displayProduct.label ? (
+                  <p className="text-xs uppercase tracking-[0.22em] text-brand-purple">
+                    {displayProduct.label}
+                  </p>
+                ) : null}
                 <h1 className="serif text-5xl font-semibold leading-none md:text-6xl">
                   {productName}
                 </h1>
