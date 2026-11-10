@@ -38,6 +38,24 @@ type VariantByIdResponse = {
   } | null;
 };
 
+/** Newest first, with this product kept in the second slot. */
+const PINNED_SECOND_HANDLE = "zig-zag";
+
+function pinProductSecond(products: StorefrontProduct[]) {
+  const index = products.findIndex(
+    (product) => product.handle === PINNED_SECOND_HANDLE
+  );
+
+  if (index < 2) {
+    return products;
+  }
+
+  const next = products.slice();
+  const [pinned] = next.splice(index, 1);
+  next.splice(1, 0, pinned);
+  return next;
+}
+
 export async function getStorefrontProducts(
   first = 20
 ): Promise<StorefrontProduct[]> {
@@ -61,7 +79,9 @@ export async function getStorefrontProducts(
     throw new Error("Shopify products query returned no data.");
   }
 
-  return data.products.edges.map(({ node }) => mapShopifyProduct(node));
+  return pinProductSecond(
+    data.products.edges.map(({ node }) => mapShopifyProduct(node))
+  );
 }
 
 export async function getStorefrontProductHandles(
