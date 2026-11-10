@@ -72,11 +72,16 @@ const homeLifestyleImage =
 
 export default async function Home() {
   const storefrontProducts = await getStorefrontProducts(50);
-  const homeProducts = storefrontProducts.map((sp) => ({
-    product: mapStorefrontToDisplayProduct(sp),
-    imageSrc: getPrimaryImageUrl(sp),
-    facts: getProductSummaryFacts(sp),
-  }));
+  const homeProducts = storefrontProducts.map((sp) => {
+    const imageSrc = getPrimaryImageUrl(sp);
+
+    return {
+      product: mapStorefrontToDisplayProduct(sp),
+      imageSrc,
+      hoverImageSrc: sp.images.find((image) => image.url !== imageSrc)?.url,
+      facts: getProductSummaryFacts(sp),
+    };
+  });
 
   return (
     <main className="min-h-screen overflow-hidden text-brand-black">
@@ -139,11 +144,12 @@ export default async function Home() {
           </Reveal>
 
           <div className="grid grid-auto-rows-fr gap-5 md:grid-cols-2 xl:grid-cols-4">
-            {homeProducts.map(({ product, imageSrc, facts }, index) => (
+            {homeProducts.map(({ product, imageSrc, hoverImageSrc, facts }, index) => (
               <Reveal key={product.handle} delayMs={index * 60}>
                 <ProductCard
                   product={product}
                   imageSrc={imageSrc}
+                  hoverImageSrc={hoverImageSrc}
                   facts={facts}
                   sizes="(min-width: 1280px) 300px, (min-width: 768px) 50vw, 100vw"
                 />
