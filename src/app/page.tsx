@@ -103,10 +103,9 @@ export default async function Home() {
 
         <Container className="relative z-10 flex min-h-[80svh] flex-col justify-end pb-14 pt-24 md:pb-20 md:pt-28 lg:pb-24">
           <Reveal className="flex flex-col gap-8 text-brand-off-white md:flex-row md:items-end md:justify-between md:gap-12">
-            <h1 className="serif max-w-4xl text-6xl font-semibold leading-[0.93] [text-shadow:0_2px_24px_rgb(0_0_0/0.35)] md:text-8xl">
-              For moments
-              <br />
-              that deserve joy.
+            {/* Visually hidden: the page keeps one h1 for search engines and screen readers. */}
+            <h1 className="sr-only">
+              Poppy Joy: herbruikbare stoffen vlaggenlijnen
             </h1>
             <div className="shrink-0 md:pb-3">
               <HoverFillLink
