@@ -1,11 +1,20 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  type PointerEvent as ReactPointerEvent,
+  type ReactNode,
+} from "react";
 import Image from "next/image";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 import type { MediaAsset } from "@/lib/media";
 import { cn } from "@/lib/utils";
+
+const HOVER_ZOOM_SCALE = 2.2;
 
 type ProductGalleryProps = {
   media: MediaAsset[];
@@ -27,6 +36,55 @@ export function ProductGallery({
   const thumbnailButtonRefs = useRef<Array<HTMLButtonElement | null>>([]);
   const activeMedia = media[activeIndex] ?? media[0];
   const hasMultipleImages = media.length > 1;
+  const zoomLayerRef = useRef<HTMLDivElement>(null);
+  // The high-res zoom image only loads after the first mouse hover.
+  const [zoomRequested, setZoomRequested] = useState(false);
+  const [isZooming, setIsZooming] = useState(false);
+
+  const updateZoomOrigin = useCallback(
+    (event: ReactPointerEvent<HTMLDivElement>) => {
+      const layer = zoomLayerRef.current;
+      if (!layer) {
+        return;
+      }
+
+      const rect = event.currentTarget.getBoundingClientRect();
+      const x = ((event.clientX - rect.left) / rect.width) * 100;
+      const y = ((event.clientY - rect.top) / rect.height) * 100;
+      layer.style.transformOrigin = `${Math.min(100, Math.max(0, x))}% ${Math.min(100, Math.max(0, y))}%`;
+    },
+    []
+  );
+
+  const handleZoomEnter = useCallback(
+    (event: ReactPointerEvent<HTMLDivElement>) => {
+      // Mouse only: touch users keep the normal swipe/tap behaviour.
+      if (event.pointerType !== "mouse") {
+        return;
+      }
+
+      updateZoomOrigin(event);
+      setZoomRequested(true);
+      setIsZooming(true);
+    },
+    [updateZoomOrigin]
+  );
+
+  const handleZoomMove = useCallback(
+    (event: ReactPointerEvent<HTMLDivElement>) => {
+      if (event.pointerType !== "mouse") {
+        return;
+      }
+
+      updateZoomOrigin(event);
+      setIsZooming(true);
+    },
+    [updateZoomOrigin]
+  );
+
+  const handleZoomLeave = useCallback(() => {
+    setIsZooming(false);
+  }, []);
 
   const goToPrevious = useCallback(() => {
     setActiveIndex((current) =>
@@ -100,14 +158,43 @@ export function ProductGallery({
         <>
           {/* Sheen sits behind the image; never hide the image behind JS load state. */}
           <div aria-hidden className="loading-sheen absolute inset-0" />
-          <Image
-            src={activeMedia.src}
-            alt={activeMedia.alt}
-            fill
-            priority={activeIndex === 0}
-            sizes="(min-width: 1280px) 58vw, (min-width: 1024px) 52vw, 100vw"
-            className="object-cover"
-          />
+          <div
+            className="absolute inset-0 overflow-hidden lg:cursor-zoom-in"
+            onPointerEnter={handleZoomEnter}
+            onPointerMove={handleZoomMove}
+            onPointerLeave={handleZoomLeave}
+          >
+            <Image
+              src={activeMedia.src}
+              alt={activeMedia.alt}
+              fill
+              priority={activeIndex === 0}
+              sizes="(min-width: 1280px) 58vw, (min-width: 1024px) 52vw, 100vw"
+              className="object-cover"
+            />
+            {zoomRequested ? (
+              <div
+                ref={zoomLayerRef}
+                aria-hidden
+                className={cn(
+                  "pointer-events-none absolute inset-0 transition-[opacity,transform] duration-200 ease-out motion-reduce:transition-none",
+                  isZooming ? "opacity-100" : "opacity-0"
+                )}
+                style={{
+                  transform: `scale(${isZooming ? HOVER_ZOOM_SCALE : 1})`,
+                }}
+              >
+                <Image
+                  src={activeMedia.src}
+                  alt=""
+                  fill
+                  quality={90}
+                  sizes="(min-width: 1280px) 128vw, (min-width: 1024px) 115vw, 100vw"
+                  className="object-cover"
+                />
+              </div>
+            ) : null}
+          </div>
         </>
       ) : (
         <div className="flex h-full items-center justify-center bg-[linear-gradient(135deg,var(--brand-beige),var(--brand-off-white))] px-8 text-center text-xs uppercase tracking-[0.28em] text-brand-black/45">

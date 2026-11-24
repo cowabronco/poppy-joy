@@ -69,8 +69,10 @@ export default async function ShopPage() {
             </span>
           </h1>
           <p className="mt-4 max-w-2xl text-base leading-7 text-brand-black/70 md:mt-5 md:text-lg md:leading-8">
-            Ontdek de eerste Poppy Joy collectie. Tijdloze stoffen vlaggenlijnen,
-            ontworpen om de mooiste momenten keer op keer te vieren.
+            De allereerste collectie unieke vlaggenlijnen van Poppy Joy.
+            Handgemaakt in Nederland van hoogwaardige interieur stoffen. Het
+            stijlvolle, duurzame alternatief voor wegwerpdecoratie — ontworpen
+            om een leven lang mee te vieren.
           </p>
         </header>
 

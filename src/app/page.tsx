@@ -64,8 +64,7 @@ const careCards = [
   },
 ];
 
-const homeHeroImage =
-  "https://cdn.shopify.com/s/files/1/0971/3359/2909/files/hero.jpg?v=1779897558";
+const homeHeroImage = "/editorial/home-hero-fabrics.jpg";
 
 const homeLifestyleImage =
   "https://cdn.shopify.com/s/files/1/0971/3359/2909/files/hompage-support-foto.jpg?v=1782844633";
@@ -89,22 +88,27 @@ export default async function Home() {
         <div className="absolute inset-0">
           <Image
             src={homeHeroImage}
-            alt="Picknicktafel met vlaggenlijn in een zonnige tuin aan het water"
+            alt="Stapel Poppy Joy vlaggenlijnen in jacquard, linnen en velours"
             fill
             priority
             sizes="100vw"
-            className="object-cover object-top"
+            className="object-cover object-center"
           />
         </div>
 
-        <div className="absolute inset-0 bg-gradient-to-b from-brand-black/30 via-brand-black/40 to-brand-black/55" />
+        {/* Busy fabric photo: a light overall tint plus strong top and bottom fades keep the nav and title legible. */}
+        <div className="absolute inset-0 bg-brand-black/15" />
+        <div className="absolute inset-x-0 top-0 h-2/5 bg-gradient-to-b from-brand-black/65 via-brand-black/25 to-transparent" />
+        <div className="absolute inset-x-0 bottom-0 h-3/4 bg-gradient-to-t from-brand-black/90 via-brand-black/55 to-transparent" />
 
         <Container className="relative z-10 flex min-h-[80svh] flex-col justify-end pb-14 pt-24 md:pb-20 md:pt-28 lg:pb-24">
-          <Reveal className="max-w-3xl text-brand-off-white">
-            <h1 className="serif max-w-4xl text-6xl font-semibold leading-[0.93] md:text-8xl">
-              For moments that deserve joy.
+          <Reveal className="flex flex-col gap-8 text-brand-off-white md:flex-row md:items-end md:justify-between md:gap-12">
+            <h1 className="serif max-w-4xl text-6xl font-semibold leading-[0.93] [text-shadow:0_2px_24px_rgb(0_0_0/0.35)] md:text-8xl">
+              For moments
+              <br />
+              that deserve joy.
             </h1>
-            <div className="mt-10">
+            <div className="shrink-0 md:pb-3">
               <HoverFillLink
                 href="/shop"
                 className="h-12 pl-7 pr-[calc(1.75rem-0.22em)] text-xs font-medium uppercase tracking-[0.22em] shadow-md shadow-black/20"
@@ -138,8 +142,10 @@ export default async function Home() {
           <Reveal className="mb-12 flex flex-col justify-between gap-6 md:flex-row md:items-end">
             <EditorialHeading eyebrow="Drop 1" title="Celebrate Joy" />
             <p className="max-w-md leading-7 text-brand-black/70">
-              De eerste Poppy Joy collectie. Tijdloze stoffen vlaggenlijnen,
-              ontworpen om de mooiste momenten keer op keer te vieren.
+              De allereerste collectie unieke vlaggenlijnen van Poppy Joy.
+              Handgemaakt in Nederland van hoogwaardige interieur stoffen. Het
+              stijlvolle, duurzame alternatief voor wegwerpdecoratie — ontworpen
+              om een leven lang mee te vieren.
             </p>
           </Reveal>
 
